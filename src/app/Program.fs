@@ -2,6 +2,7 @@
 open System.IO
 
 // load csv file
+// construct layout structure
 // render csv file
 
 let readFile name =
@@ -15,7 +16,7 @@ let loadCsv path =
 
 [<EntryPoint>]
 let main argv =
-    let chars  = readFile "C:\\Users\\sgaliamov\\projects\\personal\\git.md"
+    let chars = readFile "C:\\Users\\sgaliamov\\projects\\personal\\git.md"
     for c in chars do
         Console.Write c
     Console.ReadKey()
