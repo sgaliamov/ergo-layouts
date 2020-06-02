@@ -16,6 +16,10 @@ total to configure:  42.
 
 No need to care about `shift`, `space`, `enter` and others because they will be placed on extra keys anyway.
 
+## Scoring
+
+TBD
+
 ## Links
 
 http://patorjk.com/keyboard-layout-analyzer/#/main

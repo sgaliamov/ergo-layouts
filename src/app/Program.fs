@@ -1,9 +1,10 @@
 ﻿open System
 open System.IO
+open FSharp.Data
+open System.CommandLine
+open System.CommandLine.Invocation
 
-// load csv file
-// construct layout structure
-// render csv file
+type Config = JsonProvider<"./data/config.json">
 
 let readFile name =
     let stream = File.OpenText name
@@ -11,14 +12,22 @@ let readFile name =
         while not stream.EndOfStream do yield stream.Read()
     }
 
+
+let config = Config.GetSample()
+
 let loadCsv path =
     File.ReadAllText path
 
+let handler(flag :bool) =
+    Console.WriteLine config
+    //[1..5]
+    //|> List.map (fun x -> x)
+    //|> List.iter (printfn "%d")
+    //0
+
 [<EntryPoint>]
 let main argv =
-    let chars = readFile "C:\\Users\\sgaliamov\\projects\\personal\\git.md"
-    for c in chars do
-        Console.Write c
-    Console.ReadKey()
-    |> ignore
-    0 // return an integer exit code
+    let root = RootCommand()
+    Option("--flag") |> root.AddOption
+    root.Handler <- CommandHandler.Create handler
+    root.Invoke argv
