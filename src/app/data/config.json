@@ -1,5 +1,5 @@
 ﻿{
-  "sameFinngerPenalty": 1.3,
+  "sameFingerPenalty": 1.3,
   "handSwitchPenalty": 1.1,
   "configurableButtons": [
     9,
