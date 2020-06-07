@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="MainModule.fs" />
     <None Include="data\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -20,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="FSharp.Data" Version="3.3.3" />
-    <PackageReference Include="System.CommandLine.DragonFruit" Version="0.3.0-alpha.20253.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20303.1" />
   </ItemGroup>
 
   <ItemGroup>

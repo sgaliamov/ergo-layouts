@@ -1,33 +1,20 @@
-﻿open System
-open System.IO
-open FSharp.Data
-open System.CommandLine
+﻿open System.CommandLine
 open System.CommandLine.Invocation
+open MainModule
+open System.Threading
+open System
 
-type Config = JsonProvider<"./data/config.json">
-
-let readFile name =
-    let stream = File.OpenText name
-    seq {
-        while not stream.EndOfStream do yield stream.Read()
-    }
-
-
-let config = Config.GetSample()
-
-let loadCsv path =
-    File.ReadAllText path
-
-let handler(flag :bool) =
-    Console.WriteLine config
-    //[1..5]
-    //|> List.map (fun x -> x)
-    //|> List.iter (printfn "%d")
-    //0
+let private handler path = 
+    printfn "Press any key to exit..."
+    use cts = new CancellationTokenSource()
+    processFolders path cts.Token // todo: find a way to be pure async
+    Console.ReadKey false |> ignore
+    cts.Cancel true
+    printf "Done."
 
 [<EntryPoint>]
 let main argv =
     let root = RootCommand()
-    Option("--flag") |> root.AddOption
-    root.Handler <- CommandHandler.Create handler
+    Option("--path") |> root.AddOption
+    root.Handler <- handler |> CommandHandler.Create 
     root.Invoke argv
