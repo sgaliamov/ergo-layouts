@@ -3,25 +3,16 @@
 open System.IO
 open System.Threading
 
-let private streamFile path =
-    let stream = File.OpenText path
-    seq {
-        while not stream.EndOfStream do yield stream.Read()
-    }
+let private calculateLine line =
+    Thread.Sleep 100
+    printfn "%s" line
 
-let private iterateFiles path =
-    seq { yield! Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories) }
+let private calculateFile filePath (token :CancellationToken) =
+    use stream = File.OpenText filePath
+    while not stream.EndOfStream && not token.IsCancellationRequested do
+        stream.ReadLine() |> calculateLine // todo: use async version
 
-let private calculateFile (filePath: string) (token: CancellationToken): string =
-    ""
-
-let private isCancelled (token: CancellationToken) = token.IsCancellationRequested
-
-let calculate path (token: CancellationToken) =
-    let files = 
-        iterateFiles path
-        |> Seq.where (fun _ -> isCancelled token)
-        |> Seq.map calculateFile
-    for m in files do
-        m token
-    ()
+let calculate path token =
+    Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
+    |> Seq.map calculateFile // can run in pararllel
+    |> Seq.iter (fun m -> m token)

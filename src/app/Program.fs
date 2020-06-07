@@ -15,6 +15,6 @@ let private handler path =
 [<EntryPoint>]
 let main argv =
     let root = RootCommand()
-    Option("--path") |> root.AddOption
-    root.Handler <- handler |> CommandHandler.Create
+    root.AddOption(Option("--path"))
+    root.Handler <- CommandHandler.Create(handler)
     root.Invoke argv

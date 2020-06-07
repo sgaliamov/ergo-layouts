@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Modules\Main.fs" />
-    <Compile Include="Modules\Configs.fs" />
+    <Compile Include="modules\Main.fs" />
+    <Compile Include="modules\Configs.fs" />
     <None Include="data\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
