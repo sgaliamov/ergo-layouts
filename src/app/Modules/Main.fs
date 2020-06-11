@@ -23,18 +23,21 @@ type StringBuilder with
 
     member sb.Append (pairs, total) = sb.appendLines pairs total
 
-let private print (digraphs: ConcurrentDictionary<string, int>, letters: ConcurrentDictionary<char, int>) =
+let private print (digraphs: ConcurrentDictionary<string, int>, letters: ConcurrentDictionary<char, int>, allChars: ConcurrentDictionary<char, int>) =
     let totalLetters = Seq.sum letters.Values
+    let totalChars = Seq.sum allChars.Values
+    let symbolsOnly = allChars |> Seq.filter (fun x -> Char.IsSymbol(x.Key))
     let totalDigraphs = Seq.sum digraphs.Values
     StringBuilder()
-        .AppendFormat("Letters: {0}\n", totalLetters)
+        .AppendFormat("Letters: {0}\n", totalChars)
         .Append(letters, totalLetters)
+        .Append(symbolsOnly, totalChars)
         .AppendFormat("\nDigraphs {0}:\n", totalDigraphs)
         .Append(digraphs, totalDigraphs)
     |> Console.WriteLine
 
 let calculate path search token = async {
-    let seed = (ConcurrentDictionary<string, int>(), ConcurrentDictionary<char, int>())
+    let seed = (ConcurrentDictionary<string, int>(), ConcurrentDictionary<char, int>(), ConcurrentDictionary<char, int>())
     Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
     |> Seq.map calculateFile // todo: can run in pararllel
     |> Seq.map (fun m -> m token)

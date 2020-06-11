@@ -10,14 +10,14 @@ open System.Collections.Generic
 
 let toString (a, b) = String([| a; b |])
 
-type ICounter<'T> = seq<'T> -> seq<'T * int>
+type Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 
 let countLetters line =
     line 
     |> Seq.filter Char.IsLetter 
     |> Seq.countBy id
 
-let countAllSymbols line = line |> Seq.countBy id
+let countChars line = line |> Seq.countBy id
 
 let countDigraphs line =
     line
@@ -32,35 +32,29 @@ let yieldLines (stream: StreamReader) (token: CancellationToken) = seq {
             .ReadLine()
             .ToLowerInvariant() } // todo: use async
 
-let collect<'T> line (counter: ICounter<'T>) =
+let calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
     line
     |> counter
-    |> Seq.fold folder (ConcurrentDictionary<'T, int>())
+    |> Seq.fold folder (ConcurrentDictionary<'TOut, int>())
 
 let collect line =
-    let folder result (key, count) = addOrUpdate result key count (+)
-    let letters = collect line countLetters
-    let symbols =
-        line
-        |> countAllSymbols
-        |> Seq.fold folder (ConcurrentDictionary<char, int>())
-    let digraphs =
-        line
-        |> countDigraphs
-        |> Seq.fold folder (ConcurrentDictionary<string, int>())
-    (digraphs, letters, symbols)
+    let letters = calculate line countLetters
+    let chars = calculate line countChars
+    let digraphs = calculate line countDigraphs
+    (digraphs, letters, chars)
 
-let aggregator (digraphs, letters) (fromDigraphs, fromLetters) =
+let aggregator (digraphs, letters, chars) (fromDigraphs, fromLetters, fromChars) =
     let resultDigraphs = sumValues fromDigraphs digraphs
     let resultLetters = sumValues fromLetters letters
-    (resultDigraphs, resultLetters)
+    let resultChars = sumValues fromChars chars
+    (resultDigraphs, resultLetters, resultChars)
 
 let characters = HashSet<char>([' '..'~'] |> List.except ['A'..'Z'])
 
 let calculateFile filePath token =
     use stream = File.OpenText filePath
-    let seed = (ConcurrentDictionary<string, int>(), ConcurrentDictionary<char, int>())
+    let seed = (ConcurrentDictionary<string, int>(), ConcurrentDictionary<char, int>(), ConcurrentDictionary<char, int>())
     yieldLines stream token
     |> Seq.map (fun line -> line |> Seq.filter characters.Contains) 
     |> Seq.map collect
