@@ -29,8 +29,9 @@ let private print (digraphs: ConcurrentDictionary<string, int>, letters: Concurr
     let symbolsOnly = allChars |> Seq.filter (fun x -> Char.IsSymbol(x.Key))
     let totalDigraphs = Seq.sum digraphs.Values
     StringBuilder()
-        .AppendFormat("Letters: {0}\n", totalChars)
+        .AppendFormat("Letters: {0}\n", totalLetters)
         .Append(letters, totalLetters)
+        .AppendFormat("\nSymbols from total: {0}\n", totalChars)
         .Append(symbolsOnly, totalChars)
         .AppendFormat("\nDigraphs {0}:\n", totalDigraphs)
         .Append(digraphs, totalDigraphs)

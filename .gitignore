@@ -1,7 +1,6 @@
 .vs/
-obj/
-bin/
-~*
-.ionide/
 .vscode/
+~*
+bin/
 launchSettings.json
+obj/
