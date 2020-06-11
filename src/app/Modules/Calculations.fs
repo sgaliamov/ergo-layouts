@@ -6,6 +6,7 @@ open System.Threading
 open System.Collections.Concurrent
 
 open Utilities
+open System.Collections.Generic
 
 let toString (a, b) = String([| a; b |])
        
@@ -22,7 +23,9 @@ let countDigraphs line =
 
 let yieldLines (stream: StreamReader) (token: CancellationToken) = seq {
     while not stream.EndOfStream && not token.IsCancellationRequested do
-        yield stream.ReadLine().ToLowerInvariant() } // todo: use async
+        yield stream
+            .ReadLine()
+            .ToLowerInvariant() } // todo: use async
 
 let collect line =
     let folder result (key, count) = addOrUpdate result key count (+)
@@ -41,9 +44,13 @@ let aggregator (digraphs, letters) (fromDigraphs, fromLetters) =
     let resultLetters = sumValues fromLetters letters
     (resultDigraphs, resultLetters)
 
+let set = HashSet<char>([' '..'~'])
+set.ExceptWith(['A'..'Z'])
+
 let calculateFile filePath token =
     use stream = File.OpenText filePath
     let seed = (ConcurrentDictionary<string, int>(), ConcurrentDictionary<char, int>())
     yieldLines stream token
+    |> Seq.map (fun line -> line |> Seq.filter set.Contains) 
     |> Seq.map collect
     |> Seq.fold aggregator seed

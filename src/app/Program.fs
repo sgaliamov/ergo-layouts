@@ -8,7 +8,6 @@ let private handler path search =
     calculate path search cts.Token |> Async.Start
     Console.ReadKey false |> ignore
     cts.Cancel true
-    printf "Done."
 
 [<EntryPoint>]
 let main argv =
