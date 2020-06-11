@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="modules\Utilities.fs" />
     <Compile Include="modules\Main.fs" />
     <Compile Include="modules\Configs.fs" />
     <Content Include="data\statistics.json" />

@@ -1,20 +1,18 @@
 ﻿open System
-open System.CommandLine
-open System.CommandLine.Invocation
 open System.Threading
 open Main
 
-let private handler path = 
+let private handler path search = 
     printfn "Press any key to exit..."
     use cts = new CancellationTokenSource()
-    calculate path cts.Token // todo: find a way to be pure async
+    calculate path search cts.Token |> Async.Start
     Console.ReadKey false |> ignore
     cts.Cancel true
     printf "Done."
 
 [<EntryPoint>]
 let main argv =
-    let root = RootCommand()
-    root.AddOption(Option("--path"))
-    root.Handler <- CommandHandler.Create(handler)
-    root.Invoke argv
+    match argv with
+    | [| first; second |] -> handler first second
+    | _ -> printfn "Wrong input."
+    0
