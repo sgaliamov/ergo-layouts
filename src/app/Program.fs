@@ -1,23 +1,17 @@
 ﻿open System
-open System.IO
+open System.Threading
+open Main
 
-// load csv file
-// render csv file
-
-let readFile name =
-    let stream = File.OpenText name
-    seq {
-        while not stream.EndOfStream do yield stream.Read()
-    }
-
-let loadCsv path =
-    File.ReadAllText path
+let private handler path search = 
+    printfn "Press any key to exit..."
+    use cts = new CancellationTokenSource()
+    calculate path search cts.Token |> Async.Start
+    Console.ReadKey false |> ignore
+    cts.Cancel true
 
 [<EntryPoint>]
 let main argv =
-    let chars  = readFile "C:\\Users\\sgaliamov\\projects\\personal\\git.md"
-    for c in chars do
-        Console.Write c
-    Console.ReadKey()
-    |> ignore
-    0 // return an integer exit code
+    match argv with
+    | [| first; second |] -> handler first second
+    | _ -> printfn "Wrong input."
+    0
