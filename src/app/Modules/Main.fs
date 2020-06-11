@@ -14,24 +14,23 @@ let private div x y =
 
 let private getValue value total = 100.0 * div value total
 
-let private appendLine (sb: StringBuilder, key, value, total) = 
-    sb.AppendFormat("{0} : {1:0.###}\n", key, (getValue value total))
-    |> ignore
-
-let private appendLines<'T> (sb: StringBuilder) (pairs: seq<KeyValuePair<'T, int>>) total =
-    pairs
-    |> Seq.sortByDescending (fun pair -> pair.Value)
-    |> Seq.map (fun pair -> (sb, pair.Key, pair.Value, total))
-    |> Seq.iter appendLine
+type StringBuilder with
+    static member AppendLine (sb: StringBuilder, key, value, total) = 
+        sb.AppendFormat("{0} : {1:0.###}\n", key, (getValue value total))
+    member sb.AppendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total =
+        pairs
+        |> Seq.sortByDescending (fun pair -> pair.Value)
+        |> Seq.fold (fun (sb, total) pair -> 
+            StringBuilder.AppendLine(sb, pair.Key, pair.Value, total)) (sb, total)
 
 let private print (digraphs: ConcurrentDictionary<string, int>, letters: ConcurrentDictionary<char, int>) =
     let totalLetters = Seq.sum letters.Values
     let totalDigraphs = Seq.sum digraphs.Values
     let sb = StringBuilder().AppendFormat("Letters: {0}\n", totalLetters)
 
-    appendLines sb letters totalLetters
-    sb.AppendFormat("\nDigraphs {0}:\n", totalDigraphs) |> ignore
-    appendLines sb digraphs totalDigraphs
+    sb.AppendLines (letters, totalLetters)
+      .AppendFormat("\nDigraphs {0}:\n", totalDigraphs)
+    sb.AppendLines digraphs totalDigraphs
 
     Console.WriteLine(sb)
 
