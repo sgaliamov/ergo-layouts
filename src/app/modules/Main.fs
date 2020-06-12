@@ -16,12 +16,12 @@ type StringBuilder with
         let getValue value total = 100.0 * div value total
         sb.AppendFormat("{0} : {1:0.####}\t", key, (getValue value total))
 
-    member sb.appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total =
+    member sb.AppendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total =
         pairs
         |> Seq.sortByDescending (fun pair -> pair.Value)
         |> Seq.fold (fun (sb: StringBuilder) pair -> sb.appendPair(pair.Key, pair.Value, total)) sb
 
-    member sb.Append (pairs, total) = sb.appendLines pairs total
+    member sb.Append (pairs, total) = sb.AppendLines pairs total
 
 let yieldLines filePath (token: CancellationToken) = seq {
     use stream = File.OpenText filePath
