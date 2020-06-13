@@ -19,7 +19,12 @@ type StringBuilder with
     member sb.AppendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total =
         pairs
         |> Seq.sortByDescending (fun pair -> pair.Value)
-        |> Seq.fold (fun (sb: StringBuilder) pair -> sb.AppendPair(pair.Key, pair.Value, total)) sb
+        |> Seq.fold (fun (sb: StringBuilder, i) pair ->
+            if i % 5 = 0 && i <> 0 then
+                sb.AppendLine() |> ignore
+            (sb.AppendPair(pair.Key, pair.Value, total), i + 1)) (sb, 0)
+        |> ignore
+        sb
 
     member sb.Append (pairs, total) = sb.AppendLines pairs total
 
@@ -35,9 +40,9 @@ let private print state =
     StringBuilder()
         .AppendFormat("Letters: {0}\n", state.totalLetters)
         .Append(state.letters, state.totalLetters)
-        .AppendFormat("\nSymbols from total: {0}\n", state.totalChars)
+        .AppendFormat("\n\nSymbols from total: {0}\n", state.totalChars)
         .Append(symbolsOnly, state.totalChars)
-        .AppendFormat("\nDigraphs {0}:\n", state.totalDigraphs)
+        .AppendFormat("\n\nDigraphs {0}:\n", state.totalDigraphs)
         .Append(state.digraphs, state.totalDigraphs)
     |> Console.WriteLine
 

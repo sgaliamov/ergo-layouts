@@ -1,14 +1,15 @@
 ﻿module Calculations
 
-open System
 open System.Collections.Concurrent
 open System.Collections.Generic
 open Utilities
 
-type Digraph = char * char
-type Letters = ConcurrentDictionary<char, int>
+type Char = char
+type Letter = char
+type Chars = ConcurrentDictionary<Char, int>
+type Letters = ConcurrentDictionary<Letter, int>
+type Digraph = Letter * Letter
 type Digraphs = ConcurrentDictionary<Digraph, int>
-type Chars = ConcurrentDictionary<char, int>
 type State = {
     letters: Letters
     digraphs: Digraphs
