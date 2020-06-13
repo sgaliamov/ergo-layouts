@@ -17,3 +17,5 @@ let sumValues<'T> source destination =
     let folder acc (pair: KeyValuePair<'T, int>) = addOrUpdate acc pair.Key pair.Value (+)
     source
     |> Seq.fold folder destination
+
+let toString (a, b) = String([| a; b |])

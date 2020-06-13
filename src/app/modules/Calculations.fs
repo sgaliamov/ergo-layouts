@@ -1,14 +1,21 @@
 ﻿module Calculations
 
 open System
-open System.IO
-open System.Threading
 open System.Collections.Concurrent
-
-open Utilities
 open System.Collections.Generic
+open Utilities
 
-let toString (a, b) = String([| a; b |])
+type Digraph = char * char
+type Letters = ConcurrentDictionary<char, int>
+type Digraphs = ConcurrentDictionary<Digraph, int>
+type Chars = ConcurrentDictionary<char, int>
+type State = {
+    letters: Letters
+    digraphs: Digraphs
+    chars: Chars
+    totalLetters: int
+    totalDigraphs: int
+    totalChars: int }
 
 type Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 
@@ -17,20 +24,15 @@ let countLetters line =
     |> Seq.filter Char.IsLetter 
     |> Seq.countBy id
 
-let countChars line = line |> Seq.countBy id
+let countChars line =
+    line
+    |> Seq.countBy id
 
 let countDigraphs line =
     line
     |> Seq.filter Char.IsLetter
     |> Seq.pairwise
-    |> Seq.map toString
     |> Seq.countBy id
-    
-let yieldLines (stream: StreamReader) (token: CancellationToken) = seq {
-    while not stream.EndOfStream && not token.IsCancellationRequested do
-        yield stream
-            .ReadLine()
-            .ToLowerInvariant() } // todo: use async
 
 let calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
@@ -42,20 +44,34 @@ let collect line =
     let letters = calculate line countLetters
     let chars = calculate line countChars
     let digraphs = calculate line countDigraphs
-    (digraphs, letters, chars)
+    { 
+        letters = letters
+        digraphs = digraphs
+        chars = chars
+        totalLetters = letters.Values |> Seq.sum
+        totalDigraphs = digraphs.Values |> Seq.sum
+        totalChars = chars.Values |> Seq.sum
+    }
 
-let aggregator (digraphs, letters, chars) (fromDigraphs, fromLetters, fromChars) =
-    let resultDigraphs = sumValues fromDigraphs digraphs
-    let resultLetters = sumValues fromLetters letters
-    let resultChars = sumValues fromChars chars
-    (resultDigraphs, resultLetters, resultChars)
+let aggregator state from = {
+    letters = sumValues from.letters state.letters
+    digraphs = sumValues from.digraphs state.digraphs
+    chars = sumValues from.chars state.chars
+    totalLetters = from.totalLetters + state.totalLetters
+    totalDigraphs = from.totalDigraphs + state.totalDigraphs
+    totalChars = from.totalChars + state.totalChars }
 
 let characters = HashSet<char>([' '..'~'] |> List.except ['A'..'Z'])
 
-let calculateFile filePath token =
-    use stream = File.OpenText filePath
-    let seed = (ConcurrentDictionary<string, int>(), ConcurrentDictionary<char, int>(), ConcurrentDictionary<char, int>())
-    yieldLines stream token
+let calculateLines lines =
+    let seed = {
+        letters = Letters()
+        digraphs = Digraphs()
+        chars = Chars()
+        totalLetters = 0
+        totalDigraphs = 0
+        totalChars = 0 }
+    lines
     |> Seq.map (fun line -> line |> Seq.filter characters.Contains) 
     |> Seq.map collect
     |> Seq.fold aggregator seed
