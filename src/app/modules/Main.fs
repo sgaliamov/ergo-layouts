@@ -4,11 +4,11 @@ open System
 open System.IO
 open System.Collections.Generic
 open System.Text
-open Calculations
 open System.Threading
+open Calculations
 
 type StringBuilder with
-    member sb.appendPair (key, value, total) =
+    member sb.AppendPair (key, value, total) =
         let div x y =
             match y with
             | 0 -> 0.0
@@ -19,7 +19,7 @@ type StringBuilder with
     member sb.AppendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total =
         pairs
         |> Seq.sortByDescending (fun pair -> pair.Value)
-        |> Seq.fold (fun (sb: StringBuilder) pair -> sb.appendPair(pair.Key, pair.Value, total)) sb
+        |> Seq.fold (fun (sb: StringBuilder) pair -> sb.AppendPair(pair.Key, pair.Value, total)) sb
 
     member sb.Append (pairs, total) = sb.AppendLines pairs total
 
