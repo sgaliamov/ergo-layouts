@@ -8,7 +8,7 @@ type Char = char
 type Letter = char
 type Chars = ConcurrentDictionary<Char, int>
 type Letters = ConcurrentDictionary<Letter, int>
-type Digraph = Letter * Letter
+type Digraph = string
 type Digraphs = ConcurrentDictionary<Digraph, int>
 type State = {
     letters: Letters
@@ -17,7 +17,6 @@ type State = {
     totalLetters: int
     totalDigraphs: int
     totalChars: int }
-
 type Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 
 let countLetters line =
@@ -33,6 +32,7 @@ let countDigraphs line =
     line
     |> Seq.filter Char.IsLetter
     |> Seq.pairwise
+    |> Seq.map toString
     |> Seq.countBy id
 
 let calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
@@ -62,17 +62,18 @@ let aggregator state from = {
     totalDigraphs = from.totalDigraphs + state.totalDigraphs
     totalChars = from.totalChars + state.totalChars }
 
-let characters = HashSet<char>([' '..'~'] |> List.except ['A'..'Z'])
+let private characters = HashSet<char>([' '..'~'] |> List.except ['A'..'Z'])
+
+let stateSeed = {
+    letters = Letters()
+    digraphs = Digraphs()
+    chars = Chars()
+    totalLetters = 0
+    totalDigraphs = 0
+    totalChars = 0 }
 
 let calculateLines lines =
-    let seed = {
-        letters = Letters()
-        digraphs = Digraphs()
-        chars = Chars()
-        totalLetters = 0
-        totalDigraphs = 0
-        totalChars = 0 }
     lines
-    |> Seq.map (fun line -> line |> Seq.filter characters.Contains) 
+    |> Seq.map (fun (line: string) -> line.ToLowerInvariant() |> Seq.filter characters.Contains) 
     |> Seq.map collect
-    |> Seq.fold aggregator seed
+    |> Seq.fold aggregator stateSeed

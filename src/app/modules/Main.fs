@@ -6,6 +6,7 @@ open System.Collections.Generic
 open System.Text
 open System.Threading
 open Calculations
+open Configs
 
 type StringBuilder with
     member sb.AppendPair (key, value, total) =
@@ -28,12 +29,10 @@ type StringBuilder with
 
     member sb.Append (pairs, total) = sb.AppendLines pairs total
 
-let yieldLines filePath (token: CancellationToken) = seq {
+let private yieldLines filePath (token: CancellationToken) = seq {
     use stream = File.OpenText filePath
     while not stream.EndOfStream && not token.IsCancellationRequested do
-        yield stream
-            .ReadLine()
-            .ToLowerInvariant() } // todo: use async
+        yield stream.ReadLine() } // todo: use async
 
 let private print state =
     let symbolsOnly = state.chars |> Seq.filter (fun x -> Char.IsPunctuation(x.Key))
@@ -47,16 +46,9 @@ let private print state =
     |> Console.WriteLine
 
 let calculate path search (token: CancellationToken) = async {
-    let seed = {
-        letters = Letters()
-        digraphs = Digraphs()
-        chars = Chars()
-        totalLetters = 0
-        totalDigraphs = 0
-        totalChars = 0 }
     Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
     |> Seq.filter (fun _ -> not token.IsCancellationRequested)
     |> Seq.map (fun filePath -> yieldLines filePath token)
     |> Seq.map calculateLines // todo: can run in pararllel
-    |> Seq.fold aggregator seed
+    |> Seq.fold aggregator stateSeed
     |> print }
