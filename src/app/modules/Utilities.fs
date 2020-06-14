@@ -14,10 +14,10 @@ let addOrUpdate<'T1, 'T2> (dict: ConcurrentDictionary<'T1, 'T2>) key value onUpd
         |> ignore
     dict
 
-let sumValues<'T> source destination =
+let sumValues<'T> source (seed: ConcurrentDictionary<'T, int>) =
     let folder acc (pair: KeyValuePair<'T, int>) = addOrUpdate acc pair.Key pair.Value (+)
     source
-    |> Seq.fold folder destination
+    |> Seq.fold folder (ConcurrentDictionary<'T,int>(seed))
 
 let toString (a, b) = String([| a; b |])
 
