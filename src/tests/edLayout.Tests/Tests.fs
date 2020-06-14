@@ -12,9 +12,14 @@ type private Stats = JsonProvider<"./statistics.json">
 
 let statistics = Stats.GetSample()
 
+let get = seq {
+    for (a: string, b: JsonValue)  in statistics.Digraphs.JsonValue.Properties do
+        yield (a.ToString(), b.AsFloat())
+}
+
+
 [<Fact>]
 let ``My test`` () =
-    let a = statistics.Digraphs.JsonValue.Properties
-    let b = a.ToDictionary(new Func<(string*JsonValue),string>(fun (a,b) -> a))
-    let c = a.Select(fun (a, b: JsonValue) -> (a, b.AsFloat())).ToArray()
+    let digraphsMap =  get|> Map.ofSeq
+    let r = digraphsMap.["th"]
     Assert.True(true)
