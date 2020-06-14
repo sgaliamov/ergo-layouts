@@ -8,8 +8,8 @@ open FSharp.Data
 let addOrUpdate<'T1, 'T2> (dict: ConcurrentDictionary<'T1, 'T2>) key value onUpdate =
     dict.AddOrUpdate (
         key,
-        new Func<'T1, 'T2, 'T2>(fun _ value -> value),
-        new Func<'T1, 'T2, 'T2, 'T2>(fun _ acc value -> onUpdate acc value),
+        (fun _ v -> v),
+        (fun _ acc v -> onUpdate acc v),
         value)
         |> ignore
     dict

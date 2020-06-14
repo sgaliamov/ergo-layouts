@@ -43,9 +43,13 @@ let isFinished<'TKey> (state: ConcurrentDictionary<'TKey, int>) (stats: Map<stri
 
     state.Keys
     |> Seq.map (fun key ->
-        let keyStatistics = stats.[key.ToString()]
-        let count = state.[key]
-        isEnough count keyStatistics)
+        let str = key.ToString()
+        match stats.ContainsKey str with
+        | true -> 
+            let keyStatistics = stats.[str]
+            let count = state.[key]
+            isEnough count keyStatistics
+        | _ -> true)
     |> Seq.filter id
     |> Seq.length
     = state.Keys.Count

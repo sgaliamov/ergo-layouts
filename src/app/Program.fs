@@ -5,7 +5,7 @@ open Main
 let private handler path search =
     printfn "Press any key to exit..."
     use cts = new CancellationTokenSource()
-    let task = calculate path search cts.Token |> Async.StartAsTask
+    let task = calculate path search cts |> Async.StartAsTask
     Console.ReadKey true |> ignore
     cts.Cancel true
     // todo: better awaiting
