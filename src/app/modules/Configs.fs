@@ -7,6 +7,7 @@ open Utilities
 
 type private Config = JsonProvider<"./data/config.json">
 type private Stats = JsonProvider<"./data/statistics.json">
+type private Settings = JsonProvider<"./data/settings.json">
 
 let private config = Config.GetSample()
 let private statistics = Stats.GetSample()
@@ -24,5 +25,6 @@ let stats = {|
     digraphs = digraphsStatistics;
     letters = lettersStatistics |}
 
-let loadLayout path =
-    File.ReadAllText path
+let loadLayout path = File.ReadAllText path
+
+let settings = Settings.GetSample()

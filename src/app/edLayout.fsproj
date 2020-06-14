@@ -7,6 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="data\settings.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
         <None Include="data\statistics.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

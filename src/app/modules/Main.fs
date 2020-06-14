@@ -8,10 +8,8 @@ open System.Threading
 open Calculations
 open Configs
 
-let columns = 6
-
 type StringBuilder with
-    member sb.AppendPair (key, value) = sb.AppendFormat("{0} : {1:0.###}\t", key, value)
+    member sb.AppendPair (key, value) = sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
 
     member sb.AppendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter =
         let getValue value =
@@ -26,7 +24,7 @@ type StringBuilder with
         |> Seq.filter (fun pair -> pair.Value >= filter)
         |> Seq.sortByDescending (fun pair -> pair.Value)
         |> Seq.fold (fun (sb: StringBuilder, i) pair ->
-            if i % columns = 0 && i <> 0 then sb.AppendLine() |> ignore
+            if i % settings.Columns = 0 && i <> 0 then sb.AppendLine() |> ignore
             (sb.AppendPair(pair.Key, pair.Value), i + 1)) (sb, 0)
         |> ignore
         sb
