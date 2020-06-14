@@ -24,7 +24,7 @@ type StringBuilder with
         |> Seq.filter (fun pair -> pair.Value >= filter)
         |> Seq.sortByDescending (fun pair -> pair.Value)
         |> Seq.fold (fun (sb: StringBuilder, i) pair ->
-            if i % settings.Columns = 0 && i <> 0 then sb.AppendLine() |> ignore
+            if i % settings.columns = 0 && i <> 0 then sb.AppendLine() |> ignore
             (sb.AppendPair(pair.Key, pair.Value), i + 1)) (sb, 0)
         |> ignore
         sb
@@ -50,8 +50,8 @@ let calculate path search (cts: CancellationTokenSource) = async {
     
     let folder (cts: CancellationTokenSource) state next =
         let newState = aggregator state next
-        let digraphsFinished = isFinished newState.digraphs stats.digraphs newState.totalDigraphs stats.precision
-        let lettersFinished = isFinished newState.letters stats.letters newState.totalLetters stats.precision
+        let digraphsFinished = isFinished newState.digraphs settings.digraphs newState.totalDigraphs settings.precision
+        let lettersFinished = isFinished newState.letters settings.letters newState.totalLetters settings.precision
         if digraphsFinished && lettersFinished then cts.Cancel()
         newState
 
