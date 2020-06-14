@@ -11,23 +11,23 @@ type Letters = ConcurrentDictionary<Letter, int>
 type Digraph = string
 type Digraphs = ConcurrentDictionary<Digraph, int>
 type State =
-    { letters: Letters
-      digraphs: Digraphs
-      chars: Chars
-      totalLetters: int
-      totalDigraphs: int
-      totalChars: int }
+    { Letters: Letters
+      Digraphs: Digraphs
+      Chars: Chars
+      TotalLetters: int
+      TotalDigraphs: int
+      TotalChars: int }
 type Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 
 let private characters = HashSet<char>([' '..'~'] |> List.except ['A'..'Z'])
 
 let initialState = {
-    letters = Letters()
-    digraphs = Digraphs()
-    chars = Chars()
-    totalLetters = 0
-    totalDigraphs = 0
-    totalChars = 0 }
+    Letters = Letters()
+    Digraphs = Digraphs()
+    Chars = Chars()
+    TotalLetters = 0
+    TotalDigraphs = 0
+    TotalChars = 0 }
 
 let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
@@ -74,23 +74,23 @@ let collect line =
     let letters = calculate line countLetters
     let chars = calculate line countChars
     let digraphs = calculate line countDigraphs
-    { letters = letters
-      digraphs = digraphs
-      chars = chars
-      totalLetters = letters.Values |> Seq.sum
-      totalDigraphs = digraphs.Values |> Seq.sum
-      totalChars = chars.Values |> Seq.sum }
+    { Letters = letters
+      Digraphs = digraphs
+      Chars = chars
+      TotalLetters = letters.Values |> Seq.sum
+      TotalDigraphs = digraphs.Values |> Seq.sum
+      TotalChars = chars.Values |> Seq.sum }
 
 let aggregator state from =
-    { letters = sumValues from.letters state.letters
-      digraphs = sumValues from.digraphs state.digraphs
-      chars = sumValues from.chars state.chars
-      totalLetters = from.totalLetters + state.totalLetters
-      totalDigraphs = from.totalDigraphs + state.totalDigraphs
-      totalChars = from.totalChars + state.totalChars }
+    { Letters = sumValues from.Letters state.Letters
+      Digraphs = sumValues from.Digraphs state.Digraphs
+      Chars = sumValues from.Chars state.Chars
+      TotalLetters = from.TotalLetters + state.TotalLetters
+      TotalDigraphs = from.TotalDigraphs + state.TotalDigraphs
+      TotalChars = from.TotalChars + state.TotalChars }
 
 let calculateLines lines =
     lines
-    |> Seq.map (fun (line: string) -> line.ToLowerInvariant() |> Seq.filter characters.Contains) 
+    |> Seq.map (fun (line: string) -> line.ToLowerInvariant() |> Seq.filter characters.Contains)
     |> Seq.map collect
     |> Seq.fold aggregator initialState

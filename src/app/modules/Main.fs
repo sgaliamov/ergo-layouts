@@ -38,20 +38,20 @@ let calculate path search (cts: CancellationTokenSource) = async {
             yield stream.ReadLine () } // todo: use async
     
     let print state =
-        let symbolsOnly = state.chars |> Seq.filter (fun x -> Char.IsPunctuation(x.Key))
+        let symbolsOnly = state.Chars |> Seq.filter (fun x -> Char.IsPunctuation(x.Key))
         StringBuilder()
-            .AppendFormat("Letters: {0}\n", state.totalLetters)
-            .Append(state.letters, state.totalLetters, 0.0)
-            .AppendFormat("\n\nSymbols from total: {0}\n", state.totalChars)
-            .Append(symbolsOnly, state.totalChars, 0.0)
-            .AppendFormat("\n\nDigraphs {0}:\n", state.totalDigraphs)
-            .Append(state.digraphs, state.totalDigraphs, 0.05)
+            .AppendFormat("Letters: {0}\n", state.TotalLetters)
+            .Append(state.Letters, state.TotalLetters, 0.0)
+            .AppendFormat("\n\nSymbols from total: {0}\n", state.TotalChars)
+            .Append(symbolsOnly, state.TotalChars, 0.0)
+            .AppendFormat("\n\nDigraphs {0}:\n", state.TotalDigraphs)
+            .Append(state.Digraphs, state.TotalDigraphs, 0.05)
         |> Console.WriteLine
     
     let folder state next =
         let newState = aggregator state next
-        let digraphsFinished = isFinished newState.digraphs settings.digraphs newState.totalDigraphs settings.precision
-        let lettersFinished = isFinished newState.letters settings.letters newState.totalLetters settings.precision
+        let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
+        let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
         if digraphsFinished && lettersFinished then cts.Cancel()
         newState
 
