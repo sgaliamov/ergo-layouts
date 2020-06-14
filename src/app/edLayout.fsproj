@@ -21,8 +21,8 @@
         </None>
         <Compile Include="modules\Utilities.fs" />
         <Compile Include="modules\Calculations.fs" />
-        <Compile Include="modules\Main.fs" />
         <Compile Include="modules\Configs.fs" />
+        <Compile Include="modules\Main.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
