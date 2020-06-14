@@ -3,6 +3,7 @@
 open System
 open System.Collections.Concurrent
 open System.Collections.Generic
+open FSharp.Data
 
 let addOrUpdate<'T1, 'T2> (dict: ConcurrentDictionary<'T1, 'T2>) key value onUpdate =
     dict.AddOrUpdate (
@@ -19,3 +20,8 @@ let sumValues<'T> source destination =
     |> Seq.fold folder destination
 
 let toString (a, b) = String([| a; b |])
+
+let jsonValueToMap jsonValues =
+    jsonValues
+    |> Seq.map (fun (a: string, b: JsonValue) -> (a.ToString(), b.AsFloat()))
+    |> Map.ofSeq

@@ -19,29 +19,54 @@ type State = {
     totalChars: int }
 type Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 
-let countLetters line =
-    line 
-    |> Seq.filter Char.IsLetter 
-    |> Seq.countBy id
+let private characters = HashSet<char>([' '..'~'] |> List.except ['A'..'Z'])
 
-let countChars line =
-    line
-    |> Seq.countBy id
+let stateSeed = {
+    letters = Letters()
+    digraphs = Digraphs()
+    chars = Chars()
+    totalLetters = 0
+    totalDigraphs = 0
+    totalChars = 0 }
 
-let countDigraphs line =
-    line
-    |> Seq.filter Char.IsLetter
-    |> Seq.pairwise
-    |> Seq.map toString
-    |> Seq.countBy id
-
-let calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
+let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
     line
     |> counter
     |> Seq.fold folder (ConcurrentDictionary<'TOut, int>())
 
+let isFinished<'TKey> (state: ConcurrentDictionary<'TKey, int>) (stats: Map<string, float>) total precision =
+    let isEnough count keyStatistics =
+        let delta = int(precision * float total)
+        let goal = int(keyStatistics * float total)
+        count + delta >= goal
+
+    state.Keys
+    |> Seq.map (fun key ->
+        let keyStatistics = stats.[key.ToString()]
+        let count = state.[key]
+        isEnough count keyStatistics)
+    |> Seq.filter id
+    |> Seq.length
+    = state.Keys.Count
+
 let collect line =
+    let countLetters line =
+        line 
+        |> Seq.filter Char.IsLetter 
+        |> Seq.countBy id
+    
+    let countChars line =
+        line
+        |> Seq.countBy id
+    
+    let countDigraphs line =
+        line
+        |> Seq.filter Char.IsLetter
+        |> Seq.pairwise
+        |> Seq.map toString
+        |> Seq.countBy id
+
     let letters = calculate line countLetters
     let chars = calculate line countChars
     let digraphs = calculate line countDigraphs
@@ -61,16 +86,6 @@ let aggregator state from = {
     totalLetters = from.totalLetters + state.totalLetters
     totalDigraphs = from.totalDigraphs + state.totalDigraphs
     totalChars = from.totalChars + state.totalChars }
-
-let private characters = HashSet<char>([' '..'~'] |> List.except ['A'..'Z'])
-
-let stateSeed = {
-    letters = Letters()
-    digraphs = Digraphs()
-    chars = Chars()
-    totalLetters = 0
-    totalDigraphs = 0
-    totalChars = 0 }
 
 let calculateLines lines =
     lines

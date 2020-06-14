@@ -16,7 +16,6 @@ type StringBuilder with
             | _ -> (float x) / (float y)
         let getValue value total = 100.0 * div value total
         sb.AppendFormat("{0} : {1:0.####}\t", key, (getValue value total))
-
     member sb.AppendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total =
         pairs
         |> Seq.sortByDescending (fun pair -> pair.Value)
@@ -26,29 +25,35 @@ type StringBuilder with
             (sb.AppendPair(pair.Key, pair.Value, total), i + 1)) (sb, 0)
         |> ignore
         sb
-
     member sb.Append (pairs, total) = sb.AppendLines pairs total
 
-let private yieldLines filePath (token: CancellationToken) = seq {
-    use stream = File.OpenText filePath
-    while not stream.EndOfStream && not token.IsCancellationRequested do
-        yield stream.ReadLine() } // todo: use async
+let calculate path search (cts: CancellationTokenSource) = async {
+    let yieldLines (token: CancellationToken) filePath = seq {
+        use stream = File.OpenText filePath
+        while not stream.EndOfStream && not token.IsCancellationRequested do
+            yield stream.ReadLine() } // todo: use async
+    
+    let print state =
+        let symbolsOnly = state.chars |> Seq.filter (fun x -> Char.IsPunctuation(x.Key))
+        StringBuilder()
+            .AppendFormat("Letters: {0}\n", state.totalLetters)
+            .Append(state.letters, state.totalLetters)
+            .AppendFormat("\n\nSymbols from total: {0}\n", state.totalChars)
+            .Append(symbolsOnly, state.totalChars)
+            .AppendFormat("\n\nDigraphs {0}:\n", state.totalDigraphs)
+            .Append(state.digraphs, state.totalDigraphs)
+        |> Console.WriteLine
+    
+    let folder (cts: CancellationTokenSource) state next =
+        let newState = aggregator state next
+        let digraphsFinished = isFinished newState.digraphs stats.digraphs newState.totalDigraphs stats.precision
+        let lettersFinished = isFinished newState.letters stats.letters newState.totalLetters stats.precision
+        if digraphsFinished && lettersFinished then cts.Cancel()
+        newState
 
-let private print state =
-    let symbolsOnly = state.chars |> Seq.filter (fun x -> Char.IsPunctuation(x.Key))
-    StringBuilder()
-        .AppendFormat("Letters: {0}\n", state.totalLetters)
-        .Append(state.letters, state.totalLetters)
-        .AppendFormat("\n\nSymbols from total: {0}\n", state.totalChars)
-        .Append(symbolsOnly, state.totalChars)
-        .AppendFormat("\n\nDigraphs {0}:\n", state.totalDigraphs)
-        .Append(state.digraphs, state.totalDigraphs)
-    |> Console.WriteLine
-
-let calculate path search (token: CancellationToken) = async {
     Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
-    |> Seq.filter (fun _ -> not token.IsCancellationRequested)
-    |> Seq.map (fun filePath -> yieldLines filePath token)
+    |> Seq.filter (fun _ -> not cts.IsCancellationRequested)
+    |> Seq.map (yieldLines cts.Token)
     |> Seq.map calculateLines // todo: can run in pararllel
-    |> Seq.fold aggregator stateSeed
+    |> Seq.fold (folder cts) stateSeed
     |> print }
