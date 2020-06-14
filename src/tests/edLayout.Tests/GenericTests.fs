@@ -1,8 +1,7 @@
-module Tests
+module GenericTests
 
 open Xunit
 open FsUnit
-
 open FSharp.Data
 open FSharp.Data.JsonExtensions
 
