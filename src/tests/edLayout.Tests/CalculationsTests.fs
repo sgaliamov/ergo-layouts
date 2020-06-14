@@ -12,12 +12,10 @@ let toKeyValuePairs<'TKey, 'TValue> pairs =
 
 [<Fact>]
 let ``Should consider to finish when has enough characters`` () =
-    let state =
-        ConcurrentDictionary<string, int>(toKeyValuePairs [| ("th", 8) |])
-
     let stats = Map<string, float> [ ("th", 10.) ]
     let total = 100
     let precision = 2.
+    let state = ConcurrentDictionary<string, int>(toKeyValuePairs [| ("th", 8) |])
 
     let actual = isFinished state stats total precision
     actual |> should be True

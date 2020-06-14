@@ -17,7 +17,6 @@ type StringBuilder with
                 match y with
                 | 0 -> 0.0
                 | _ -> (float x) / (float y)
-
             100.0 * div value total
 
         pairs
@@ -49,22 +48,21 @@ let calculate path search (cts: CancellationTokenSource) =
                 state.Chars
                 |> Seq.filter (fun x -> Char.IsPunctuation(x.Key))
 
-            StringBuilder().AppendFormat("Letters: {0}\n", state.TotalLetters)
+            StringBuilder()
+                .AppendFormat("Letters: {0}\n", state.TotalLetters)
                 .Append(state.Letters, state.TotalLetters, 0.0)
                 .AppendFormat("\n\nSymbols from total: {0}\n", state.TotalChars)
-                .Append(symbolsOnly, state.TotalChars, 0.0).AppendFormat("\n\nDigraphs {0}:\n", state.TotalDigraphs)
+                .Append(symbolsOnly, state.TotalChars, 0.0)
+                .AppendFormat("\n\nDigraphs {0}:\n", state.TotalDigraphs)
                 .Append(state.Digraphs, state.TotalDigraphs, 0.05)
             |> Console.WriteLine
 
         let folder state next =
             let newState = aggregator state next
-
             let digraphsFinished =
                 isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
-
             let lettersFinished =
                 isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
-
             if digraphsFinished && lettersFinished then cts.Cancel()
             newState
 
