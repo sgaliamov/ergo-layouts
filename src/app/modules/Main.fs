@@ -48,7 +48,7 @@ let calculate path search (cts: CancellationTokenSource) = async {
             .Append(state.digraphs, state.totalDigraphs, 0.05)
         |> Console.WriteLine
     
-    let folder (cts: CancellationTokenSource) state next =
+    let folder state next =
         let newState = aggregator state next
         let digraphsFinished = isFinished newState.digraphs settings.digraphs newState.totalDigraphs settings.precision
         let lettersFinished = isFinished newState.letters settings.letters newState.totalLetters settings.precision
@@ -59,5 +59,5 @@ let calculate path search (cts: CancellationTokenSource) = async {
     |> Seq.filter (fun _ -> not cts.IsCancellationRequested)
     |> Seq.map (yieldLines cts.Token)
     |> Seq.map calculateLines // todo: can run in pararllel
-    |> Seq.fold (folder cts) stateSeed
+    |> Seq.fold folder initialState
     |> print }
