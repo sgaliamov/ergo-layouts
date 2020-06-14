@@ -14,7 +14,7 @@ let private config = Config.GetSample()
 let private statistics = Stats.GetSample()
 let private appSettings = Settings.GetSample()
 
-let private digraphsStatistics = 
+let private digraphsStatistics =
     statistics.Digraphs.JsonValue.Properties
     |> jsonValueToMap
 
@@ -25,8 +25,8 @@ let private lettersStatistics =
 type Probability = Probability of float
 
 let createProbability value =
-    if value < 0. || value > 100. then
-        raise (ArgumentOutOfRangeException ("value"))
+    if value < 0. || value > 100.
+    then raise (ArgumentOutOfRangeException("value"))
     value / 100.
 
 let settings =
@@ -36,4 +36,3 @@ let settings =
        letters = lettersStatistics |}
 
 let loadLayout path = File.ReadAllText path
-
