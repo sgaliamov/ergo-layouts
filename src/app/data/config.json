@@ -1,6 +1,6 @@
 ﻿{
-  "sameFingerPenalty": 1.3,
-  "handSwitchPenalty": 1.1,
+  "sameFingerPenalty": 1.5,
+  "handSwitchPenalty": 5,
   "fixed": {
     "A2": "1",
     "A3": "2",
