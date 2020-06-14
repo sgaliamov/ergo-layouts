@@ -1,25 +1,24 @@
 module Tests
 
-open System.Linq
-open System
 open Xunit
-open Configs
+open FsUnit
 
 open FSharp.Data
 open FSharp.Data.JsonExtensions
 
-type private Stats = JsonProvider<"./statistics.json">
-
-let statistics = Stats.GetSample()
-
-let get = seq {
-    for (a: string, b: JsonValue)  in statistics.Digraphs.JsonValue.Properties do
-        yield (a.ToString(), b.AsFloat())
-}
-
+type private Stats = JsonProvider<"""{
+    "digraphs": {
+        "th": 1.23
+    }
+}""">
 
 [<Fact>]
-let ``My test`` () =
-    let digraphsMap =  get|> Map.ofSeq
-    let r = digraphsMap.["th"]
-    Assert.True(true)
+let ``Test map creation`` () =
+    let statistics = Stats.GetSample()
+    let digraphsMap = 
+        statistics.Digraphs.JsonValue.Properties
+        |> Seq.map (fun (a: string, b: JsonValue) -> (a.ToString(), b.AsFloat()))
+        |> Map.ofSeq
+
+    digraphsMap.["th"]
+    |> should equal 1.23
