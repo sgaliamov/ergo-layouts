@@ -7,6 +7,7 @@ open System.Text
 open System.Threading
 open Calculations
 open Configs
+open Models
 
 type StringBuilder with
     member sb.AppendPair(key, value) = sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
@@ -46,7 +47,7 @@ let calculate path search (cts: CancellationTokenSource) =
         let print state =
             let symbolsOnly =
                 state.Chars
-                |> Seq.filter (fun x -> Char.IsPunctuation(x.Key))
+                |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
 
             StringBuilder()
                 .AppendFormat("Letters: {0}\n", state.TotalLetters)
@@ -59,12 +60,12 @@ let calculate path search (cts: CancellationTokenSource) =
 
         let folder state next =
             let newState = aggregator state next
-            let digraphsFinished =
-                isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
-            let lettersFinished =
-                isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
+            let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
+            let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
             if digraphsFinished && lettersFinished then cts.Cancel()
             newState
+
+        let start = DateTime.UtcNow
 
         Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
         |> Seq.filter (fun _ -> not cts.IsCancellationRequested)
@@ -72,4 +73,6 @@ let calculate path search (cts: CancellationTokenSource) =
         |> Seq.map calculateLines // todo: can run in pararllel
         |> Seq.fold folder initialState
         |> print
+
+        printf "\nTime: %s." ((DateTime.UtcNow - start).ToString("c"))
     }

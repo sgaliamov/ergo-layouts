@@ -22,6 +22,8 @@
         <None Include="data\qwerty.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <Compile Include="modules\Probability.fs" />
+        <Compile Include="modules\Models.fs" />
         <Compile Include="modules\Utilities.fs" />
         <Compile Include="modules\Calculations.fs" />
         <Compile Include="modules\Configs.fs" />
