@@ -1,6 +1,5 @@
 ﻿module Configs
 
-open System
 open System.IO
 open FSharp.Data
 open FSharp.Data.JsonExtensions
@@ -14,23 +13,22 @@ let private config = Config.GetSample()
 let private statistics = Stats.GetSample()
 let private appSettings = Settings.GetSample()
 
+let private jsonToMap json =
+    json
+    |> jsonValueToPairs
+    |> Seq.map (fun (key, value) -> (key, Probability.create value))
+    |> Map.ofSeq
+
 let private digraphsStatistics =
     statistics.Digraphs.JsonValue.Properties
-    |> jsonValueToMap
+    |> jsonToMap
 
 let private lettersStatistics =
     statistics.Letters.JsonValue.Properties
-    |> jsonValueToMap
-
-type Probability = Probability of float
-
-let createProbability value =
-    if value < 0. || value > 100.
-    then raise (ArgumentOutOfRangeException("value"))
-    value / 100.
+    |> jsonToMap
 
 let settings =
-    {| precision = createProbability (float appSettings.Precision)
+    {| precision = Probability.create (float appSettings.Precision)
        digraphs = digraphsStatistics
        columns = appSettings.Columns
        letters = lettersStatistics |}

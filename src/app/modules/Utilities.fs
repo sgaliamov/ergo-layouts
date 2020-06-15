@@ -15,9 +15,8 @@ let sumValues<'T> source (seed: ConcurrentDictionary<'T, int>) =
     source
     |> Seq.fold folder (ConcurrentDictionary<'T, int>(seed))
 
-let toString (a, b) = String([| a; b |])
+let toString (a, b) = String ([| a; b |])
 
-let jsonValueToMap jsonValues =
+let jsonValueToPairs jsonValues =
     jsonValues
-    |> Seq.map (fun (a: string, b: JsonValue) -> (a.ToString(), b.AsFloat()))
-    |> Map.ofSeq
+    |> Seq.map (fun (a: string, b: JsonValue) -> a.ToString(), b.AsFloat())

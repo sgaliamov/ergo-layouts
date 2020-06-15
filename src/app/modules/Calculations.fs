@@ -2,27 +2,13 @@
 
 open System.Collections.Concurrent
 open System.Collections.Generic
+open Models
+open Probability
 open Utilities
 
-type Char = char
-type Letter = char
-type Chars = ConcurrentDictionary<Char, int>
-type Letters = ConcurrentDictionary<Letter, int>
-type Digraph = string
-type Digraphs = ConcurrentDictionary<Digraph, int>
+type private Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 
-type State =
-    { Letters: Letters
-      Digraphs: Digraphs
-      Chars: Chars
-      TotalLetters: int
-      TotalDigraphs: int
-      TotalChars: int }
-
-type Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
-
-let private characters =
-    HashSet<char>([ ' ' .. '~' ] |> List.except [ 'A' .. 'Z' ])
+let private characters = HashSet<char>([ ' ' .. '~' ] |> List.except [ 'A' .. 'Z' ])
 
 let initialState =
     { Letters = Letters()
@@ -38,10 +24,14 @@ let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     |> counter
     |> Seq.fold folder (ConcurrentDictionary<'TOut, int>())
 
-let isFinished<'TKey> (state: ConcurrentDictionary<'TKey, int>) (stats: Map<string, float>) total precision =
+let isFinished<'TKey> 
+    (state: ConcurrentDictionary<'TKey, int>)
+    (stats: Map<string, Probability>)
+    (total: int)
+    (precision: Probability) =
     let isEnough count keyStatistics =
-        let delta = int (precision * float total)
-        let goal = int (keyStatistics * float total)
+        let delta = Probability.calculate (float total) precision
+        let goal = Probability.calculate (float total) keyStatistics
         count + delta >= goal
 
     state.Keys
@@ -51,14 +41,16 @@ let isFinished<'TKey> (state: ConcurrentDictionary<'TKey, int>) (stats: Map<stri
         | true ->
             let keyStatistics = stats.[str]
             let count = state.[key]
-            isEnough count keyStatistics
+            isEnough (float count) keyStatistics
         | _ -> true)
     |> Seq.filter id
     |> Seq.length = state.Keys.Count
 
 let collect line =
     let countLetters line =
-        line |> Seq.filter Char.IsLetter |> Seq.countBy id
+        line
+        |> Seq.filter Char.IsLetter
+        |> Seq.countBy id
 
     let countChars line = line |> Seq.countBy id
 
@@ -91,7 +83,6 @@ let calculateLines lines =
     let filtered (line: string) =
         line.ToLowerInvariant()
         |> Seq.filter characters.Contains
-
     lines
     |> Seq.map (filtered >> collect)
     |> Seq.fold aggregator initialState

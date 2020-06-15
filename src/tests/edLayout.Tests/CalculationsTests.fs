@@ -4,18 +4,14 @@ open System.Collections.Concurrent
 open Xunit
 open FsUnit
 open Calculations
-open System.Collections.Generic
-
-let toKeyValuePairs<'TKey, 'TValue> pairs =
-    pairs
-    |> Array.map (fun (a, b) -> KeyValuePair<'TKey, 'TValue>(a, b))
+open Probability
 
 [<Fact>]
 let ``Should consider to finish when has enough characters`` () =
-    let stats = Map<string, float> [ ("th", 10.) ]
+    let stats = Map<string, Probability> [ ("th", Probability.create 10.) ]
     let total = 100
-    let precision = 2.
-    let state = ConcurrentDictionary<string, int>(toKeyValuePairs [| ("th", 8) |])
+    let precision = Probability.create 2.
+    let state = ConcurrentDictionary<string, int>(Map<string, int> [ ("th", 8) ])
 
     let actual = isFinished state stats total precision
     actual |> should be True
