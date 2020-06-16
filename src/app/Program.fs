@@ -2,12 +2,14 @@
 open System.Threading
 open Main
 
-let private handler path search = 
-    printfn "Press any key to exit..."
+let private handler path search =
+    printfn "Press any key to finish..."
     use cts = new CancellationTokenSource()
-    calculate path search cts.Token |> Async.Start
-    Console.ReadKey false |> ignore
+    let task = calculate path search cts |> Async.StartAsTask
+    Console.ReadKey true |> ignore
     cts.Cancel true
+    // todo: better awaiting
+    task.GetAwaiter().GetResult()
 
 [<EntryPoint>]
 let main argv =

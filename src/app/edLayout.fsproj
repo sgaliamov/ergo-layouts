@@ -7,14 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="modules\Utilities.fs" />
-        <Compile Include="modules\Calculations.fs" />
-        <Compile Include="modules\Main.fs" />
-        <Compile Include="modules\Configs.fs" />
-        <Compile Include="Program.fs" />
-    </ItemGroup>
-
-    <ItemGroup>
+        <EmbeddedResource Include="data\settings.json">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
         <None Include="data\statistics.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
@@ -27,6 +22,13 @@
         <None Include="data\qwerty.csv">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <Compile Include="modules\Probability.fs" />
+        <Compile Include="modules\Models.fs" />
+        <Compile Include="modules\Utilities.fs" />
+        <Compile Include="modules\Calculations.fs" />
+        <Compile Include="modules\Configs.fs" />
+        <Compile Include="modules\Main.fs" />
+        <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>
