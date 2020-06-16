@@ -1,6 +1,6 @@
 # edLayouts
 
-The utility to extimate layouts for ErgoDox keyboard.
+The utility to examine layouts for ErgoDox keyboard.
 
 ## Why?
 
