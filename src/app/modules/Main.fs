@@ -36,7 +36,10 @@ let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter (bu
 
 let calculate path search (cts: CancellationTokenSource) =
     async {
-        let appendValue (format: string) (value: int) (builder: StringBuilder) = builder.AppendFormat(format, value)
+        let spacer = new string(' ', Console.WindowWidth)
+        let appendValue (title: string) value (builder: StringBuilder) =
+            let format = sprintf "\n%s\n{0}: {1,-%d}\n" spacer (settings.columns * 15 - title.Length - 2)
+            builder.AppendFormat(format, title, value)
         
         let yieldLines (token: CancellationToken) filePath =
             seq {
@@ -46,38 +49,44 @@ let calculate path search (cts: CancellationTokenSource) =
                     yield stream.ReadLine() // todo: use async
             }
 
-        let formatMain state =
+        let formatMain state  (builder: StringBuilder) =
             let symbolsOnly =
                 state.Chars
                 |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
-            StringBuilder()
-            |> (appendValue "Letters: {0}\n" state.TotalLetters)
+            builder
+            |> (appendValue "Letters" state.TotalLetters)
             |> (appendLines state.Letters state.TotalLetters 0.0)
-            |> (appendValue "\n\nSymbols from total: {0}\n" state.TotalChars)
+            |> (appendValue "Symbols from total" state.TotalChars)
             |> (appendLines symbolsOnly state.TotalChars 0.0)
 
         let formatState state =
-            formatMain(state)
-            |> (appendValue "\n\nDigraphs {0}:\n" state.TotalDigraphs)
+            Console.SetCursorPosition (0, Console.CursorTop)
+            StringBuilder()
+            |> (appendValue "Digraphs" state.TotalDigraphs)
             |> (appendLines state.Digraphs state.TotalDigraphs 0.05)
+            |> formatMain state
             |> Console.WriteLine
 
-        use stateChangedStream = new Subject<State>()
 
         let onStateChanged state =
             let initialPosition = (Console.CursorLeft, Console.CursorTop)
-            formatMain state
+            StringBuilder()
+            |> formatMain state
             |> Console.WriteLine
             Console.SetCursorPosition initialPosition
 
-        use _ = Observable.subscribe onStateChanged (stateChangedStream.Throttle(TimeSpan.FromSeconds(5.)))
+        use stateChangedStream = new Subject<State>()
+        use subscription = stateChangedStream.Sample(TimeSpan.FromSeconds(0.500)).Subscribe onStateChanged
 
         let folder state next =
             let newState = aggregator state next
             let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
             let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
             if digraphsFinished && lettersFinished then
-                printfn "Collected enough data."
+                Console.SetCursorPosition(0, Console.CursorTop)
+                Console.Write spacer
+                printf "\rCollected enough data."
+                subscription.Dispose()
                 cts.Cancel()
             stateChangedStream.OnNext newState
             newState
@@ -91,7 +100,5 @@ let calculate path search (cts: CancellationTokenSource) =
         |> Seq.fold folder initialState
         |> formatState
 
-        stateChangedStream.OnCompleted()
-
-        printf "\nTime: %s." ((DateTime.UtcNow - start).ToString("c"))
+        printf "\nTime: %s\n" ((DateTime.UtcNow - start).ToString("c"))
     }
