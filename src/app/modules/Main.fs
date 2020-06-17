@@ -11,40 +11,40 @@ open Calculations
 open Configs
 open Models
 
-type StringBuilder with
-    member sb.AppendPair (key, value) = sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
+let appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter (builder: StringBuilder) =
+    let appendPair (key, value) = builder.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
+    let getValue value =
+        let div x y =
+            match y with
+            | 0 -> 0.0
+            | _ -> (float x) / (float y)
+        100.0 * div value total
 
-    member sb.AppendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter =
-        let getValue value =
-            let div x y =
-                match y with
-                | 0 -> 0.0
-                | _ -> (float x) / (float y)
-            100.0 * div value total
-
-        pairs
-        |> Seq.map (fun pair ->
-            ({| Key = pair.Key
-                Value = getValue pair.Value |}))
-        |> Seq.filter (fun pair -> pair.Value >= filter)
-        |> Seq.sortByDescending (fun pair -> pair.Value)
-        |> Seq.fold (fun (sb: StringBuilder, i) pair ->
-            if i % settings.columns = 0 && i <> 0 then sb.AppendLine() |> ignore
-            (sb.AppendPair(pair.Key, pair.Value), i + 1)) (sb, 0)
-        |> ignore
-        sb
-
-    member sb.Append(pairs, total, filter) = sb.AppendLines pairs total filter
+    pairs
+    |> Seq.map (fun pair ->
+        ({| Key = pair.Key
+            Value = getValue pair.Value |}))
+    |> Seq.filter (fun pair -> pair.Value >= filter)
+    |> Seq.sortByDescending (fun pair -> pair.Value)
+    |> Seq.fold (fun (sb: StringBuilder, i) pair ->
+        match i % settings.columns = 0 && i <> 0 with
+        | true -> sb.AppendLine(), 0
+        | _ -> appendPair(pair.Key, pair.Value), i + 1)
+        (builder, 0)
+    |> ignore
+    builder
 
 let calculate path search (cts: CancellationTokenSource) =
     async {
+        let appendValue (format: string) (value: int) (builder: StringBuilder) = builder.AppendFormat(format, value)
+
         let yieldLines (token: CancellationToken) filePath =
             seq {
                 use stream = File.OpenText filePath
                 while not stream.EndOfStream
                       && not token.IsCancellationRequested do
-                    yield stream.ReadLine()
-            } // todo: use async
+                    yield stream.ReadLine() // todo: use async
+            } 
 
         let printMain state =
             let symbolsOnly =
@@ -52,15 +52,15 @@ let calculate path search (cts: CancellationTokenSource) =
                 |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
 
             StringBuilder()
-                .AppendFormat("Letters: {0}\n", state.TotalLetters)
-                .Append(state.Letters, state.TotalLetters, 0.0)
-                .AppendFormat("\n\nSymbols from total: {0}\n", state.TotalChars)
-                .Append(symbolsOnly, state.TotalChars, 0.0)
+            |> (appendValue "Letters: {0}\n" state.TotalLetters)
+            |> (appendLines state.Letters state.TotalLetters 0.0)
+            |> (appendValue "\n\nSymbols from total: {0}\n" state.TotalChars)
+            |> (appendLines symbolsOnly state.TotalChars 0.0)
 
         let print state =
             printMain(state)
-                .AppendFormat("\n\nDigraphs {0}:\n", state.TotalDigraphs)
-                .Append(state.Digraphs, state.TotalDigraphs, 0.05)
+            |> (appendValue "\n\nDigraphs {0}:\n" state.TotalDigraphs)
+            |> (appendLines state.Digraphs state.TotalDigraphs 0.05)
             |> Console.WriteLine
 
         use stateChangedStream = new Subject<State>()
