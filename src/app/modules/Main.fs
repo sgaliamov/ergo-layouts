@@ -3,6 +3,8 @@
 open System
 open System.IO
 open System.Collections.Generic
+open System.Reactive.Subjects
+open System.Reactive.Linq
 open System.Text
 open System.Threading
 open Calculations
@@ -10,7 +12,7 @@ open Configs
 open Models
 
 type StringBuilder with
-    member sb.AppendPair(key, value) = sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
+    member sb.AppendPair (key, value) = sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
 
     member sb.AppendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter =
         let getValue value =
@@ -44,7 +46,7 @@ let calculate path search (cts: CancellationTokenSource) =
                     yield stream.ReadLine()
             } // todo: use async
 
-        let print state =
+        let printMain state =
             let symbolsOnly =
                 state.Chars
                 |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
@@ -54,15 +56,31 @@ let calculate path search (cts: CancellationTokenSource) =
                 .Append(state.Letters, state.TotalLetters, 0.0)
                 .AppendFormat("\n\nSymbols from total: {0}\n", state.TotalChars)
                 .Append(symbolsOnly, state.TotalChars, 0.0)
+
+        let print state =
+            printMain(state)
                 .AppendFormat("\n\nDigraphs {0}:\n", state.TotalDigraphs)
                 .Append(state.Digraphs, state.TotalDigraphs, 0.05)
             |> Console.WriteLine
+
+        use stateChangedStream = new Subject<State>()
+
+        let onStateChanged state =
+            let initialPosition = (Console.CursorLeft, Console.CursorTop)
+            printMain state
+            |> Console.WriteLine
+            Console.SetCursorPosition initialPosition
+
+        use _ = Observable.subscribe onStateChanged (stateChangedStream.Throttle(TimeSpan.FromSeconds(5.)))
 
         let folder state next =
             let newState = aggregator state next
             let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
             let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
-            if digraphsFinished && lettersFinished then cts.Cancel()
+            if digraphsFinished && lettersFinished then
+                printfn "Collected enough data."
+                cts.Cancel()
+            stateChangedStream.OnNext newState
             newState
 
         let start = DateTime.UtcNow
@@ -73,6 +91,8 @@ let calculate path search (cts: CancellationTokenSource) =
         |> Seq.map calculateLines // todo: can run in pararllel
         |> Seq.fold folder initialState
         |> print
+
+        stateChangedStream.OnCompleted()
 
         printf "\nTime: %s." ((DateTime.UtcNow - start).ToString("c"))
     }
