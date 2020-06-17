@@ -11,7 +11,7 @@ open Calculations
 open Configs
 open Models
 
-let appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter (builder: StringBuilder) =
+let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter (builder: StringBuilder) =
     let appendPair (key, value) = builder.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
     let getValue value =
         let div x y =
@@ -37,28 +37,27 @@ let appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter (builder: S
 let calculate path search (cts: CancellationTokenSource) =
     async {
         let appendValue (format: string) (value: int) (builder: StringBuilder) = builder.AppendFormat(format, value)
-
+        
         let yieldLines (token: CancellationToken) filePath =
             seq {
                 use stream = File.OpenText filePath
                 while not stream.EndOfStream
                       && not token.IsCancellationRequested do
                     yield stream.ReadLine() // todo: use async
-            } 
+            }
 
-        let printMain state =
+        let formatMain state =
             let symbolsOnly =
                 state.Chars
                 |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
-
             StringBuilder()
             |> (appendValue "Letters: {0}\n" state.TotalLetters)
             |> (appendLines state.Letters state.TotalLetters 0.0)
             |> (appendValue "\n\nSymbols from total: {0}\n" state.TotalChars)
             |> (appendLines symbolsOnly state.TotalChars 0.0)
 
-        let print state =
-            printMain(state)
+        let formatState state =
+            formatMain(state)
             |> (appendValue "\n\nDigraphs {0}:\n" state.TotalDigraphs)
             |> (appendLines state.Digraphs state.TotalDigraphs 0.05)
             |> Console.WriteLine
@@ -67,7 +66,7 @@ let calculate path search (cts: CancellationTokenSource) =
 
         let onStateChanged state =
             let initialPosition = (Console.CursorLeft, Console.CursorTop)
-            printMain state
+            formatMain state
             |> Console.WriteLine
             Console.SetCursorPosition initialPosition
 
@@ -85,12 +84,12 @@ let calculate path search (cts: CancellationTokenSource) =
 
         let start = DateTime.UtcNow
 
+         // todo: run in pararllel
         Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
         |> Seq.filter (fun _ -> not cts.IsCancellationRequested)
-        |> Seq.map (yieldLines cts.Token)
-        |> Seq.map calculateLines // todo: can run in pararllel
+        |> Seq.map ((yieldLines cts.Token) >> calculateLines)
         |> Seq.fold folder initialState
-        |> print
+        |> formatState
 
         stateChangedStream.OnCompleted()
 
