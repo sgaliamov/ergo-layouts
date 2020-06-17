@@ -1,10 +1,10 @@
 # To do
 
 - [x] fix tests
-- [ ] notify and render progress
+- [x] notify and render progress
+- [ ] calculate efforts
 - [ ] read files in parallel
 - [ ] read lines async
-- [ ] calculate efforts
 
 ## Phase II
 

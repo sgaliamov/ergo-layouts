@@ -11,7 +11,7 @@ open Calculations
 open Configs
 open Models
 
-let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter (builder: StringBuilder) =
+let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
     let appendPair (key, value) = builder.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
     let getValue value =
         let div x y =
@@ -24,7 +24,7 @@ let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter (bu
     |> Seq.map (fun pair ->
         ({| Key = pair.Key
             Value = getValue pair.Value |}))
-    |> Seq.filter (fun pair -> pair.Value >= filter)
+    |> Seq.filter (fun pair -> pair.Value >= minValue)
     |> Seq.sortByDescending (fun pair -> pair.Value)
     |> Seq.fold (fun (sb: StringBuilder, i) pair ->
         match i % settings.columns = 0 && i <> 0 with
@@ -37,6 +37,7 @@ let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total filter (bu
 let calculate path search (cts: CancellationTokenSource) =
     async {
         let spacer = new string(' ', Console.WindowWidth)
+
         let appendValue (title: string) value (builder: StringBuilder) =
             let format = sprintf "\n%s\n{0}: {1,-%d}\n" spacer (settings.columns * 15 - title.Length - 2)
             builder.AppendFormat(format, title, value)
