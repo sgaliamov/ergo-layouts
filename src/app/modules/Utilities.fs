@@ -17,6 +17,6 @@ let sumValues<'T> source (seed: ConcurrentDictionary<'T, int>) =
 
 let toString (a, b) = String ([| a; b |])
 
-let jsonValueToPairs jsonValues =
+let jsonValueToPairs map jsonValues =
     jsonValues
-    |> Seq.map (fun (a: string, b: JsonValue) -> a.ToString(), b.AsFloat())
+    |> Seq.map (fun (a: string, b: JsonValue) -> a, map b)

@@ -1,13 +1,10 @@
 ﻿module Configs
 
-open System.IO
 open FSharp.Data
 open FSharp.Data.JsonExtensions
 open Utilities
 open Models
 
-type private Config = JsonProvider<"./data/config.json">
-type private Efforts = JsonProvider<"./data/efforts.json">
 type private Stats = JsonProvider<"./data/statistics.json">
 type private Settings = JsonProvider<"./data/settings.json">
 let private statistics = Stats.GetSample()
@@ -15,7 +12,7 @@ let private appSettings = Settings.GetSample()
 
 let private jsonToMap json =
     json
-    |> jsonValueToPairs
+    |> jsonValueToPairs JsonExtensions.AsFloat
     |> Seq.map (fun (key, value) -> (key, Probability.create value))
     |> Map.ofSeq
 
@@ -33,8 +30,3 @@ let settings =
        columns = appSettings.Columns
        letters = lettersStatistics
        minDigraphs = float appSettings.MinDigraphs / 100. |}
-
-let loadLayout path = File.ReadAllText path
-
-let config = Config.GetSample()
-let efforts = Efforts.GetSample()
