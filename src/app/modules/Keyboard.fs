@@ -3,6 +3,7 @@
 open System
 open FSharp.Data
 open FSharp.Data.JsonExtensions
+open Option
 open Models
 open Utilities
 open System.Collections.Generic
@@ -30,11 +31,10 @@ type Keyboard =
 
 let load (path: string) =
     let keyboard = KeyboardJson.Load(path)
-
+    let createKey hand number = Key(hand, Byte.Parse(number))
     let parseHand hand jsonValue =
-        let createKey number = Key(hand, Byte.Parse(number))
         jsonValue
-        |> jsonValueToPairs Character.fromString (JsonExtensions.AsString >> createKey)
+        |> jsonValueToPairs Character.fromString (JsonExtensions.AsString >> createKey hand)
         |> filterValuebleKeys
 
     let keys =
@@ -49,13 +49,14 @@ let load (path: string) =
             | 'R' -> Some Hand.Right
             | _ -> None
         match string with
-        | HeadTail (h, t) -> Some (createHand h, tryParseDouble t)
+        | HeadTail (h, t) -> createHand h |> map (fun hand -> createKey hand t)
         | _ -> None
 
     let efforts =
         Efforts.GetSample().JsonValue.Properties
         |> jsonValueToPairs createKey JsonExtensions.AsFloat
         |> filterValuebleKeys
+        |> Map.ofSeq
 
     { Keys = keys
       Efforts = efforts
