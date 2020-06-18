@@ -7,25 +7,26 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="data\settings.json">
+        <None Include="data\settings.json">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </EmbeddedResource>
+        </None>
         <None Include="data\statistics.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Include="data\config.json">
+        <None Include="data\keyboard.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Include="data\efforts.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Include="data\qwerty.csv">
+        <None Include="data\qwerty.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <Compile Include="modules\Models.fs" />
         <Compile Include="modules\Utilities.fs" />
-        <Compile Include="modules\Calculations.fs" />
         <Compile Include="modules\Configs.fs" />
+        <Compile Include="modules\Keyboard.fs" />
+        <Compile Include="modules\Calculations.fs" />
         <Compile Include="modules\Main.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
