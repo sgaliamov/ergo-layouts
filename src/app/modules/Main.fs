@@ -45,8 +45,7 @@ let calculate path search (cts: CancellationTokenSource) =
         let yieldLines (token: CancellationToken) filePath =
             seq {
                 use stream = File.OpenText filePath
-                while not stream.EndOfStream
-                      && not token.IsCancellationRequested do
+                while not stream.EndOfStream && not token.IsCancellationRequested do
                     yield stream.ReadLine() // todo: use async
             }
 
@@ -64,7 +63,7 @@ let calculate path search (cts: CancellationTokenSource) =
             Console.SetCursorPosition (0, Console.CursorTop)
             StringBuilder()
             |> (appendValue "Digraphs" state.TotalDigraphs)
-            |> (appendLines state.Digraphs state.TotalDigraphs 0.05)
+            |> (appendLines state.Digraphs state.TotalDigraphs settings.minDigraphs)
             |> formatMain state
             |> Console.WriteLine
 
@@ -83,7 +82,7 @@ let calculate path search (cts: CancellationTokenSource) =
             let newState = aggregator state next
             let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
             let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
-            if digraphsFinished && lettersFinished then
+            if digraphsFinished || lettersFinished then
                 Console.SetCursorPosition(0, Console.CursorTop)
                 Console.Write spacer
                 printf "\rCollected enough data."
@@ -101,5 +100,5 @@ let calculate path search (cts: CancellationTokenSource) =
         |> Seq.fold folder initialState
         |> formatState
 
-        printf "\nTime: %s\n" ((DateTime.UtcNow - start).ToString("c"))
+        printf "\nTime taken: %s\n" ((DateTime.UtcNow - start).ToString("c"))
     }

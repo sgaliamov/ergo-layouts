@@ -31,6 +31,7 @@ let settings =
     {| precision = Probability.create (float appSettings.Precision)
        digraphs = digraphsStatistics
        columns = appSettings.Columns
-       letters = lettersStatistics |}
+       letters = lettersStatistics
+       minDigraphs = float appSettings.MinDigraphs / 100. |}
 
 let loadLayout path = File.ReadAllText path

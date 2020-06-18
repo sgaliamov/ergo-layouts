@@ -1,4 +1,5 @@
 ﻿{
   "precision": 1.618,
-  "columns": 8
+  "columns": 8,
+  "minDigraphs": 5 
 }

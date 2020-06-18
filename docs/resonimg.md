@@ -1,4 +1,4 @@
-# Reasoning
+﻿# Reasoning
 
 ## To configure
 
@@ -18,7 +18,12 @@ No need to care about `shift`, `space`, `enter` and others because they will be 
 
 ## Scoring
 
-TBD
+1. Efforts based on configuration. Should go down.
+1. Same fingers. Should go down.
+1. Сharacters printed with one hand without changing.. Should go up.
+1. Hands balance. Left and right hands should be used equally.
+1. Inward rolls are more preferable than outward.
+1. Fingers statistic.
 
 ## Links
 
