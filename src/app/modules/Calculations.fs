@@ -3,6 +3,7 @@
 open System
 open System.Collections.Concurrent
 open System.Collections.Generic
+open Keyboard
 open Models
 open Probability
 open Utilities
@@ -19,9 +20,9 @@ let initialState =
       TotalDigraphs = 0
       TotalChars = 0
       Efforts = 0.
-      TopRow = 0
-      HomeRow = 0
-      BottomRow = 0
+      TopKeys = 0
+      HomeKeys = 0
+      BottomKeys = 0
       SameFinger = 0
       InwardRolls = 0
       OutwardRolls = 0
@@ -60,7 +61,7 @@ let isFinished<'TKey>
     |> Seq.filter id
     |> Seq.length = state.Keys.Count
 
-let collect keyboard line =
+let collect (keyboard: Keyboard) line =
     let countLetters line =
         line
         |> Seq.filter Char.IsLetter
@@ -79,6 +80,17 @@ let collect keyboard line =
         |> Seq.map (toString >> Digraph.create)
         |> Seq.countBy id
 
+    let keys =
+        line
+        |> Seq.map Character.create
+        |> Seq.map (fun char -> keyboard.Keys.[char])
+        |> List.ofSeq
+
+    let countKeys by =
+        keys
+        |> Seq.filter by
+        |> Seq.length
+
     let letters = calculate line countLetters
     let chars = calculate line countChars
     let digraphs = calculate line countDigraphs
@@ -90,9 +102,9 @@ let collect keyboard line =
       TotalDigraphs = digraphs.Values |> Seq.sum
       TotalChars = chars.Values |> Seq.sum
       Efforts = 0.
-      TopRow = 0
-      HomeRow = 0
-      BottomRow = 0
+      TopKeys = countKeys keyboard.TopKeys.Contains
+      HomeKeys = countKeys keyboard.HomeKeys.Contains
+      BottomKeys = countKeys keyboard.BottomKeys.Contains
       SameFinger = 0
       InwardRolls = 0
       OutwardRolls = 0
@@ -111,9 +123,9 @@ let aggregator state from =
       TotalDigraphs = from.TotalDigraphs + state.TotalDigraphs
       TotalChars = from.TotalChars + state.TotalChars
       Efforts = from.Efforts + state.Efforts
-      TopRow = from.TopRow + state.TopRow
-      HomeRow = from.HomeRow + state.HomeRow
-      BottomRow = from.BottomRow + state.BottomRow
+      TopKeys = from.TopKeys + state.TopKeys
+      HomeKeys = from.HomeKeys + state.HomeKeys
+      BottomKeys = from.BottomKeys + state.BottomKeys
       SameFinger = from.SameFinger + state.SameFinger
       InwardRolls = from.InwardRolls + state.InwardRolls
       OutwardRolls = from.OutwardRolls + state.OutwardRolls

@@ -49,9 +49,9 @@ type State =
       TotalDigraphs: int
       TotalChars: int
       Efforts: float
-      TopRow: int
-      HomeRow: int
-      BottomRow: int
+      TopKeys: int
+      HomeKeys: int
+      BottomKeys: int
       SameFinger: int
       InwardRolls: int
       OutwardRolls: int
