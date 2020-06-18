@@ -40,9 +40,9 @@ type State =
       TotalLetters: int
       TotalDigraphs: int
       TotalChars: int
-      HomeRow: int
       Efforts: float
       TopRow: int
+      HomeRow: int
       BottomRow: int
       SameFinger: int
       InwardRolls: int
@@ -51,5 +51,5 @@ type State =
       LeftFinders: Fingers
       RightHandTotal: int
       LeftHandTotal: int
-      RightHandСontinuous: int
-      LeftHandСontinuous: int }
+      RightHandContinuous: int
+      LeftHandContinuous: int }

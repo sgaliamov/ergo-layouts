@@ -4,12 +4,12 @@ open System.IO
 open FSharp.Data
 open FSharp.Data.JsonExtensions
 open Utilities
+open Models
 
 type private Config = JsonProvider<"./data/config.json">
+type private Efforts = JsonProvider<"./data/efforts.json">
 type private Stats = JsonProvider<"./data/statistics.json">
 type private Settings = JsonProvider<"./data/settings.json">
-
-let private config = Config.GetSample()
 let private statistics = Stats.GetSample()
 let private appSettings = Settings.GetSample()
 
@@ -35,3 +35,6 @@ let settings =
        minDigraphs = float appSettings.MinDigraphs / 100. |}
 
 let loadLayout path = File.ReadAllText path
+
+let config = Config.GetSample()
+let efforts = Efforts.GetSample()
