@@ -53,7 +53,7 @@ let calculate path search (cts: CancellationTokenSource) =
         let formatMain state  (builder: StringBuilder) =
             let symbolsOnly =
                 state.Chars
-                |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
+                |> Seq.filter (fun x -> Char.IsPunctuation(Character.value x.Key) || Character.value x.Key = ' ')
             builder
             |> (appendValue "Letters" state.TotalLetters)
             |> (appendLines state.Letters state.TotalLetters 0.0)
