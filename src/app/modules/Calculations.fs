@@ -3,7 +3,6 @@
 open System
 open System.Collections.Concurrent
 open System.Collections.Generic
-open Keyboard
 open Models
 open Probability
 open Utilities
@@ -61,7 +60,7 @@ let isFinished<'TKey>
     |> Seq.filter id
     |> Seq.length = state.Keys.Count
 
-let collect line =
+let collect keyboard line =
     let countLetters line =
         line
         |> Seq.filter Char.IsLetter
@@ -125,10 +124,10 @@ let aggregator state from =
       RightHandContinuous = from.RightHandContinuous + state.RightHandContinuous
       LeftHandContinuous = from.LeftHandContinuous + state.LeftHandContinuous }
 
-let calculateLines lines =
+let calculateLines keyboard lines =
     let filtered (line: string) =
         line.ToLowerInvariant()
         |> Seq.filter characters.Contains
     lines
-    |> Seq.map (filtered >> collect)
+    |> Seq.map (filtered >> collect keyboard)
     |> Seq.fold aggregator initialState
