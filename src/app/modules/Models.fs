@@ -2,11 +2,16 @@
 
 open System
 open System.Collections.Concurrent
+open Utilities
 
     module Character =
         type Char = Char of char
         type Chars = ConcurrentDictionary<Char, int>
-        let create char = Char char
+        let create value = Char value
+        let fromString (string: string) =
+            match string with
+            | HeadTail (h, _) -> Some (create h)
+            | _ -> None
         let value (Char char) = char
 
     module Digraph =

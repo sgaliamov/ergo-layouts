@@ -22,8 +22,8 @@
         <None Include="data\qwerty.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <Compile Include="modules\Models.fs" />
         <Compile Include="modules\Utilities.fs" />
+        <Compile Include="modules\Models.fs" />
         <Compile Include="modules\Configs.fs" />
         <Compile Include="modules\Keyboard.fs" />
         <Compile Include="modules\Calculations.fs" />
