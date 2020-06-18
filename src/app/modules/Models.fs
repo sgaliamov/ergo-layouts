@@ -6,16 +6,19 @@ open System.Collections.Concurrent
     module Character =
         type Char = Char of char
         type Chars = ConcurrentDictionary<Char, int>
+        let create char = Char char
         let value (Char char) = char
 
     module Digraph =
         type Digraph = Digraph of string
         type Digraphs = ConcurrentDictionary<Digraph, int>
+        let create string = Digraph string
         let value (Digraph digraph) = digraph
 
     module Letter =
         type Letter = Letter of char
         type Letters = ConcurrentDictionary<Letter, int>
+        let create char = Letter char
         let value (Letter letter) = letter
 
     module Probability =
