@@ -4,6 +4,7 @@ open System.Collections.Concurrent
 open Xunit
 open FsUnit
 open Calculations
+open StateModels
 open Probability
 
 [<Fact>]

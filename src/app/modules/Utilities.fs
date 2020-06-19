@@ -35,3 +35,5 @@ let filterValuebleKeys<'TKey, 'TValue> seq =
      seq
      |> Seq.filter (fun (key: 'TKey option, _: 'TValue) -> key.IsSome)
      |> Seq.map (fun (key, value) -> key.Value, value)
+
+let flipTuple (a, b) = (b, a)

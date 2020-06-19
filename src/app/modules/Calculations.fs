@@ -62,7 +62,7 @@ let isFinished<'TKey>
     |> Seq.filter id
     |> Seq.length = state.Keys.Count
 
-let collect (keyboard: KeyboardConfiguration) line =
+let collect (keyboard) line =
     let countLetters line =
         line
         |> Seq.filter Char.IsLetter
@@ -102,7 +102,7 @@ let collect (keyboard: KeyboardConfiguration) line =
       TotalLetters = letters.Values |> Seq.sum
       TotalDigraphs = digraphs.Values |> Seq.sum
       TotalChars = chars.Values |> Seq.sum
-      Efforts = 0.
+      Efforts = 0. 
       TopKeys = countKeys keyboard.TopKeys.Contains
       HomeKeys = countKeys keyboard.HomeKeys.Contains
       BottomKeys = countKeys keyboard.BottomKeys.Contains

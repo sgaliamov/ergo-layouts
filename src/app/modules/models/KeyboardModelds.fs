@@ -7,7 +7,7 @@ open FSharp.Data
 open StateModels
 open Utilities
 
-type Keyboard = JsonProvider<"./data/keyboard.json">
+type KeyboardInfo = JsonProvider<"./data/keyboard.json">
 type Efforts = JsonProvider<"./data/efforts.json">
 type Layout = JsonProvider<"./data/qwerty.json">
 
@@ -37,7 +37,7 @@ module Keys =
         | HandStringKey(hand, number) -> Some <| Key(hand, Byte.Parse(number))
         | Key(hand, number) -> Some <| Key(hand, number)
 
-type KeyboardConfiguration =
+type Keyboard =
     { Keys: Map<Character.Char, Keys.Key>
       Efforts: Map<Keys.Key, float>
       TopKeys: HashSet<Keys.Key>

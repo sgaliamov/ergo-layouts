@@ -88,7 +88,7 @@ let calculate path search (keyboardPath: string) (cts: CancellationTokenSource) 
         newState
 
     let start = DateTime.UtcNow
-    let keyboard = KeyboardModelds.load <| Layout.Load keyboardPath
+    let keyboard = Keyboard.load <| Layout.Load keyboardPath
 
     // todo: run in pararllel
     Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
