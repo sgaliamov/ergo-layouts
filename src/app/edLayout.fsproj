@@ -23,7 +23,8 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <Compile Include="modules\Utilities.fs" />
-        <Compile Include="modules\Models.fs" />
+        <Compile Include="modules\models\StateModels.fs" />
+        <Compile Include="modules\models\KeyboardModelds.fs" />
         <Compile Include="modules\Configs.fs" />
         <Compile Include="modules\Keyboard.fs" />
         <Compile Include="modules\Calculations.fs" />

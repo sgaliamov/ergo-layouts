@@ -3,7 +3,7 @@
 open FSharp.Data
 open FSharp.Data.JsonExtensions
 open Utilities
-open Models
+open StateModels
 
 type private Stats = JsonProvider<"./data/statistics.json">
 type private Settings = JsonProvider<"./data/settings.json">

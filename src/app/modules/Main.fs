@@ -9,7 +9,8 @@ open System.Text
 open System.Threading
 open Calculations
 open Configs
-open Models
+open KeyboardModelds
+open StateModels
 
 let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
     let appendPair (key, value) = builder.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
@@ -87,9 +88,9 @@ let calculate path search (keyboardPath: string) (cts: CancellationTokenSource) 
         newState
 
     let start = DateTime.UtcNow
-    let keyboard = Keyboard.load <| Layout.Load keyboardPath
+    let keyboard = KeyboardModelds.load <| Layout.Load keyboardPath
 
-        // todo: run in pararllel
+    // todo: run in pararllel
     Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
     |> Seq.filter (fun _ -> not cts.IsCancellationRequested)
     |> Seq.map (yieldLines cts.Token >> calculateLines keyboard)

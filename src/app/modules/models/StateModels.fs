@@ -1,13 +1,8 @@
-﻿module Models
+﻿module StateModels
 
 open System
 open System.Collections.Concurrent
-open FSharp.Data
 open Utilities
-
-type Keyboard = JsonProvider<"./data/keyboard.json">
-type Efforts = JsonProvider<"./data/efforts.json">
-type Layout = JsonProvider<"./data/qwerty.json">
 
 module Character =
     type Char = Char of char

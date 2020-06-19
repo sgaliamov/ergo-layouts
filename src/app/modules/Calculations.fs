@@ -3,8 +3,8 @@
 open System
 open System.Collections.Concurrent
 open System.Collections.Generic
-open Keyboard
-open Models
+open KeyboardModelds
+open StateModels
 open Probability
 open Utilities
 
@@ -31,7 +31,8 @@ let initialState =
       RightHandTotal = 0
       LeftHandTotal = 0
       RightHandContinuous = 0
-      LeftHandContinuous = 0 }
+      LeftHandContinuous = 0
+      Shifts = 0 }
 
 let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
@@ -113,7 +114,8 @@ let collect (keyboard: KeyboardConfiguration) line =
       RightHandTotal = 0
       LeftHandTotal = 0
       RightHandContinuous = 0
-      LeftHandContinuous = 0 }
+      LeftHandContinuous = 0
+      Shifts = 0 }
 
 let aggregator state from =
     { Letters = sumValues from.Letters state.Letters
@@ -134,7 +136,8 @@ let aggregator state from =
       RightHandTotal = from.RightHandTotal + state.RightHandTotal
       LeftHandTotal = from.LeftHandTotal + state.LeftHandTotal
       RightHandContinuous = from.RightHandContinuous + state.RightHandContinuous
-      LeftHandContinuous = from.LeftHandContinuous + state.LeftHandContinuous }
+      LeftHandContinuous = from.LeftHandContinuous + state.LeftHandContinuous
+      Shifts = from.Shifts + state.Shifts }
 
 let calculateLines keyboard lines =
     let filtered (line: string) =
