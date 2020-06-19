@@ -7,21 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="data\settings.json">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="data\statistics.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="data\keyboard.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="data\efforts.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Include="data\qwerty.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <Compile Include="modules\Utilities.fs" />
         <Compile Include="modules\models\StateModels.fs" />
         <Compile Include="modules\models\KeyboardModelds.fs" />

@@ -7,9 +7,9 @@ open FSharp.Data
 open StateModels
 open Utilities
 
-type KeyboardInfo = JsonProvider<"./data/keyboard.json">
-type Efforts = JsonProvider<"./data/efforts.json">
-type Layout = JsonProvider<"./data/qwerty.json">
+type KeyboardInfo = JsonProvider<"../../configs/keyboard.json">
+type Efforts = JsonProvider<"../../configs/efforts.json">
+type Layout = JsonProvider<"../../configs/qwerty.json">
 
 module Hands =
     type Hand =
