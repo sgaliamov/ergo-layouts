@@ -2,36 +2,41 @@
 
 open System
 open System.Collections.Concurrent
+open FSharp.Data
 open Utilities
 
-    module Character =
-        type Char = Char of char
-        type Chars = ConcurrentDictionary<Char, int>
-        let create value = Char value
-        let fromString (string: string) =
-            match string with
-            | HeadTail (h, _) -> Some (create h)
-            | _ -> None
-        let value (Char char) = char
+type Keyboard = JsonProvider<"./data/keyboard.json">
+type Efforts = JsonProvider<"./data/efforts.json">
+type Layout = JsonProvider<"./data/qwerty.json">
 
-    module Digraph =
-        type Digraph = Digraph of string
-        type Digraphs = ConcurrentDictionary<Digraph, int>
-        let create string = Digraph string
-        let value (Digraph digraph) = digraph
+module Character =
+    type Char = Char of char
+    type Chars = ConcurrentDictionary<Char, int>
+    let fromChar value = Char value
+    let fromString (string: string) =
+        match string with
+        | HeadTail (h, t) when t.Length = 0 -> Some (fromChar h)
+        | _ -> None
+    let value (Char char) = char
 
-    module Letter =
-        type Letter = Letter of char
-        type Letters = ConcurrentDictionary<Letter, int>
-        let create char = Letter char
-        let value (Letter letter) = letter
+module Digraph =
+    type Digraph = Digraph of string
+    type Digraphs = ConcurrentDictionary<Digraph, int>
+    let create string = Digraph string
+    let value (Digraph digraph) = digraph
 
-    module Probability =
-        type Probability = Probability of float
-        let calculate value (Probability propability) = value * propability
-        let create value = // todo: use Option
-            if value < 0. || value > 100. then raise (ArgumentOutOfRangeException("value"))
-            Probability (value / 100.)
+module Letter =
+    type Letter = Letter of char
+    type Letters = ConcurrentDictionary<Letter, int>
+    let create char = Letter char
+    let value (Letter letter) = letter
+
+module Probability =
+    type Probability = Probability of float
+    let calculate value (Probability propability) = value * propability
+    let create value = // todo: use Option
+        if value < 0. || value > 100. then raise (ArgumentOutOfRangeException("value"))
+        Probability (value / 100.)
 
 type Finger =
     | Thumb = 'T'
@@ -39,6 +44,7 @@ type Finger =
     | Middle = 'M'
     | Ring = 'R'
     | Pinky = 'P'
+
 type Fingers = ConcurrentDictionary<Finger, int>
 
 type State =
@@ -60,4 +66,5 @@ type State =
       RightHandTotal: int
       LeftHandTotal: int
       RightHandContinuous: int
-      LeftHandContinuous: int }
+      LeftHandContinuous: int
+      Shifts: int }

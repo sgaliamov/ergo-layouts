@@ -61,7 +61,7 @@ let isFinished<'TKey>
     |> Seq.filter id
     |> Seq.length = state.Keys.Count
 
-let collect (keyboard: Keyboard) line =
+let collect (keyboard: KeyboardConfiguration) line =
     let countLetters line =
         line
         |> Seq.filter Char.IsLetter
@@ -70,7 +70,7 @@ let collect (keyboard: Keyboard) line =
 
     let countChars line =
         line
-        |> Seq.map Character.create
+        |> Seq.map Character.fromChar
         |> Seq.countBy id
 
     let countDigraphs line =
@@ -82,7 +82,7 @@ let collect (keyboard: Keyboard) line =
 
     let keys =
         line
-        |> Seq.map Character.create
+        |> Seq.map Character.fromChar
         |> Seq.map (fun char -> keyboard.Keys.[char])
         |> List.ofSeq
 

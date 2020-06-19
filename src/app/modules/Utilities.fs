@@ -19,7 +19,7 @@ let toString (a, b) = String ([| a; b |])
 
 let jsonValueToPairs mapKey mapValue jsonValues =
     jsonValues
-    |> Seq.map (fun (a: string, b: JsonValue) -> mapKey a, mapValue b)
+    |> Seq.map (fun (a: string, b: JsonValue) -> mapKey a, mapValue b)           
 
 let tryParseDouble (value: string) =
     match Double.TryParse value with

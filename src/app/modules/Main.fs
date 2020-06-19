@@ -32,7 +32,7 @@ let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (
     |> ignore
     builder
 
-let calculate path search keyboardPath (cts: CancellationTokenSource) = async {
+let calculate path search (keyboardPath: string) (cts: CancellationTokenSource) = async {
     let spacer = new string(' ', Console.WindowWidth)
 
     let appendValue (title: string) value (builder: StringBuilder) =
@@ -63,7 +63,6 @@ let calculate path search keyboardPath (cts: CancellationTokenSource) = async {
         |> formatMain state
         |> Console.WriteLine
 
-
     let onStateChanged state =
         let initialPosition = (Console.CursorLeft, Console.CursorTop)
         StringBuilder()
@@ -88,7 +87,7 @@ let calculate path search keyboardPath (cts: CancellationTokenSource) = async {
         newState
 
     let start = DateTime.UtcNow
-    let keyboard = Keyboard.load keyboardPath
+    let keyboard = Keyboard.load <| Layout.Load keyboardPath
 
         // todo: run in pararllel
     Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
