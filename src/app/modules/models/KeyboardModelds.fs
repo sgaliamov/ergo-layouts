@@ -43,6 +43,8 @@ type Keyboard =
       TopKeys: HashSet<Keys.Key>
       HomeKeys: HashSet<Keys.Key>
       BottomKeys: HashSet<Keys.Key>
+      LeftKeys: HashSet<Keys.Key>
+      RightKeys: HashSet<Keys.Key>
       ThumbKeys: HashSet<Keys.Key>
       IndexKeys: HashSet<Keys.Key>
       MiddleKeys: HashSet<Keys.Key>

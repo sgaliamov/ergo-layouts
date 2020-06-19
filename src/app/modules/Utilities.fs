@@ -17,7 +17,7 @@ let sumValues<'T> source (seed: ConcurrentDictionary<'T, int>) =
 
 let toString (a, b) = String ([| a; b |])
 
-let jsonValueToPairs mapKey mapValue jsonValues =
+let toPairs mapKey mapValue jsonValues =
     jsonValues
     |> Seq.map (fun (a: string, b: JsonValue) -> mapKey a, mapValue b)           
 
@@ -35,5 +35,10 @@ let filterValuebleKeys<'TKey, 'TValue> seq =
      seq
      |> Seq.filter (fun (key: 'TKey option, _: 'TValue) -> key.IsSome)
      |> Seq.map (fun (key, value) -> key.Value, value)
+
+let filterValuebles<'TKey, 'TValue> seq =
+    seq
+    |> Seq.filter (fun (key: 'TKey option, value: 'TValue option) -> key.IsSome && value.IsSome)
+    |> Seq.map (fun (key, value) -> key.Value, value.Value)
 
 let flipTuple (a, b) = (b, a)

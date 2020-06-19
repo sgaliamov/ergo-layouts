@@ -12,7 +12,7 @@ let private appSettings = Settings.GetSample()
 
 let private jsonToMap json =
     json
-    |> jsonValueToPairs id (JsonExtensions.AsFloat >> Probability.create)
+    |> toPairs id (JsonExtensions.AsFloat >> Probability.create)
     |> Map.ofSeq
 
 let private digraphsStatistics =
