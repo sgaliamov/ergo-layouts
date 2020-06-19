@@ -33,7 +33,7 @@ let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (
     |> ignore
     builder
 
-let calculate path search (keyboardPath: string) (cts: CancellationTokenSource) = async {
+let calculate path search (layout: string) (cts: CancellationTokenSource) =
     let spacer = new string(' ', Console.WindowWidth)
 
     let appendValue (title: string) value (builder: StringBuilder) =
@@ -83,12 +83,12 @@ let calculate path search (keyboardPath: string) (cts: CancellationTokenSource) 
             Console.Write spacer
             printf "\rCollected enough data."
             subscription.Dispose()
-            cts.Cancel()
+            cts.Cancel true
         stateChangedStream.OnNext newState
         newState
 
     let start = DateTime.UtcNow
-    let keyboard = Keyboard.load <| Layout.Load keyboardPath
+    let keyboard = Keyboard.load <| Layout.Load layout
 
     // todo: run in pararllel
     Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
@@ -97,4 +97,4 @@ let calculate path search (keyboardPath: string) (cts: CancellationTokenSource) 
     |> Seq.fold folder initialState
     |> formatState
 
-    printf "\nTime taken: %s\n" ((DateTime.UtcNow - start).ToString("c")) }
+    printf "\nTime taken: %s\n" ((DateTime.UtcNow - start).ToString("c"))

@@ -1,15 +1,17 @@
 ﻿open System
 open System.Threading
 open Main
+open System.Threading.Tasks
 
-let private handler path search keyboard =
-    printf "Press any key to finish..."
+let private handler path search layout =
     use cts = new CancellationTokenSource()
-    let task = calculate path search keyboard cts |> Async.StartAsTask
-    Console.ReadKey true |> ignore
-    cts.Cancel true
-    // todo: better awaiting
-    task.GetAwaiter().GetResult()
+    let task = Task.Run(fun () ->
+        Console.ReadKey true |> ignore
+        cts.Cancel true, cts.Token)
+
+    printf "Press any key to finish..."
+    calculate path search layout cts
+    Task.WaitAll task
 
 [<EntryPoint>]
 let main argv =
