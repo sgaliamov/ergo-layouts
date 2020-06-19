@@ -13,7 +13,7 @@ type private Stats =
 }""">
 
 [<Fact>]
-let ``Test map creation`` () =
+let ``Test map creation.`` () =
     let statistics = Stats.GetSample()
 
     let digraphsMap =

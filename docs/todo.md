@@ -5,6 +5,7 @@
 - [ ] calculate efforts
 - [ ] read files in parallel
 - [ ] read lines async
+- [ ] use [ROP](https://fsharpforfunandprofit.com/posts/recipe-part2/)
 
 ## Phase II
 

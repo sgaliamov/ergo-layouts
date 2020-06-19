@@ -8,7 +8,7 @@ open StateModels
 open Probability
 
 [<Fact>]
-let ``Should consider to finish when has enough characters`` () =
+let ``Should consider to finish when has enough characters.`` () =
     let stats = Map<string, Probability> [ ("th", Probability.create 10.) ]
     let total = 100
     let precision = Probability.create 2.
