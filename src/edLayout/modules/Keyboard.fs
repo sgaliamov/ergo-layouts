@@ -38,7 +38,6 @@ let load (layout: Layout.Root) =
 
     let shifted =
         keyboard.Shifted.JsonValue.Properties
-        |> Seq.append layout.Shifted.JsonValue.Properties
         |> toPairs Character.fromString (JsonExtensions.AsString >> Character.fromString)
         |> filterValuebles
         |> Seq.map mapShifted

@@ -51,13 +51,11 @@ let isFinished<'TKey when 'TKey : comparison>
         count + delta >= goal
 
     state.Keys
+    |> Seq.filter stats.ContainsKey
     |> Seq.map (fun key ->
-        match stats.ContainsKey key with
-        | true ->
-            let keyStatistics = stats.[key]
-            let count = state.[key]
-            isEnough (float count) keyStatistics
-        | _ -> true)
+        let keyStatistics = stats.[key]
+        let count = state.[key]
+        isEnough (float count) keyStatistics)
     |> Seq.filter id
     |> Seq.length = state.Keys.Count
 

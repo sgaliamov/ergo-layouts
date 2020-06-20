@@ -9,7 +9,16 @@ open Utilities
 
 type KeyboardInfo = JsonProvider<"../../configs/keyboard.json">
 type Efforts = JsonProvider<"../../configs/efforts.json">
-type Layout = JsonProvider<"../../configs/qwerty.json">
+type Layout = JsonProvider<"""
+{
+    "left": {
+        "1": "a"
+    },
+    "right": {
+        "2": "b"
+    }
+}
+""">
 
 module Hands =
     type Hand =
