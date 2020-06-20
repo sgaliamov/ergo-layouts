@@ -26,12 +26,12 @@ let initialState =
       SameFinger = 0
       InwardRolls = 0
       OutwardRolls = 0
-      RightFinders = Fingers()
       LeftFinders = Fingers()
-      RightHandTotal = 0
+      RightFinders = Fingers()
       LeftHandTotal = 0
-      RightHandContinuous = 0
+      RightHandTotal = 0
       LeftHandContinuous = 0
+      RightHandContinuous = 0
       Shifts = 0 }
 
 let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
@@ -109,6 +109,33 @@ let collect keyboard line =
         |> Seq.pairwise
         |> Seq.filter (fun (a, b) -> a = b)
         |> Seq.length
+    let (topKeys, homeKeys, bottomKeys, leftKeys, rightKeys) = keyboard.TopKeys, keyboard.HomeKeys, keyboard.BottomKeys, keyboard.LeftKeys, keyboard.RightKeys
+    let inwards =
+        keysInLine
+        |> Seq.pairwise
+        |> Seq.fold (fun count (a, b) ->
+            if topKeys.Contains(a) && not (topKeys.Contains(b)) then count + 1
+            else if homeKeys.Contains(a) && bottomKeys.Contains(b) then count + 1
+            else count) 0
+    let outwards =
+        keysInLine
+        |> Seq.pairwise
+        |> Seq.fold (fun count (a, b) ->
+            if bottomKeys.Contains(a) && not (bottomKeys.Contains(b)) then count + 1
+            else if homeKeys.Contains(a) && topKeys.Contains(b) then count + 1
+            else count) 0
+    let leftContinuous =
+        keysInLine
+        |> Seq.pairwise
+        |> Seq.fold (fun count (a, b) ->
+            if leftKeys.Contains(a) && leftKeys.Contains(b) then count + 1
+            else count) 0
+    let rightContinuous =
+           keysInLine
+           |> Seq.pairwise
+           |> Seq.fold (fun count (a, b) ->
+               if rightKeys.Contains(a) && rightKeys.Contains(b) then count + 1
+               else count) 0
 
     { Letters = letters
       Digraphs = digraphs
@@ -117,18 +144,18 @@ let collect keyboard line =
       TotalDigraphs = digraphs.Values |> Seq.sum
       TotalChars = chars.Values |> Seq.sum
       Efforts = efforts
-      TopKeys = count keysInLine keyboard.TopKeys.Contains
-      HomeKeys = count keysInLine keyboard.HomeKeys.Contains
-      BottomKeys = count keysInLine keyboard.BottomKeys.Contains
+      TopKeys = count keysInLine topKeys.Contains
+      HomeKeys = count keysInLine homeKeys.Contains
+      BottomKeys = count keysInLine bottomKeys.Contains
       SameFinger = sameFinger
-      InwardRolls = 0
-      OutwardRolls = 0
-      RightFinders = Fingers()
+      InwardRolls = inwards
+      OutwardRolls = outwards
       LeftFinders = Fingers()
-      RightHandTotal = count keysInLine keyboard.RightKeys.Contains
-      LeftHandTotal = count keysInLine keyboard.LeftKeys.Contains
-      RightHandContinuous = 0
-      LeftHandContinuous = 0
+      RightFinders = Fingers()
+      LeftHandTotal = count keysInLine rightKeys.Contains
+      RightHandTotal = count keysInLine leftKeys.Contains
+      LeftHandContinuous = leftContinuous
+      RightHandContinuous = rightContinuous
       Shifts = 0 }
 
 let aggregator state from =
@@ -145,12 +172,12 @@ let aggregator state from =
       SameFinger = from.SameFinger + state.SameFinger
       InwardRolls = from.InwardRolls + state.InwardRolls
       OutwardRolls = from.OutwardRolls + state.OutwardRolls
-      RightFinders = sumValues from.RightFinders state.RightFinders
       LeftFinders = sumValues from.LeftFinders state.LeftFinders
-      RightHandTotal = from.RightHandTotal + state.RightHandTotal
+      RightFinders = sumValues from.RightFinders state.RightFinders
       LeftHandTotal = from.LeftHandTotal + state.LeftHandTotal
-      RightHandContinuous = from.RightHandContinuous + state.RightHandContinuous
+      RightHandTotal = from.RightHandTotal + state.RightHandTotal
       LeftHandContinuous = from.LeftHandContinuous + state.LeftHandContinuous
+      RightHandContinuous = from.RightHandContinuous + state.RightHandContinuous
       Shifts = from.Shifts + state.Shifts }
 
 let calculateLines keyboard lines =

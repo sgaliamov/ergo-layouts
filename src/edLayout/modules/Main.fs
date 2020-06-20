@@ -61,12 +61,14 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
             yield stream.ReadLine() }
 
     let formatMain state (builder: StringBuilder) =
+        let percentFromTotal value = (100. * float value / float state.TotalChars)
         let symbolsOnly =
             state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
             |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
-                
         let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
+
         builder
+        |> appendSpacer
         |> appendValue "Letters" state.TotalLetters
         |> appendLines letters state.TotalLetters 0.0
         |> appendSpacer
@@ -74,7 +76,16 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         |> appendLines symbolsOnly state.TotalChars 0.0
         |> appendSpacer
         |> appendValue "Efforts" state.Efforts
-        |> appendValue "Same finger" (100. * float state.SameFinger / float state.TotalChars)
+        |> appendValue "Same finger" (percentFromTotal state.SameFinger)
+        |> appendValue "Top keys" (percentFromTotal state.TopKeys)
+        |> appendValue "Home keys" (percentFromTotal state.HomeKeys)
+        |> appendValue "Bottom keys" (percentFromTotal state.BottomKeys)
+        |> appendValue "Inward rolls" (percentFromTotal state.InwardRolls)
+        |> appendValue "Outward rolls" (percentFromTotal state.OutwardRolls)
+        |> appendValue "Left hand" (percentFromTotal state.LeftHandTotal)
+        |> appendValue "Right hand" (percentFromTotal state.RightHandTotal)
+        |> appendValue "Left hand continuous" (percentFromTotal state.LeftHandContinuous)
+        |> appendValue "Right hand continuous" (percentFromTotal state.RightHandContinuous)
 
     let formatState state =
         Console.SetCursorPosition(0, Console.CursorTop)
@@ -82,7 +93,6 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         StringBuilder()
         |> appendValue "Digraphs" state.TotalDigraphs
         |> appendLines digraphs state.TotalDigraphs settings.minDigraphs
-        |> appendSpacer
         |> formatMain state
         |> Console.WriteLine
 

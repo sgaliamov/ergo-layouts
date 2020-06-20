@@ -56,10 +56,10 @@ type State =
       SameFinger: int
       InwardRolls: int
       OutwardRolls: int
-      RightFinders: Fingers
       LeftFinders: Fingers
-      RightHandTotal: int
+      RightFinders: Fingers
       LeftHandTotal: int
-      RightHandContinuous: int
+      RightHandTotal: int
       LeftHandContinuous: int
+      RightHandContinuous: int
       Shifts: int }
