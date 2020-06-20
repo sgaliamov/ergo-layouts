@@ -2,9 +2,9 @@
 
 - [x] fix tests
 - [x] notify and render progress
-- [ ] calculate efforts
-- [ ] read files in parallel
-- [ ] read lines async
+- [x] calculate efforts
+- [x] read files in parallel
+- [ ] verify and test
 
 ## Phase II
 

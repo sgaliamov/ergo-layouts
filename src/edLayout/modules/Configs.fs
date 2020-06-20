@@ -1,36 +1,32 @@
 ﻿module Configs
 
-open System.IO
+open System.Linq
 open FSharp.Data
 open FSharp.Data.JsonExtensions
 open Utilities
+open StateModels
 
-type private Config = JsonProvider<"./data/config.json">
-type private Stats = JsonProvider<"./data/statistics.json">
-type private Settings = JsonProvider<"./data/settings.json">
-
-let private config = Config.GetSample()
+type private Stats = JsonProvider<"../../configs/statistics.json">
+type private Settings = JsonProvider<"../../configs/settings.json">
 let private statistics = Stats.GetSample()
 let private appSettings = Settings.GetSample()
 
-let private jsonToMap json =
+let private jsonToMap mapKey json =
     json
-    |> jsonValueToPairs
-    |> Seq.map (fun (key, value) -> (key, Probability.create value))
+    |> toPairs mapKey (JsonExtensions.AsFloat >> Probability.create)
     |> Map.ofSeq
 
 let private digraphsStatistics =
     statistics.Digraphs.JsonValue.Properties
-    |> jsonToMap
+    |> jsonToMap Digraph.create
 
 let private lettersStatistics =
     statistics.Letters.JsonValue.Properties
-    |> jsonToMap
+    |> jsonToMap (fun x -> Letter.create(x.Single()))
 
 let settings =
     {| precision = Probability.create (float appSettings.Precision)
        digraphs = digraphsStatistics
        columns = appSettings.Columns
-       letters = lettersStatistics |}
-
-let loadLayout path = File.ReadAllText path
+       letters = lettersStatistics
+       minDigraphs = float appSettings.MinDigraphs |}

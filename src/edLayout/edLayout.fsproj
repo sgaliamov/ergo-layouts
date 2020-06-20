@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="modules\Utilities.fs" />
+        <Compile Include="modules\models\StateModels.fs" />
+        <Compile Include="modules\models\KeyboardModelds.fs" />
+        <Compile Include="modules\Configs.fs" />
+        <Compile Include="modules\Keyboard.fs" />
+        <Compile Include="modules\Calculations.fs" />
+        <Compile Include="modules\Main.fs" />
+        <Compile Include="Program.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FSharp.Collections.ParallelSeq" Version="1.1.3" />
+        <PackageReference Include="FSharp.Control.Reactive" Version="4.4.0" />
+        <PackageReference Include="FSharp.Data" Version="3.3.3" />
+        <PackageReference Update="FSharp.Core" Version="4.7.2" />
+    </ItemGroup>
+
+</Project>
