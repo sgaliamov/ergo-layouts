@@ -114,7 +114,7 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         if digraphsFinished || lettersFinished then
             Console.SetCursorPosition(0, Console.CursorTop)
             Console.Write spacer
-            printf "\rCollected enough data."
+            printfn "\rCollected enough data."
             subscription.Dispose()
             cts.Cancel true
         stateChangedStream.OnNext newState
@@ -130,4 +130,4 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
     |> PSeq.fold folder initialState
     |> formatState
 
-    Ok (sprintf "\nTime taken: %s" ((DateTime.UtcNow - start).ToString("c")))
+    Ok (sprintf "Time spent: %s" ((DateTime.UtcNow - start).ToString("c")))
