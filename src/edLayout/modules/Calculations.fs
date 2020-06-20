@@ -81,16 +81,19 @@ let collect (keyboard) line =
         |> Seq.map (toString >> Digraph.create)
         |> Seq.countBy id
 
-    let keys =
-        line
-        |> Seq.map Character.fromChar
-        |> Seq.map (fun char -> keyboard.Keys.[char])
-        |> List.ofSeq
-
-    let countKeys by =
+    let count keys by =
         keys
         |> Seq.filter by
         |> Seq.length
+
+    let keys =
+        line
+        |> Seq.map (Character.fromChar >> (fun char ->
+            // todo: apply RoP
+            match keyboard.Keys.TryGetValue char with
+            | (true, key) -> key
+            | (false, _) -> failwithf "Can't find key for '%c'" (Character.value char)))
+        |> List.ofSeq
 
     let letters = calculate line countLetters
     let chars = calculate line countChars
@@ -103,16 +106,16 @@ let collect (keyboard) line =
       TotalDigraphs = digraphs.Values |> Seq.sum
       TotalChars = chars.Values |> Seq.sum
       Efforts = 0.
-      TopKeys = countKeys keyboard.TopKeys.Contains
-      HomeKeys = countKeys keyboard.HomeKeys.Contains
-      BottomKeys = countKeys keyboard.BottomKeys.Contains
+      TopKeys = count keys keyboard.TopKeys.Contains
+      HomeKeys = count keys keyboard.HomeKeys.Contains
+      BottomKeys = count keys keyboard.BottomKeys.Contains
       SameFinger = 0
       InwardRolls = 0
       OutwardRolls = 0
       RightFinders = Fingers()
       LeftFinders = Fingers()
-      RightHandTotal = countKeys keyboard.RightKeys.Contains
-      LeftHandTotal = countKeys keyboard.LeftKeys.Contains
+      RightHandTotal = count keys keyboard.RightKeys.Contains
+      LeftHandTotal = count keys keyboard.LeftKeys.Contains
       RightHandContinuous = 0
       LeftHandContinuous = 0
       Shifts = 0 }
