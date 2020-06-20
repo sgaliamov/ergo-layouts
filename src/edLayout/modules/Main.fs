@@ -77,6 +77,12 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         |> appendSpacer
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Same finger" (percentFromTotal state.SameFinger)
+        |> appendValue "Left fingers" (state.LeftFinders.Values.Sum())
+        |> appendLines state.LeftFinders state.TotalChars 0.0
+        |> appendSpacer
+        |> appendValue "Right fingers" (state.RightFinders.Values.Sum())
+        |> appendLines state.RightFinders state.TotalChars 0.0
+        |> appendSpacer
         |> appendValue "Top keys" (percentFromTotal state.TopKeys)
         |> appendValue "Home keys" (percentFromTotal state.HomeKeys)
         |> appendValue "Bottom keys" (percentFromTotal state.BottomKeys)
