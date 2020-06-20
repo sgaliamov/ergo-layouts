@@ -1,5 +1,6 @@
 ﻿module Configs
 
+open System.Linq
 open FSharp.Data
 open FSharp.Data.JsonExtensions
 open Utilities
@@ -10,18 +11,18 @@ type private Settings = JsonProvider<"../../configs/settings.json">
 let private statistics = Stats.GetSample()
 let private appSettings = Settings.GetSample()
 
-let private jsonToMap json =
+let private jsonToMap mapKey json =
     json
-    |> toPairs id (JsonExtensions.AsFloat >> Probability.create)
+    |> toPairs mapKey (JsonExtensions.AsFloat >> Probability.create)
     |> Map.ofSeq
 
 let private digraphsStatistics =
     statistics.Digraphs.JsonValue.Properties
-    |> jsonToMap
+    |> jsonToMap Digraph.create
 
 let private lettersStatistics =
     statistics.Letters.JsonValue.Properties
-    |> jsonToMap
+    |> jsonToMap (fun x -> Letter.create(x.Single()))
 
 let settings =
     {| precision = Probability.create (float appSettings.Precision)

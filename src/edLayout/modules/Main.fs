@@ -70,9 +70,10 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
 
     let formatState state =
         Console.SetCursorPosition(0, Console.CursorTop)
+        let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
         StringBuilder()
         |> appendValue "Digraphs" state.TotalDigraphs
-        |> appendLines state.Digraphs state.TotalDigraphs settings.minDigraphs
+        |> appendLines digraphs state.TotalDigraphs settings.minDigraphs
         |> formatMain state
         |> Console.WriteLine
 
@@ -109,4 +110,4 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
     |> Seq.fold folder initialState
     |> formatState
 
-    Ok (sprintf "\nTime taken: %s\n" ((DateTime.UtcNow - start).ToString("c")))
+    Ok (sprintf "\nTime taken: %s" ((DateTime.UtcNow - start).ToString("c")))

@@ -40,9 +40,9 @@ let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     |> counter
     |> Seq.fold folder (ConcurrentDictionary<'TOut, int>())
 
-let isFinished<'TKey> 
+let isFinished<'TKey when 'TKey : comparison>
     (state: ConcurrentDictionary<'TKey, int>)
-    (stats: Map<string, Probability>)
+    (stats: Map<'TKey, Probability>)
     (total: int)
     (precision: Probability) =
     let isEnough count keyStatistics =
@@ -52,10 +52,9 @@ let isFinished<'TKey>
 
     state.Keys
     |> Seq.map (fun key ->
-        let str = key.ToString()
-        match stats.ContainsKey str with
+        match stats.ContainsKey key with
         | true ->
-            let keyStatistics = stats.[str]
+            let keyStatistics = stats.[key]
             let count = state.[key]
             isEnough (float count) keyStatistics
         | _ -> true)
