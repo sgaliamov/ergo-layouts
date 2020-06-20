@@ -59,35 +59,34 @@ let isFinished<'TKey when 'TKey : comparison>
     |> Seq.filter id
     |> Seq.length = state.Keys.Count
 
+let private countLetters line =
+    line
+    |> Seq.filter Char.IsLetter
+    |> Seq.map Letter.create
+    |> Seq.countBy id
+
+let private countChars line =
+    line
+    |> Seq.map Character.fromChar
+    |> Seq.countBy id
+
+let private countDigraphs line =
+    line
+    |> Seq.filter Char.IsLetter
+    |> Seq.pairwise
+    |> Seq.map (toString >> Digraph.create)
+    |> Seq.countBy id
+
+let private count keys by =
+    keys
+    |> Seq.filter by
+    |> Seq.length
+
 let collect keyboard line =
     let lowerLine =
         line 
         |> Seq.map Char.ToLowerInvariant
-        |> Seq.cache
-
-    let countLetters line =
-        line
-        |> Seq.filter Char.IsLetter
-        |> Seq.map Letter.create
-        |> Seq.countBy id
-
-    let countChars line =
-        line
-        |> Seq.map Character.fromChar
-        |> Seq.countBy id
-
-    let countDigraphs line =
-        line
-        |> Seq.filter Char.IsLetter
-        |> Seq.pairwise
-        |> Seq.map (toString >> Digraph.create)
-        |> Seq.countBy id
-
-    let count keys by =
-        keys
-        |> Seq.filter by
-        |> Seq.length
-
+        |> List.ofSeq
     let keysInLine =
         lowerLine
         |> Seq.map (Character.fromChar >> (fun char ->
@@ -96,7 +95,6 @@ let collect keyboard line =
             | (true, key) -> key
             | (false, _) -> failwithf "Can't find key for '%c'" (Character.value char)))
         |> List.ofSeq
-
     let letters = calculate lowerLine countLetters
     let chars = calculate lowerLine countChars
     let digraphs = calculate lowerLine countDigraphs
@@ -106,6 +104,11 @@ let collect keyboard line =
             match keyboard.Efforts.TryGetValue key with
             | (true, effort) -> effort
             | (false, _) -> failwithf "Can't find effort for '%s'" (key.ToString()))
+    let sameFinger =
+        keysInLine
+        |> Seq.pairwise
+        |> Seq.filter (fun (a, b) -> a = b)
+        |> Seq.length
 
     { Letters = letters
       Digraphs = digraphs
@@ -117,7 +120,7 @@ let collect keyboard line =
       TopKeys = count keysInLine keyboard.TopKeys.Contains
       HomeKeys = count keysInLine keyboard.HomeKeys.Contains
       BottomKeys = count keysInLine keyboard.BottomKeys.Contains
-      SameFinger = 0
+      SameFinger = sameFinger
       InwardRolls = 0
       OutwardRolls = 0
       RightFinders = Fingers()
