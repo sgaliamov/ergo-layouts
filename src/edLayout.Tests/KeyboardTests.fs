@@ -16,10 +16,8 @@ let ``Should load given layout.`` () =
             },
             "right": {
                 "2": "b",
-                "14": "\""
-            },
-            "shifted": {
-                "`": "\""
+                "14": "\"",
+                "3": "9"
             }
         }
         """)
@@ -28,7 +26,7 @@ let ``Should load given layout.`` () =
 
     keyboard.Keys.[Char('a')] |> should equal (StringKey("L1") |> create).Value
     keyboard.Keys.[Char('b')] |> should equal (StringKey("R2") |> create).Value
-    keyboard.Keys.[Char('`')] |> should equal (StringKey("R14") |> create).Value
     keyboard.Keys.[Char('\"')] |> should equal (StringKey("R14") |> create).Value
+    keyboard.Keys.[Char('(')] |> should equal (StringKey("R3") |> create).Value
 
 
