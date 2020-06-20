@@ -143,7 +143,7 @@ let collect keyboard line =
     let shifts =
         line
         |> Seq.zip lowerLine
-        |> Seq.filter (fun (a, b) -> not(a = b) || keyboard.Shifted.Contains a)
+        |> Seq.filter (fun (a, b) -> a <> b || keyboard.Shifted.Contains a)
         |> Seq.length
 
     { Letters = letters
