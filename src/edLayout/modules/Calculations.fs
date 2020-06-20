@@ -10,7 +10,7 @@ open Utilities
 
 type private Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 
-let private characters = HashSet<char>([ ' ' .. '~' ] |> List.except [ 'A' .. 'Z' ])
+let private characters = HashSet<char>([' '..'~'])
 
 let initialState =
     { Letters = Letter.Letters()
@@ -59,7 +59,12 @@ let isFinished<'TKey when 'TKey : comparison>
     |> Seq.filter id
     |> Seq.length = state.Keys.Count
 
-let collect (keyboard) line =
+let collect keyboard line =
+    let lowerLine =
+        line 
+        |> Seq.map Char.ToLowerInvariant
+        |> Seq.cache
+
     let countLetters line =
         line
         |> Seq.filter Char.IsLetter
@@ -83,8 +88,8 @@ let collect (keyboard) line =
         |> Seq.filter by
         |> Seq.length
 
-    let keys =
-        line
+    let keysInLine =
+        lowerLine
         |> Seq.map (Character.fromChar >> (fun char ->
             // todo: apply RoP
             match keyboard.Keys.TryGetValue char with
@@ -92,9 +97,15 @@ let collect (keyboard) line =
             | (false, _) -> failwithf "Can't find key for '%c'" (Character.value char)))
         |> List.ofSeq
 
-    let letters = calculate line countLetters
-    let chars = calculate line countChars
-    let digraphs = calculate line countDigraphs
+    let letters = calculate lowerLine countLetters
+    let chars = calculate lowerLine countChars
+    let digraphs = calculate lowerLine countDigraphs
+    let efforts =
+        keysInLine
+        |> Seq.sumBy (fun key ->
+            match keyboard.Efforts.TryGetValue key with
+            | (true, effort) -> effort
+            | (false, _) -> failwithf "Can't find effort for '%s'" (key.ToString()))
 
     { Letters = letters
       Digraphs = digraphs
@@ -102,17 +113,17 @@ let collect (keyboard) line =
       TotalLetters = letters.Values |> Seq.sum
       TotalDigraphs = digraphs.Values |> Seq.sum
       TotalChars = chars.Values |> Seq.sum
-      Efforts = 0.
-      TopKeys = count keys keyboard.TopKeys.Contains
-      HomeKeys = count keys keyboard.HomeKeys.Contains
-      BottomKeys = count keys keyboard.BottomKeys.Contains
+      Efforts = efforts
+      TopKeys = count keysInLine keyboard.TopKeys.Contains
+      HomeKeys = count keysInLine keyboard.HomeKeys.Contains
+      BottomKeys = count keysInLine keyboard.BottomKeys.Contains
       SameFinger = 0
       InwardRolls = 0
       OutwardRolls = 0
       RightFinders = Fingers()
       LeftFinders = Fingers()
-      RightHandTotal = count keys keyboard.RightKeys.Contains
-      LeftHandTotal = count keys keyboard.LeftKeys.Contains
+      RightHandTotal = count keysInLine keyboard.RightKeys.Contains
+      LeftHandTotal = count keysInLine keyboard.LeftKeys.Contains
       RightHandContinuous = 0
       LeftHandContinuous = 0
       Shifts = 0 }
@@ -140,8 +151,8 @@ let aggregator state from =
       Shifts = from.Shifts + state.Shifts }
 
 let calculateLines keyboard lines =
-    let filtered (line: string) =
-        line.ToLowerInvariant()
+    let filtered line =
+        line
         |> Seq.filter characters.Contains
     lines
     |> Seq.map (filtered >> collect keyboard)

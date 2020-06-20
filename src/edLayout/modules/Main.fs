@@ -47,7 +47,7 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
     let spacer = new string(' ', Console.WindowWidth)
 
     let appendValue (title: string) value (builder: StringBuilder) =
-        let format = sprintf "\n%s\n{0}: {1,-%d}\n" spacer (settings.columns * 15 - title.Length - 2)
+        let format = sprintf "\n%s\n{0}: {1,-%d:0.###}\n" spacer (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
         
     let yieldLines (token: CancellationToken) filePath = seq {
@@ -67,6 +67,7 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         |> appendLines letters state.TotalLetters 0.0
         |> appendValue "Symbols from total" state.TotalChars
         |> appendLines symbolsOnly state.TotalChars 0.0
+        |> appendValue "Efforts" state.Efforts
 
     let formatState state =
         Console.SetCursorPosition(0, Console.CursorTop)
