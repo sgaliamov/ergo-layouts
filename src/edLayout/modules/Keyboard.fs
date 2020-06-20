@@ -47,7 +47,7 @@ let load (layout: Layout.Root) =
 
     let efforts =
         Efforts.GetSample().JsonValue.Properties
-        |> toPairs (fun string -> Keys.create <| Keys.StringKey(string)) JsonExtensions.AsFloat
+        |> toPairs (Keys.StringKey >> Keys.create) JsonExtensions.AsFloat
         |> filterValuebleKeys
         |> Map.ofSeq
 

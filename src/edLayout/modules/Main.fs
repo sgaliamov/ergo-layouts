@@ -1,8 +1,9 @@
 ﻿module Main
 
 open System
-open System.IO
 open System.Collections.Generic
+open System.IO
+open System.Linq
 open System.Reactive.Subjects
 open System.Reactive.Linq
 open System.Text
@@ -57,11 +58,13 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
 
     let formatMain state (builder: StringBuilder) =
         let symbolsOnly =
-            state.Chars
-            |> Seq.filter (fun x -> Char.IsPunctuation(Character.value x.Key) || Character.value x.Key = ' ')
+            state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
+            |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
+                
+        let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
         builder
         |> appendValue "Letters" state.TotalLetters
-        |> appendLines state.Letters state.TotalLetters 0.0
+        |> appendLines letters state.TotalLetters 0.0
         |> appendValue "Symbols from total" state.TotalChars
         |> appendLines symbolsOnly state.TotalChars 0.0
 
