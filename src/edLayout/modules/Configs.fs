@@ -29,4 +29,4 @@ let settings =
        digraphs = digraphsStatistics
        columns = appSettings.Columns
        letters = lettersStatistics
-       minDigraphs = float appSettings.MinDigraphs / 100. |}
+       minDigraphs = float appSettings.MinDigraphs |}

@@ -14,6 +14,8 @@ open Configs
 open KeyboardModelds
 open StateModels
 
+let private spacer = new string(' ', Console.WindowWidth) + "\r"
+
 let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
     let appendPair (key, value) = builder.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
     let getValue value =
@@ -45,13 +47,11 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         Error "Layout file does not exist."
     else
 
-    let spacer = new string(' ', Console.WindowWidth)
-
     let appendSpacer (builder: StringBuilder) =
         builder.AppendFormat("\n{0}", spacer)
 
     let appendValue (title: string) value (builder: StringBuilder) =
-        let format = sprintf "{0}: {1,-%d:0.###}\n" (settings.columns * 15 - title.Length - 2)
+        let format = sprintf "{0}: {1,-%d:0.###}\n%s" (settings.columns * 15 - title.Length - 2) spacer
         builder.AppendFormat(format, title, value)
         
     let yieldLines (token: CancellationToken) filePath = seq {
@@ -72,17 +72,21 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         |> appendValue "Letters" state.TotalLetters
         |> appendLines letters state.TotalLetters 0.0
         |> appendSpacer
+        |> appendSpacer
         |> appendValue "Symbols from total" state.TotalChars
         |> appendLines symbolsOnly state.TotalChars 0.0
         |> appendSpacer
-        |> appendValue "Shifts" (percentFromTotal state.Shifts)
+        |> appendSpacer
         |> appendValue "Left fingers" (state.LeftFinders.Values.Sum())
         |> appendLines state.LeftFinders state.TotalChars 0.0
+        |> appendSpacer
         |> appendSpacer
         |> appendValue "Right fingers" (state.RightFinders.Values.Sum())
         |> appendLines state.RightFinders state.TotalChars 0.0
         |> appendSpacer
+        |> appendSpacer
         |> appendValue "Same finger" (percentFromTotal state.SameFinger)
+        |> appendValue "Shifts" (percentFromTotal state.Shifts)
         |> appendValue "Top keys" (percentFromTotal state.TopKeys)
         |> appendValue "Home keys" (percentFromTotal state.HomeKeys)
         |> appendValue "Bottom keys" (percentFromTotal state.BottomKeys)
@@ -101,13 +105,14 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         |> appendValue "Digraphs" state.TotalDigraphs
         |> appendLines digraphs state.TotalDigraphs settings.minDigraphs
         |> formatMain state
-        |> Console.WriteLine
+        |> appendSpacer
 
     let onStateChanged state =
         let initialPosition = (Console.CursorLeft, Console.CursorTop)
         StringBuilder()
         |> formatMain state
-        |> Console.WriteLine
+        |> appendSpacer
+        |> Console.Write
         Console.SetCursorPosition initialPosition
 
     use stateChangedStream = new Subject<State>()
@@ -120,7 +125,7 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         if digraphsFinished || lettersFinished then
             Console.SetCursorPosition(0, Console.CursorTop)
             Console.Write spacer
-            printfn "\rCollected enough data."
+            printfn "Collected enough data."
             subscription.Dispose()
             cts.Cancel true
         stateChangedStream.OnNext newState
@@ -129,11 +134,11 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
     let start = DateTime.UtcNow
     let keyboard = Keyboard.load <| Layout.Load layout
 
-    // todo: run in pararllel
     Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
     |> Seq.filter (fun _ -> not cts.IsCancellationRequested)
     |> PSeq.map (yieldLines cts.Token >> calculateLines keyboard)
     |> PSeq.fold folder initialState
     |> formatState
+    |> Console.Write
 
     Ok (sprintf "Time spent: %s" ((DateTime.UtcNow - start).ToString("c")))

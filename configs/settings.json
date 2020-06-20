@@ -3,5 +3,5 @@
   "handSwitchPenalty": 2,
   "precision": 1.618,
   "columns": 8,
-  "minDigraphs": 5
+  "minDigraphs": 0.2
 }
