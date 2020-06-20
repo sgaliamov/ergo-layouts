@@ -31,15 +31,19 @@ let load (layout: Layout.Root) =
         |> Seq.append rightKeys
         |> Map.ofSeq
 
-    let mapShifted (from, shifted) = (shifted, keys.[from])
+    let mapShifted (shifted, from) =
+        match keys.TryGetValue from with
+        | (true, key) -> (Some key, Some shifted)
+        | (false, _) -> (None, None)
 
     let shifted =
         keyboard.Shifted.JsonValue.Properties
         |> Seq.append layout.Shifted.JsonValue.Properties
         |> toPairs Character.fromString (JsonExtensions.AsString >> Character.fromString)
         |> filterValuebles
-        |> Seq.map flipTuple
         |> Seq.map mapShifted
+        |> filterValuebles
+        |> Seq.map flipTuple
 
     let efforts =
         Efforts.GetSample().JsonValue.Properties
