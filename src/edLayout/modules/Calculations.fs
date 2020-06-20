@@ -82,6 +82,27 @@ let private count keys by =
     |> Seq.filter by
     |> Seq.length
 
+let private countCountinuous keys (set: HashSet<Keys.Key>) =
+    keys
+    |> Seq.pairwise
+    |> Seq.fold (fun count (a, b) ->
+        if set.Contains(a) && set.Contains(b) then count + 1
+        else count) 0
+
+let private countFingers keyboard keys (hand: HashSet<Keys.Key>) =
+    keys
+    |> Seq.filter hand.Contains
+    |> Seq.groupBy (fun key ->
+        if keyboard.IndexKeys.Contains key then Finger.Index
+        else if keyboard.MiddleKeys.Contains key then Finger.Middle
+        else if keyboard.RingKeys.Contains key then Finger.Ring
+        else if keyboard.PinkyKeys.Contains key then Finger.Pinky
+        else if keyboard.ThumbKeys.Contains key then Finger.Thumb
+        else failwithf "Unknown finger for the key %s" (key.ToString()))
+    |> Seq.map (fun (finger, keys) -> (finger, keys |> Seq.length))
+    |> Map.ofSeq
+    |> Fingers
+
 let collect keyboard line =
     let line = line |> Seq.cache
     let lowerLine =
@@ -125,18 +146,6 @@ let collect keyboard line =
             if bottomKeys.Contains(a) && not (bottomKeys.Contains(b)) then count + 1
             else if homeKeys.Contains(a) && topKeys.Contains(b) then count + 1
             else count) 0
-    let leftContinuous =
-        keysInLine
-        |> Seq.pairwise
-        |> Seq.fold (fun count (a, b) ->
-            if leftKeys.Contains(a) && leftKeys.Contains(b) then count + 1
-            else count) 0
-    let rightContinuous =
-           keysInLine
-           |> Seq.pairwise
-           |> Seq.fold (fun count (a, b) ->
-               if rightKeys.Contains(a) && rightKeys.Contains(b) then count + 1
-               else count) 0
     let shifts =
         line
         |> Seq.zip lowerLine
@@ -156,12 +165,12 @@ let collect keyboard line =
       SameFinger = sameFinger
       InwardRolls = inwards
       OutwardRolls = outwards
-      LeftFinders = Fingers()
-      RightFinders = Fingers()
+      LeftFinders = countFingers keyboard keysInLine leftKeys
+      RightFinders = countFingers keyboard keysInLine rightKeys
       LeftHandTotal = count keysInLine rightKeys.Contains
       RightHandTotal = count keysInLine leftKeys.Contains
-      LeftHandContinuous = leftContinuous
-      RightHandContinuous = rightContinuous
+      LeftHandContinuous = countCountinuous keysInLine leftKeys
+      RightHandContinuous = countCountinuous keysInLine rightKeys
       Shifts = shifts }
 
 let aggregator state from =

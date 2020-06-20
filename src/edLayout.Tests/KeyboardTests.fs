@@ -31,5 +31,3 @@ let ``Should load given layout.`` () =
     keyboard.Keys.[Char('(')] |> should equal (StringKey("R3") |> create).Value
     keyboard.Keys.[Char('9')] |> should equal (StringKey("R3") |> create).Value
     keyboard.Keys.[Char(''')] |> should equal (StringKey("L2") |> create).Value
-
-
