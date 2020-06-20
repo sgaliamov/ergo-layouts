@@ -2,10 +2,9 @@
 
 - [x] fix tests
 - [x] notify and render progress
-- [ ] calculate efforts
+- [x] calculate efforts
 - [x] read files in parallel
-- [ ] read lines async
-- [ ] use [ROP](https://fsharpforfunandprofit.com/posts/recipe-part2/)
+- [ ] verify and test
 
 ## Phase II
 

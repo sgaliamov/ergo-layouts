@@ -75,14 +75,14 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         |> appendValue "Symbols from total" state.TotalChars
         |> appendLines symbolsOnly state.TotalChars 0.0
         |> appendSpacer
-        |> appendValue "Efforts" state.Efforts
-        |> appendValue "Same finger" (percentFromTotal state.SameFinger)
+        |> appendValue "Shifts" (percentFromTotal state.Shifts)
         |> appendValue "Left fingers" (state.LeftFinders.Values.Sum())
         |> appendLines state.LeftFinders state.TotalChars 0.0
         |> appendSpacer
         |> appendValue "Right fingers" (state.RightFinders.Values.Sum())
         |> appendLines state.RightFinders state.TotalChars 0.0
         |> appendSpacer
+        |> appendValue "Same finger" (percentFromTotal state.SameFinger)
         |> appendValue "Top keys" (percentFromTotal state.TopKeys)
         |> appendValue "Home keys" (percentFromTotal state.HomeKeys)
         |> appendValue "Bottom keys" (percentFromTotal state.BottomKeys)
@@ -92,7 +92,7 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         |> appendValue "Right hand" (percentFromTotal state.RightHandTotal)
         |> appendValue "Left hand continuous" (percentFromTotal state.LeftHandContinuous)
         |> appendValue "Right hand continuous" (percentFromTotal state.RightHandContinuous)
-        |> appendValue "Shifts" (percentFromTotal state.Shifts)
+        |> appendValue "Efforts" state.Efforts
 
     let formatState state =
         Console.SetCursorPosition(0, Console.CursorTop)
