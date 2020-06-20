@@ -34,6 +34,15 @@ let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (
     builder
 
 let calculate path search (layout: string) (cts: CancellationTokenSource) =
+    // todo: find better way to validate input parameters
+    if not (Directory.Exists path) then
+        cts.Cancel true
+        Error "Samples direcotry does not exist."
+    else if not (File.Exists layout) then
+        cts.Cancel true
+        Error "Layout file does not exist."
+    else
+
     let spacer = new string(' ', Console.WindowWidth)
 
     let appendValue (title: string) value (builder: StringBuilder) =
@@ -97,4 +106,4 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
     |> Seq.fold folder initialState
     |> formatState
 
-    printf "\nTime taken: %s\n" ((DateTime.UtcNow - start).ToString("c"))
+    Ok (sprintf "\nTime taken: %s\n" ((DateTime.UtcNow - start).ToString("c")))
