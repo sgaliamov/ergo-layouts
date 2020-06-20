@@ -83,6 +83,7 @@ let private count keys by =
     |> Seq.length
 
 let collect keyboard line =
+    let line = line |> Seq.cache
     let lowerLine =
         line 
         |> Seq.map Char.ToLowerInvariant
@@ -136,6 +137,11 @@ let collect keyboard line =
            |> Seq.fold (fun count (a, b) ->
                if rightKeys.Contains(a) && rightKeys.Contains(b) then count + 1
                else count) 0
+    let shifts =
+        line
+        |> Seq.zip lowerLine
+        |> Seq.filter (fun (a, b) -> not(a = b) || keyboard.Shifted.Contains a)
+        |> Seq.length
 
     { Letters = letters
       Digraphs = digraphs
@@ -156,7 +162,7 @@ let collect keyboard line =
       RightHandTotal = count keysInLine leftKeys.Contains
       LeftHandContinuous = leftContinuous
       RightHandContinuous = rightContinuous
-      Shifts = 0 }
+      Shifts = shifts }
 
 let aggregator state from =
     { Letters = sumValues from.Letters state.Letters

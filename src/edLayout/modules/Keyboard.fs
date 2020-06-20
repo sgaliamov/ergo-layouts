@@ -62,6 +62,7 @@ let load (layout: Layout.Root) =
         |> HashSet<Keys.Key>
 
     { Keys = Map(keys |> Map.toSeq |> Seq.append shifted)
+      Shifted = shifted |> Seq.map (fun (char, _) -> Character.value char) |> HashSet<char>
       Efforts = efforts
       TopKeys = keyboard.Top |> toSet
       HomeKeys = keyboard.Home |> toSet

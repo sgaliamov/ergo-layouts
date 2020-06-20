@@ -12,7 +12,8 @@ let ``Should load given layout.`` () =
         Layout.Parse("""
         {
             "left": {
-                "1": "a"
+                "1": "a",
+                "2": "'"
             },
             "right": {
                 "2": "b",
@@ -26,7 +27,9 @@ let ``Should load given layout.`` () =
 
     keyboard.Keys.[Char('a')] |> should equal (StringKey("L1") |> create).Value
     keyboard.Keys.[Char('b')] |> should equal (StringKey("R2") |> create).Value
-    keyboard.Keys.[Char('\"')] |> should equal (StringKey("R14") |> create).Value
+    keyboard.Keys.[Char('"')] |> should equal (StringKey("R14") |> create).Value
     keyboard.Keys.[Char('(')] |> should equal (StringKey("R3") |> create).Value
+    keyboard.Keys.[Char('9')] |> should equal (StringKey("R3") |> create).Value
+    keyboard.Keys.[Char(''')] |> should equal (StringKey("L2") |> create).Value
 
 

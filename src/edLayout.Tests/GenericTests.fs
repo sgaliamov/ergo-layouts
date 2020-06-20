@@ -22,3 +22,10 @@ let ``Test map creation.`` () =
         |> Map.ofSeq
 
     digraphsMap.["th"] |> should equal 1.23
+
+[<Fact>]
+let ``Map override dublicates on creation.`` () =
+    let actual = Map([(1, "a"); (2, "b"); (1, "c")])
+    let expected = Map([(1, "c"); (2, "b")])
+
+    actual |> should equal expected

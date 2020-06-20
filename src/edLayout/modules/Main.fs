@@ -86,6 +86,7 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         |> appendValue "Right hand" (percentFromTotal state.RightHandTotal)
         |> appendValue "Left hand continuous" (percentFromTotal state.LeftHandContinuous)
         |> appendValue "Right hand continuous" (percentFromTotal state.RightHandContinuous)
+        |> appendValue "Shifts" (percentFromTotal state.Shifts)
 
     let formatState state =
         Console.SetCursorPosition(0, Console.CursorTop)
