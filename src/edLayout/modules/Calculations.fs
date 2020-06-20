@@ -92,13 +92,7 @@ let private countCountinuous keys (set: HashSet<Keys.Key>) =
 let private countFingers keyboard keys (hand: HashSet<Keys.Key>) =
     keys
     |> Seq.filter hand.Contains
-    |> Seq.groupBy (fun key ->
-        if keyboard.IndexKeys.Contains key then Finger.Index
-        else if keyboard.MiddleKeys.Contains key then Finger.Middle
-        else if keyboard.RingKeys.Contains key then Finger.Ring
-        else if keyboard.PinkyKeys.Contains key then Finger.Pinky
-        else if keyboard.ThumbKeys.Contains key then Finger.Thumb
-        else failwithf "Unknown finger for the key %s" (key.ToString()))
+    |> Seq.groupBy (fun key -> keyboard.Fingers.[key])
     |> Seq.map (fun (finger, keys) -> (finger, keys |> Seq.length))
     |> Map.ofSeq
     |> Fingers

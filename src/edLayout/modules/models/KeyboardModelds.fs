@@ -6,6 +6,7 @@ open Option
 open FSharp.Data
 open StateModels
 open Utilities
+open System.Collections.Concurrent
 
 type KeyboardInfo = JsonProvider<"../../configs/keyboard.json">
 type Efforts = JsonProvider<"../../configs/efforts.json">
@@ -55,8 +56,4 @@ type Keyboard =
       BottomKeys: HashSet<Keys.Key>
       LeftKeys: HashSet<Keys.Key>
       RightKeys: HashSet<Keys.Key>
-      ThumbKeys: HashSet<Keys.Key>
-      IndexKeys: HashSet<Keys.Key>
-      MiddleKeys: HashSet<Keys.Key>
-      RingKeys: HashSet<Keys.Key>
-      PinkyKeys: HashSet<Keys.Key> }
+      Fingers: ConcurrentDictionary<Keys.Key, Finger> }
