@@ -8,7 +8,7 @@ let private handler path search layout =
     Task.Run((fun () ->
         printf "Press any key to finish..."
         Console.ReadKey true |> ignore
-        cts.Cancel true) , cts.Token) |> ignore
+        cts.Cancel true), cts.Token) |> ignore
 
     let result = calculate path search layout cts
     match result with

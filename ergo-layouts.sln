@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{672E0C03-8A08-4D48-BD57-E06025439E3A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		scripts\lint.ps1 = scripts\lint.ps1
 		readme.md = readme.md
 		docs\resonimg.md = docs\resonimg.md
 		docs\todo.md = docs\todo.md
