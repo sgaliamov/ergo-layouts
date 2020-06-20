@@ -8,6 +8,7 @@ open System.Reactive.Subjects
 open System.Reactive.Linq
 open System.Text
 open System.Threading
+open FSharp.Collections.ParallelSeq
 open Calculations
 open Configs
 open KeyboardModelds
@@ -107,8 +108,8 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
     // todo: run in pararllel
     Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
     |> Seq.filter (fun _ -> not cts.IsCancellationRequested)
-    |> Seq.map (yieldLines cts.Token >> calculateLines keyboard)
-    |> Seq.fold folder initialState
+    |> PSeq.map (yieldLines cts.Token >> calculateLines keyboard)
+    |> PSeq.fold folder initialState
     |> formatState
 
     Ok (sprintf "\nTime taken: %s" ((DateTime.UtcNow - start).ToString("c")))
