@@ -81,7 +81,7 @@ let private countFingers (fingers: FingersKeyMap) keys (hand: HashSet<Keys.Key>)
 let private getFactor keyboard key next =
     if next = endToken then 1.0
     else if not (isSameHand keyboard key next) then settings.handSwitchPenalty
-    else if key = next then 0.5
+    else if key = next then 0.2
     else if isSameFinger keyboard key next then settings.sameFingerPenalty
     else 1.0
 
