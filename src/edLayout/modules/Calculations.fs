@@ -11,9 +11,8 @@ open Probability
 open Utilities
 
 type private Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
-
-let private characters = HashSet<char>([' '..'~'])
-
+let private characters = [' '..'~'] |> HashSet<char>
+let private lettersOnly = ['a'..'z'] |> HashSet<char>
 let private END = Keys.StringKey "END"
 
 let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
@@ -86,6 +85,15 @@ let private getFactor keyboard key next =
     else if isSameFinger keyboard key next then settings.sameFingerPenalty
     else 1.0
 
+let private toKeys keyboard line =
+    line
+    |> Seq.map (Character.fromChar >> (fun char ->
+        // todo: apply RoP
+        match keyboard.Keys.TryGetValue char with
+        | (true, key) -> key
+        | (false, _) -> failwithf "Can't find key for '%c'" (Character.value char)))
+    |> List.ofSeq
+
 let collect (keyboard: Keyboard) line =
     let (topKeys, homeKeys, bottomKeys, leftKeys, rightKeys, fingersMap) =
         keyboard.TopKeys,
@@ -101,14 +109,7 @@ let collect (keyboard: Keyboard) line =
         line 
         |> Seq.map Char.ToLowerInvariant
         |> List.ofSeq
-    let keysInLine =
-        lowerLine
-        |> Seq.map (Character.fromChar >> (fun char ->
-            // todo: apply RoP
-            match keyboard.Keys.TryGetValue char with
-            | (true, key) -> key
-            | (false, _) -> failwithf "Can't find key for '%c'" (Character.value char)))
-        |> List.ofSeq
+    let keysInLine = toKeys keyboard lowerLine
     let letters = calculate lowerLine countLetters
     let chars = calculate lowerLine countChars
     let digraphs = calculate lowerLine countDigraphs
@@ -146,6 +147,11 @@ let collect (keyboard: Keyboard) line =
         |> Seq.zip lowerLine
         |> Seq.filter (fun (a, b) -> a <> b || keyboard.Shifted.Contains a)
         |> Seq.length
+    let letterKeys =
+        lowerLine
+        |> Seq.filter lettersOnly.Contains
+        |> toKeys keyboard
+        |> List.ofSeq
 
     { Letters = letters
       Digraphs = digraphs
@@ -164,8 +170,8 @@ let collect (keyboard: Keyboard) line =
       RightFingers = countFingers fingersMap keysInLine rightKeys
       LeftHandTotal = count keysInLine rightKeys.Contains
       RightHandTotal = count keysInLine leftKeys.Contains
-      LeftHandContinuous = countCountinuous keysInLine leftKeys
-      RightHandContinuous = countCountinuous keysInLine rightKeys
+      LeftHandContinuous = countCountinuous letterKeys leftKeys
+      RightHandContinuous = countCountinuous letterKeys rightKeys
       Shifts = shifts }
 
 let aggregator state from =
