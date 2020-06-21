@@ -26,8 +26,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E13E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1BDC0-517F-404E-9B03-A902D17EB7F6}"
 	ProjectSection(SolutionItems) = preProject
+		layouts\breakl15.json = layouts\breakl15.json
 		layouts\collemak.json = layouts\collemak.json
+		layouts\dvorak.json = layouts\dvorak.json
+		layouts\kaehi.json = layouts\kaehi.json
+		layouts\mtgap1.json = layouts\mtgap1.json
+		layouts\mtgap2.json = layouts\mtgap2.json
+		layouts\niro.json = layouts\niro.json
 		layouts\qwerty.json = layouts\qwerty.json
+		layouts\soul.json = layouts\soul.json
+		layouts\workman.json = layouts\workman.json
 	EndProjectSection
 EndProject
 Global
