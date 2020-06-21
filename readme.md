@@ -1,6 +1,6 @@
 # edLayouts
 
-The utility to examine layouts for ErgoDox keyboard.
+Is a utility to examine layouts for ErgoDox keyboard.
 
 ## Why?
 
@@ -17,7 +17,7 @@ But in my case it does not work.
 For exapmple, it's much more comfortable for me to use ring finger for P and Q instesad of pinky.
 I don't know who is mutant in this case.
 
-ErgoDox keyboard is very different, it's much bigger than a regular laptop keyboard.
+ErgoDox keyboard is very different, and it's bigger than a regular laptop keyboard.
 On a regular keyboard for example, you don't have to tilt your wrist when you press button N because all buttons are shifted.
 On ErgoDox all buttons are strictly vertical.
 On the other hand, in the literal and figurative sense, button B is more reachable now.
