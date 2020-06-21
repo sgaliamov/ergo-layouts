@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		scripts\lint.ps1 = scripts\lint.ps1
 		readme.md = readme.md
 		docs\resonimg.md = docs\resonimg.md
+		docs\results.md = docs\results.md
 		docs\todo.md = docs\todo.md
 	EndProjectSection
 EndProject
@@ -24,6 +25,13 @@ EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "edLayout", "src\edLayout\edLayout.fsproj", "{D34B1902-79FC-4451-A483-74A5430F15AC}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "edLayout.Tests", "src\edLayout.Tests\edLayout.Tests.fsproj", "{6754AB4C-0921-4C5F-9AAE-975D4392A071}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E13E840A-A8A9-4E5B-82E3-1A12CFF86132}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\lint.ps1 = scripts\lint.ps1
+		scripts\publish.ps1 = scripts\publish.ps1
+		scripts\run.ps1 = scripts\run.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +50,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E13E840A-A8A9-4E5B-82E3-1A12CFF86132} = {672E0C03-8A08-4D48-BD57-E06025439E3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1EF56F16-2A51-4C23-BE6C-6F237E6C6037}
