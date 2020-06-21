@@ -6,3 +6,4 @@ launchSettings.json
 obj/
 .ionide/
 publish/
+*.user
