@@ -40,7 +40,7 @@ type Finger =
     | Ring = 'R'
     | Pinky = 'P'
 
-type Fingers = ConcurrentDictionary<Finger, int>
+type FingersCounter = ConcurrentDictionary<Finger, int>
 
 type State =
     { Letters: Letter.Letters
@@ -56,10 +56,32 @@ type State =
       SameFinger: int
       InwardRolls: int
       OutwardRolls: int
-      LeftFinders: Fingers
-      RightFinders: Fingers
+      LeftFingers: FingersCounter
+      RightFingers: FingersCounter
       LeftHandTotal: int
       RightHandTotal: int
       LeftHandContinuous: int
       RightHandContinuous: int
       Shifts: int }
+
+let initialState =
+    { Letters = Letter.Letters()
+      Digraphs = Digraph.Digraphs()
+      Chars = Character.Chars()
+      TotalLetters = 0
+      TotalDigraphs = 0
+      TotalChars = 0
+      Efforts = 0.
+      TopKeys = 0
+      HomeKeys = 0
+      BottomKeys = 0
+      SameFinger = 0
+      InwardRolls = 0
+      OutwardRolls = 0
+      LeftFingers = FingersCounter()
+      RightFingers = FingersCounter()
+      LeftHandTotal = 0
+      RightHandTotal = 0
+      LeftHandContinuous = 0
+      RightHandContinuous = 0
+      Shifts = 0 }

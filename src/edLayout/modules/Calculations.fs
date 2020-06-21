@@ -3,6 +3,8 @@
 open System
 open System.Collections.Concurrent
 open System.Collections.Generic
+open FSharp.Collections.ParallelSeq
+open Configs
 open KeyboardModelds
 open StateModels
 open Probability
@@ -12,27 +14,7 @@ type private Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 
 let private characters = HashSet<char>([' '..'~'])
 
-let initialState =
-    { Letters = Letter.Letters()
-      Digraphs = Digraph.Digraphs()
-      Chars = Character.Chars()
-      TotalLetters = 0
-      TotalDigraphs = 0
-      TotalChars = 0
-      Efforts = 0.
-      TopKeys = 0
-      HomeKeys = 0
-      BottomKeys = 0
-      SameFinger = 0
-      InwardRolls = 0
-      OutwardRolls = 0
-      LeftFinders = Fingers()
-      RightFinders = Fingers()
-      LeftHandTotal = 0
-      RightHandTotal = 0
-      LeftHandContinuous = 0
-      RightHandContinuous = 0
-      Shifts = 0 }
+let private END = Keys.StringKey "END"
 
 let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
@@ -57,7 +39,7 @@ let isFinished<'TKey when 'TKey : comparison>
         let count = state.[key]
         isEnough (float count) keyStatistics)
     |> Seq.filter id
-    |> Seq.length = state.Keys.Count
+    |> Seq.length = state.Keys.Count && state.Keys.Count <> 0
 
 let private countLetters line =
     line
@@ -82,22 +64,38 @@ let private count keys by =
     |> Seq.filter by
     |> Seq.length
 
-let private countCountinuous keys (set: HashSet<Keys.Key>) =
+let private countCountinuous keys (hand: HashSet<Keys.Key>) =
     keys
     |> Seq.pairwise
     |> Seq.fold (fun count (a, b) ->
-        if set.Contains(a) && set.Contains(b) then count + 1
+        if hand.Contains(a) && hand.Contains(b) then count + 1
         else count) 0
 
-let private countFingers keyboard keys (hand: HashSet<Keys.Key>) =
+let private countFingers (fingers: FingersKeyMap) keys (hand: HashSet<Keys.Key>) =
     keys
     |> Seq.filter hand.Contains
-    |> Seq.groupBy (fun key -> keyboard.Fingers.[key])
+    |> Seq.groupBy (getFinger fingers)
     |> Seq.map (fun (finger, keys) -> (finger, keys |> Seq.length))
     |> Map.ofSeq
-    |> Fingers
+    |> FingersCounter
 
-let collect keyboard line =
+let private getFactor keyboard key next =
+    if next = END then 1.0
+    else if not (isSameHand keyboard key next) then settings.handSwitchPenalty
+    else if key = next then 0.5
+    else if isSameFinger keyboard key next then settings.sameFingerPenalty
+    else 1.0
+
+let collect (keyboard: Keyboard) line =
+    let (topKeys, homeKeys, bottomKeys, leftKeys, rightKeys, fingersMap) =
+        keyboard.TopKeys,
+        keyboard.HomeKeys,
+        keyboard.BottomKeys,
+        keyboard.LeftKeys,
+        keyboard.RightKeys,
+        keyboard.FingersMap
+    let isSameHand (a, b) = isSameHand keyboard a b
+    let isSameFinger (a, b) = isSameFinger keyboard a b
     let line = line |> Seq.cache
     let lowerLine =
         line 
@@ -115,20 +113,22 @@ let collect keyboard line =
     let chars = calculate lowerLine countChars
     let digraphs = calculate lowerLine countDigraphs
     let efforts =
-        keysInLine
-        |> Seq.sumBy (fun key ->
+        keysInLine @ [END]
+        |> Seq.pairwise
+        |> Seq.map (fun (key, next) -> key, (getFactor keyboard key next))
+        |> Seq.sumBy (fun (key, factor) ->
             match keyboard.Efforts.TryGetValue key with
-            | (true, effort) -> effort
+            | (true, effort) -> effort * factor
             | (false, _) -> failwithf "Can't find effort for '%s'" (key.ToString()))
     let sameFinger =
         keysInLine
         |> Seq.pairwise
-        |> Seq.filter (fun (a, b) -> a = b)
+        |> Seq.filter isSameFinger
         |> Seq.length
-    let (topKeys, homeKeys, bottomKeys, leftKeys, rightKeys) = keyboard.TopKeys, keyboard.HomeKeys, keyboard.BottomKeys, keyboard.LeftKeys, keyboard.RightKeys
     let inwards =
         keysInLine
         |> Seq.pairwise
+        |> Seq.filter isSameHand
         |> Seq.fold (fun count (a, b) ->
             if topKeys.Contains(a) && not (topKeys.Contains(b)) then count + 1
             else if homeKeys.Contains(a) && bottomKeys.Contains(b) then count + 1
@@ -136,6 +136,7 @@ let collect keyboard line =
     let outwards =
         keysInLine
         |> Seq.pairwise
+        |> Seq.filter isSameHand
         |> Seq.fold (fun count (a, b) ->
             if bottomKeys.Contains(a) && not (bottomKeys.Contains(b)) then count + 1
             else if homeKeys.Contains(a) && topKeys.Contains(b) then count + 1
@@ -159,8 +160,8 @@ let collect keyboard line =
       SameFinger = sameFinger
       InwardRolls = inwards
       OutwardRolls = outwards
-      LeftFinders = countFingers keyboard keysInLine leftKeys
-      RightFinders = countFingers keyboard keysInLine rightKeys
+      LeftFingers = countFingers fingersMap keysInLine leftKeys
+      RightFingers = countFingers fingersMap keysInLine rightKeys
       LeftHandTotal = count keysInLine rightKeys.Contains
       RightHandTotal = count keysInLine leftKeys.Contains
       LeftHandContinuous = countCountinuous keysInLine leftKeys
@@ -181,8 +182,8 @@ let aggregator state from =
       SameFinger = from.SameFinger + state.SameFinger
       InwardRolls = from.InwardRolls + state.InwardRolls
       OutwardRolls = from.OutwardRolls + state.OutwardRolls
-      LeftFinders = sumValues from.LeftFinders state.LeftFinders
-      RightFinders = sumValues from.RightFinders state.RightFinders
+      LeftFingers = sumValues from.LeftFingers state.LeftFingers
+      RightFingers = sumValues from.RightFingers state.RightFingers
       LeftHandTotal = from.LeftHandTotal + state.LeftHandTotal
       RightHandTotal = from.RightHandTotal + state.RightHandTotal
       LeftHandContinuous = from.LeftHandContinuous + state.LeftHandContinuous
@@ -194,5 +195,5 @@ let calculateLines keyboard lines =
         line
         |> Seq.filter characters.Contains
     lines
-    |> Seq.map (filtered >> collect keyboard)
-    |> Seq.fold aggregator initialState
+    |> PSeq.map (filtered >> collect keyboard)
+    |> PSeq.fold aggregator initialState

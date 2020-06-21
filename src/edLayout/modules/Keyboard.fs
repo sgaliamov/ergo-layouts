@@ -84,4 +84,4 @@ let load (layout: Layout.Root) =
       BottomKeys = keyboard.Bottom |> toSet |> HashSet<Keys.Key>
       RightKeys = rightKeys |> getKeys
       LeftKeys = leftKeys |> getKeys
-      Fingers = fingers }
+      FingersMap = fingers }

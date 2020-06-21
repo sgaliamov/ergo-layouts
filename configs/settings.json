@@ -1,6 +1,6 @@
 ﻿{
-  "sameFingerPenalty": 2,
-  "handSwitchPenalty": 2,
+  "sameFingerPenalty": 1.8,
+  "handSwitchPenalty": 2.1,
   "precision": 1.618,
   "columns": 8,
   "minDigraphs": 0.2

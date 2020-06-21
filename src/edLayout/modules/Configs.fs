@@ -29,4 +29,6 @@ let settings =
        digraphs = digraphsStatistics
        columns = appSettings.Columns
        letters = lettersStatistics
+       handSwitchPenalty = float appSettings.HandSwitchPenalty
+       sameFingerPenalty = float appSettings.SameFingerPenalty
        minDigraphs = float appSettings.MinDigraphs |}
