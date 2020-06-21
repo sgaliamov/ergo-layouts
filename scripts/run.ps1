@@ -1,4 +1,10 @@
 $ErrorActionPreference = "Stop"
 
+cls
+
 $currDir = (Get-Item -Path "./").FullName
-.\publish\edLayout.exe $currDir\samples *.txt false $currDir\layouts\qwerty.json
+
+Get-ChildItem $currDir\publish\layouts\*.json -Recurse | ForEach-Object {
+    Write-Host $_
+    .\publish\edLayout.exe $currDir\samples *.txt false $_
+}

@@ -59,3 +59,24 @@ Left hand continuous: 21.057
 Right hand continuous: 24.367
 Efforts: 82476941.06
 ```
+
+## Collemak
+
+``` ini
+Left fingers: 5047186
+    Index : 16.762    Middle : 10.978    Ring : 6.621     Pinky : 6.318
+Right fingers: 7360205
+    Index : 14.944    Thumb : 14.108    Middle : 14.032    Ring : 10.232    Pinky : 6.005
+Same finger: 4.897
+Shifts: 5.974
+Top keys: 15.924
+Home keys: 57.568
+Bottom keys: 26.508
+Inward rolls: 12.766
+Outward rolls: 9.528
+Left hand: 59.321
+Right hand: 40.679
+Left hand continuous: 12.367
+Right hand continuous: 30.868
+Efforts: 55610301.56
+```
