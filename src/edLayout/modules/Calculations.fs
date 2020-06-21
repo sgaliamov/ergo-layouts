@@ -13,7 +13,7 @@ open Utilities
 type private Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 let private characters = [' '..'~'] |> HashSet<char>
 let private lettersOnly = ['a'..'z'] |> HashSet<char>
-let private END = Keys.StringKey "END"
+let private endToken = Keys.StringKey "END"
 
 let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
@@ -79,7 +79,7 @@ let private countFingers (fingers: FingersKeyMap) keys (hand: HashSet<Keys.Key>)
     |> FingersCounter
 
 let private getFactor keyboard key next =
-    if next = END then 1.0
+    if next = endToken then 1.0
     else if not (isSameHand keyboard key next) then settings.handSwitchPenalty
     else if key = next then 0.5
     else if isSameFinger keyboard key next then settings.sameFingerPenalty
@@ -114,7 +114,7 @@ let collect (keyboard: Keyboard) line =
     let chars = calculate lowerLine countChars
     let digraphs = calculate lowerLine countDigraphs
     let efforts =
-        keysInLine @ [END]
+        keysInLine @ [endToken]
         |> Seq.pairwise
         |> Seq.map (fun (key, next) -> key, (getFactor keyboard key next))
         |> Seq.sumBy (fun (key, factor) ->
