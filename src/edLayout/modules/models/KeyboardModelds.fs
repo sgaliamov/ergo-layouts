@@ -8,18 +8,15 @@ open StateModels
 open Utilities
 open System.Collections.Concurrent
 
-type KeyboardInfo = JsonProvider<"../../configs/keyboard.json">
-type Efforts = JsonProvider<"../../configs/efforts.json">
-type Layout = JsonProvider<"""
-{
-    "left": {
-        "1": "a"
-    },
-    "right": {
-        "2": "b"
-    }
-}
-""">
+type Layout =
+    JsonProvider<"""{
+        "left": {
+            "1": "a"
+        },
+        "right": {
+            "2": "b"
+        }
+    }""">
 
 module Hands =
     type Hand =
@@ -47,6 +44,8 @@ module Keys =
         | HandStringKey(hand, number) -> Some <| Key(hand, Byte.Parse(number))
         | Key(hand, number) -> Some <| Key(hand, number)
 
+type FingersKeyMap = ConcurrentDictionary<Keys.Key, Finger>
+
 type Keyboard =
     { Keys: Map<Character.Char, Keys.Key>
       Shifted: HashSet<char>
@@ -56,4 +55,20 @@ type Keyboard =
       BottomKeys: HashSet<Keys.Key>
       LeftKeys: HashSet<Keys.Key>
       RightKeys: HashSet<Keys.Key>
-      Fingers: ConcurrentDictionary<Keys.Key, Finger> }
+      FingersMap: FingersKeyMap }
+
+let getFinger (fingers: FingersKeyMap) key = fingers.[key]
+
+let getHand keyboard key =
+    let left, _ = keyboard.LeftKeys.TryGetValue key
+    if left then Hands.Hand.Left else Hands.Hand.Right
+
+let isSameHand keyboard a b  =
+    let aHand = getHand keyboard a
+    let bHand = getHand keyboard b
+    aHand = bHand
+
+let isSameFinger keyboard a b =
+    let aFinger = getFinger keyboard.FingersMap a
+    let bFinger = getFinger keyboard.FingersMap b
+    aFinger = bFinger && isSameHand keyboard a b

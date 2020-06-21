@@ -9,6 +9,9 @@ open KeyboardModelds
 open KeyboardModelds.Hands
 open System.Collections.Concurrent
 
+type KeyboardInfo = JsonProvider<"./keyboard.json">
+type Efforts = JsonProvider<"./efforts.json">
+
 let private keyboard = KeyboardInfo.GetSample()
 
 let load (layout: Layout.Root) =
@@ -84,4 +87,4 @@ let load (layout: Layout.Root) =
       BottomKeys = keyboard.Bottom |> toSet |> HashSet<Keys.Key>
       RightKeys = rightKeys |> getKeys
       LeftKeys = leftKeys |> getKeys
-      Fingers = fingers }
+      FingersMap = fingers }

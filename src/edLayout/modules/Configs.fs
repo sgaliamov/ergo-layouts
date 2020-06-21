@@ -6,8 +6,8 @@ open FSharp.Data.JsonExtensions
 open Utilities
 open StateModels
 
-type private Stats = JsonProvider<"../../configs/statistics.json">
-type private Settings = JsonProvider<"../../configs/settings.json">
+type private Stats = JsonProvider<"./statistics.json">
+type private Settings = JsonProvider<"./settings.json">
 let private statistics = Stats.GetSample()
 let private appSettings = Settings.GetSample()
 
@@ -29,4 +29,6 @@ let settings =
        digraphs = digraphsStatistics
        columns = appSettings.Columns
        letters = lettersStatistics
+       handSwitchPenalty = float appSettings.HandSwitchPenalty
+       sameFingerPenalty = float appSettings.SameFingerPenalty
        minDigraphs = float appSettings.MinDigraphs |}

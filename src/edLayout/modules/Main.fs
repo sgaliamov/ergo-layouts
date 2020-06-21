@@ -14,30 +14,27 @@ open Configs
 open KeyboardModelds
 open StateModels
 
-let private spacer = new string(' ', Console.WindowWidth) + "\r"
+let private spacer = new string(' ', Console.WindowWidth)
 
 let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
-    let appendPair (key, value) = builder.AppendFormat("{0,-2} : {1,-10:0.###}", key, value)
+    let appendPair (sb: StringBuilder, i) (key, value) =
+        if i % settings.columns = 0 then sb.AppendLine().Append("    ") |> ignore
+        sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value), i + 1
     let getValue value =
         let div x y =
             match y with
             | 0 -> 0.0
             | _ -> float x / float y
         100.0 * div value total
-
     pairs
-    |> Seq.map (fun pair -> {| Key = pair.Key; Value = getValue pair.Value |})
-    |> Seq.filter (fun pair -> pair.Value >= minValue)
-    |> Seq.sortByDescending (fun pair -> pair.Value)
-    |> Seq.fold (fun (sb: StringBuilder, i) pair ->
-        match i % settings.columns = 0 && i <> 0 with
-        | true -> sb.AppendLine(), 0
-        | _ -> appendPair(pair.Key, pair.Value), i + 1)
-        (builder, 0)
+    |> Seq.map (fun pair -> pair.Key, getValue pair.Value)
+    |> Seq.filter (fun (_, value) -> value >= minValue)
+    |> Seq.sortByDescending (fun (_, value) -> value)
+    |> Seq.fold appendPair (builder, 0)
     |> ignore
     builder
 
-let calculate path search (layout: string) (cts: CancellationTokenSource) =
+let calculate path search detailed (layout: string) (cts: CancellationTokenSource) =
     // todo: find better way to validate input parameters
     if not (Directory.Exists path) then
         cts.Cancel true
@@ -47,11 +44,8 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         Error "Layout file does not exist."
     else
 
-    let appendSpacer (builder: StringBuilder) =
-        builder.AppendFormat("\n{0}", spacer)
-
     let appendValue (title: string) value (builder: StringBuilder) =
-        let format = sprintf "{0}: {1,-%d:0.###}\n%s" (settings.columns * 15 - title.Length - 2) spacer
+        let format = sprintf "\n{0}: {1,-%d:0.###}" (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
         
     let yieldLines (token: CancellationToken) filePath = seq {
@@ -62,29 +56,11 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
 
     let formatMain state (builder: StringBuilder) =
         let percentFromTotal value = (100. * float value / float state.TotalChars)
-        let symbolsOnly =
-            state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
-            |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
-        let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
-
         builder
-        |> appendSpacer
-        |> appendValue "Letters" state.TotalLetters
-        |> appendLines letters state.TotalLetters 0.0
-        |> appendSpacer
-        |> appendSpacer
-        |> appendValue "Symbols from total" state.TotalChars
-        |> appendLines symbolsOnly state.TotalChars 0.0
-        |> appendSpacer
-        |> appendSpacer
-        |> appendValue "Left fingers" (state.LeftFinders.Values.Sum())
-        |> appendLines state.LeftFinders state.TotalChars 0.0
-        |> appendSpacer
-        |> appendSpacer
-        |> appendValue "Right fingers" (state.RightFinders.Values.Sum())
-        |> appendLines state.RightFinders state.TotalChars 0.0
-        |> appendSpacer
-        |> appendSpacer
+        |> appendValue "Left fingers" (state.LeftFingers.Values.Sum())
+        |> appendLines state.LeftFingers state.TotalChars 0.0
+        |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
+        |> appendLines state.RightFingers state.TotalChars 0.0
         |> appendValue "Same finger" (percentFromTotal state.SameFinger)
         |> appendValue "Shifts" (percentFromTotal state.Shifts)
         |> appendValue "Top keys" (percentFromTotal state.TopKeys)
@@ -99,19 +75,28 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         |> appendValue "Efforts" state.Efforts
 
     let formatState state =
-        Console.SetCursorPosition(0, Console.CursorTop)
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
-        StringBuilder()
-        |> appendValue "Digraphs" state.TotalDigraphs
-        |> appendLines digraphs state.TotalDigraphs settings.minDigraphs
+        let symbolsOnly =
+            state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
+            |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
+        let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
+        let builder = StringBuilder()
+        if detailed then
+            builder
+            |> appendValue "Digraphs" state.TotalDigraphs
+            |> appendLines digraphs state.TotalDigraphs settings.minDigraphs
+            |> appendValue "Letters" state.TotalLetters
+            |> appendLines letters state.TotalLetters 0.0
+            |> appendValue "Symbols from total" state.TotalChars
+            |> appendLines symbolsOnly state.TotalChars 0.0
+            |> ignore
+        builder
         |> formatMain state
-        |> appendSpacer
 
     let onStateChanged state =
         let initialPosition = (Console.CursorLeft, Console.CursorTop)
         StringBuilder()
         |> formatMain state
-        |> appendSpacer
         |> Console.Write
         Console.SetCursorPosition initialPosition
 
@@ -122,10 +107,10 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
         let newState = aggregator state next
         let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
         let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
-        if digraphsFinished || lettersFinished then
+        if digraphsFinished && lettersFinished then
             Console.SetCursorPosition(0, Console.CursorTop)
             Console.Write spacer
-            printfn "Collected enough data."
+            printfn "\rCollected enough data."
             subscription.Dispose()
             cts.Cancel true
         stateChangedStream.OnNext newState
@@ -134,11 +119,11 @@ let calculate path search (layout: string) (cts: CancellationTokenSource) =
     let start = DateTime.UtcNow
     let keyboard = Keyboard.load <| Layout.Load layout
 
-    Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
-    |> Seq.filter (fun _ -> not cts.IsCancellationRequested)
+    Directory.EnumerateFiles(path, search, SearchOption.AllDirectories).AsParallel()
+    |> PSeq.filter (fun _ -> not cts.IsCancellationRequested)
     |> PSeq.map (yieldLines cts.Token >> calculateLines keyboard)
     |> PSeq.fold folder initialState
     |> formatState
-    |> Console.Write
+    |> Console.WriteLine
 
-    Ok (sprintf "Time spent: %s" ((DateTime.UtcNow - start).ToString("c")))
+    Ok (sprintf "\nTime spent: %s" ((DateTime.UtcNow - start).ToString("c")))
