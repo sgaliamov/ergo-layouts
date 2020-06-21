@@ -107,7 +107,7 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
         let newState = aggregator state next
         let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
         let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
-        if digraphsFinished || lettersFinished then
+        if digraphsFinished && lettersFinished then
             Console.SetCursorPosition(0, Console.CursorTop)
             Console.Write spacer
             printfn "\rCollected enough data."
@@ -124,6 +124,6 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
     |> PSeq.map (yieldLines cts.Token >> calculateLines keyboard)
     |> PSeq.fold folder initialState
     |> formatState
-    |> Console.Write
+    |> Console.WriteLine
 
     Ok (sprintf "\nTime spent: %s" ((DateTime.UtcNow - start).ToString("c")))

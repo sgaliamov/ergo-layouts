@@ -42,21 +42,20 @@ Symbols from total: 12407391
 
 ## Qwerty
 ``` ini
-Left fingers: 5978872
-    Index : 17.889    Middle : 16.784    Ring : 7.174     Pinky : 6.341
-Right fingers: 6428519
-    Index : 14.667    Ring : 14.32     Thumb : 14.108    Middle : 8.026     Pinky : 0.69
-Same finger: 8.947
+Left fingers: 6009181
+    Index : 17.911    Middle : 16.907    Ring : 7.174     Pinky : 6.319     Thumb : 0.122
+Right fingers: 6398210
+    Index : 14.667    Ring : 14.198    Thumb : 14.108    Middle : 8.026     Pinky : 0.568
+Same finger: 8.948
 Shifts: 5.974
-Top keys: 43.533
-Home keys: 24.566
+Top keys: 43.555
+Home keys: 24.544
 Bottom keys: 31.901
-Inward rolls: 13.716
-Outward rolls: 14.297
-Left hand: 51.812
-Right hand: 48.188
-Left hand continuous: 20.983
-Right hand continuous: 24.57
-Efforts: 82549198.14
-Time spent: 00:01:05.8790333
+Inward rolls: 13.727
+Outward rolls: 14.292
+Left hand: 51.568
+Right hand: 48.432
+Left hand continuous: 21.057
+Right hand continuous: 24.367
+Efforts: 82476941.06
 ```

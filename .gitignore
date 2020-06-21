@@ -5,3 +5,4 @@ bin/
 launchSettings.json
 obj/
 .ionide/
+publish/
