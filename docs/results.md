@@ -55,8 +55,8 @@ Inward rolls: 13.727
 Outward rolls: 14.292
 Left hand: 51.568
 Right hand: 48.432
-Left hand continuous: 21.057
-Right hand continuous: 24.367
+Left hand continuous: 27.128
+Right hand continuous: 12.331
 Efforts: 82476941.06
 ```
 
@@ -76,7 +76,7 @@ Inward rolls: 12.766
 Outward rolls: 9.528
 Left hand: 59.321
 Right hand: 40.679
-Left hand continuous: 12.367
-Right hand continuous: 30.868
+Left hand continuous: 16.439
+Right hand continuous: 17.174
 Efforts: 55610301.56
 ```
