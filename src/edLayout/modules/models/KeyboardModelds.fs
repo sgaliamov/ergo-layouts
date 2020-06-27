@@ -37,12 +37,15 @@ module Keys =
 
     let rec create union =
         match union with
-        | StringKey(string) ->
+        | StringKey (string) ->
             match string with
-            | HeadTail (h, t) -> Hands.create h |> map (fun hand -> HandStringKey(hand, t) |> create) |> flatten
+            | HeadTail (h, t) ->
+                Hands.create h
+                |> map (fun hand -> HandStringKey(hand, t) |> create)
+                |> flatten
             | _ -> None
-        | HandStringKey(hand, number) -> Some <| Key(hand, Byte.Parse(number))
-        | Key(hand, number) -> Some <| Key(hand, number)
+        | HandStringKey (hand, number) -> Some <| Key(hand, Byte.Parse(number))
+        | Key (hand, number) -> Some <| Key(hand, number)
 
 type FingersKeyMap = ConcurrentDictionary<Keys.Key, Finger>
 
@@ -63,12 +66,11 @@ let getHand keyboard key =
     let left, _ = keyboard.LeftKeys.TryGetValue key
     if left then Hands.Hand.Left else Hands.Hand.Right
 
-let isSameHand keyboard a b  =
+let isSameHand keyboard a b =
     let aHand = getHand keyboard a
     let bHand = getHand keyboard b
     aHand = bHand
 
 let isSameFinger keyboard a b =
-    let aFinger = getFinger keyboard.FingersMap a
-    let bFinger = getFinger keyboard.FingersMap b
-    aFinger = bFinger && isSameHand keyboard a b
+    isSameHand keyboard a b
+    && getFinger keyboard.FingersMap a = getFinger keyboard.FingersMap b

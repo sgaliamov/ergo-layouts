@@ -13,7 +13,8 @@ open Utilities
 type private Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 let private characters = [' '..'~'] |> HashSet<char>
 let private lettersOnly = ['a'..'z'] |> HashSet<char>
-let private endToken = Keys.StringKey "END"
+let private END_TOKEN = Keys.StringKey "END"
+let private START_TOKEN = Keys.StringKey "START"
 
 let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
@@ -78,11 +79,11 @@ let private countFingers (fingers: FingersKeyMap) keys (hand: HashSet<Keys.Key>)
     |> Map.ofSeq
     |> FingersCounter
 
-let private getFactor keyboard key next =
-    if next = endToken then 1.0
-    else if not (isSameHand keyboard key next) then settings.handSwitchPenalty
-    else if key = next then 0.2
-    else if isSameFinger keyboard key next then settings.sameFingerPenalty
+let private getFactor keyboard prev key =
+    if prev = START_TOKEN then 1.0
+    else if key = prev then 0.2
+    else if isSameFinger keyboard key prev then settings.sameFingerPenalty
+    else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
     else 1.0
 
 let private toKeys keyboard line =
@@ -114,9 +115,9 @@ let collect (keyboard: Keyboard) line =
     let chars = calculate lowerLine countChars
     let digraphs = calculate lowerLine countDigraphs
     let efforts =
-        keysInLine @ [endToken]
+        START_TOKEN::keysInLine
         |> Seq.pairwise
-        |> Seq.map (fun (key, next) -> key, (getFactor keyboard key next))
+        |> Seq.map (fun (prev, key) -> key, (getFactor keyboard prev key))
         |> Seq.sumBy (fun (key, factor) ->
             match keyboard.Efforts.TryGetValue key with
             | (true, effort) -> effort * factor
