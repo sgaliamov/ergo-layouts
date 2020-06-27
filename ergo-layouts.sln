@@ -29,12 +29,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1
 		layouts\breakl15.json = layouts\breakl15.json
 		layouts\collemak.json = layouts\collemak.json
 		layouts\dvorak.json = layouts\dvorak.json
+		layouts\gelatin.json = layouts\gelatin.json
 		layouts\kaehi.json = layouts\kaehi.json
 		layouts\mtgap1.json = layouts\mtgap1.json
 		layouts\mtgap2.json = layouts\mtgap2.json
 		layouts\niro.json = layouts\niro.json
+		layouts\norman.json = layouts\norman.json
+		layouts\qfmlwy.json = layouts\qfmlwy.json
+		layouts\qgmlwb.json = layouts\qgmlwb.json
+		layouts\qgmlwy.json = layouts\qgmlwy.json
 		layouts\qwerty.json = layouts\qwerty.json
 		layouts\soul.json = layouts\soul.json
+		layouts\tnwmlc.json = layouts\tnwmlc.json
 		layouts\workman.json = layouts\workman.json
 	EndProjectSection
 EndProject
