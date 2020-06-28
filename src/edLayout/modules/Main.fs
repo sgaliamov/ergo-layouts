@@ -19,7 +19,7 @@ let private spacer = new string(' ', Console.WindowWidth)
 let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
     let appendPair (sb: StringBuilder, i) (key, value) =
         if i % settings.columns = 0 then sb.AppendLine().Append("    ") |> ignore
-        sb.AppendFormat("{0,-2} : {1,-10:0,0.000}", key, value), i + 1
+        sb.AppendFormat("{0,-2} : {1,-10:0.##}", key, value), i + 1
     let getValue value =
         let div x y =
             match y with
@@ -79,9 +79,7 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
 
     let formatState state =
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
-        let symbolsOnly =
-            state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
-            |> Seq.filter (fun x -> Char.IsPunctuation(x.Key) || x.Key = ' ')
+        let characters = state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
         let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
         let builder = StringBuilder()
         if detailed then
@@ -90,8 +88,8 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
             |> appendLines digraphs state.TotalDigraphs settings.minDigraphs
             |> appendValue "Letters" state.TotalLetters
             |> appendLines letters state.TotalLetters 0.0
-            |> appendValue "Symbols from total" state.TotalChars
-            |> appendLines symbolsOnly state.TotalChars 0.0
+            |> appendValue "Characters" state.TotalChars
+            |> appendLines characters state.TotalChars 0.0
             |> appendValue "Shifts" (percentFromTotal state.TotalChars state.Shifts)
             |> ignore
         builder
