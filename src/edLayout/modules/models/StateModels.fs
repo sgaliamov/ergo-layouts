@@ -17,7 +17,7 @@ module Character =
 module Digraph =
     type Digraph = Digraph of string
     type Digraphs = ConcurrentDictionary<Digraph, int>
-    let create string = Digraph string
+    let create string = Digraph (string |> Seq.sort |> Array.ofSeq |> String)
     let value (Digraph digraph) = digraph
 
 module Letter =
