@@ -3,7 +3,6 @@
 open System
 open System.Collections.Concurrent
 open System.Collections.Generic
-open FSharp.Collections.ParallelSeq
 open Configs
 open KeyboardModelds
 open StateModels
@@ -201,5 +200,5 @@ let calculateLines keyboard lines =
         line
         |> Seq.filter characters.Contains
     lines
-    |> PSeq.map (filtered >> collect keyboard)
-    |> PSeq.fold aggregator initialState
+    |> Seq.map (filtered >> collect keyboard)
+    |> Seq.fold aggregator initialState

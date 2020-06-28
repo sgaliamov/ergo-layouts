@@ -120,8 +120,8 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
     let start = DateTime.UtcNow
     let keyboard = Keyboard.load <| Layout.Load layout
 
-    Directory.EnumerateFiles(path, search, SearchOption.AllDirectories).AsParallel()
-    |> PSeq.filter (fun _ -> not cts.IsCancellationRequested)
+    Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
+    |> Seq.takeWhile (fun _ -> not cts.IsCancellationRequested)
     |> PSeq.map (yieldLines cts.Token >> calculateLines keyboard)
     |> PSeq.fold folder initialState
     |> formatState
