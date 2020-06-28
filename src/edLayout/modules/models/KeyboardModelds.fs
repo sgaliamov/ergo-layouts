@@ -53,6 +53,7 @@ type Keyboard =
     { Keys: Map<Character.Char, Keys.Key>
       Shifted: HashSet<char>
       Efforts: Map<Keys.Key, float>
+      Coordinates: Map<Keys.Key, float * float>
       TopKeys: HashSet<Keys.Key>
       HomeKeys: HashSet<Keys.Key>
       BottomKeys: HashSet<Keys.Key>

@@ -1,5 +1,6 @@
 ﻿module Keyboard
 
+open System
 open FSharp.Data
 open FSharp.Data.JsonExtensions
 open StateModels
@@ -10,8 +11,10 @@ open KeyboardModelds.Hands
 open System.Collections.Concurrent
 
 type KeyboardInfo = JsonProvider<"./keyboard.json">
-type Efforts = JsonProvider<"./efforts.json">
+type private Efforts = JsonProvider<"./efforts.json">
+type private Coordinates = JsonProvider<"./coordinates.json">
 
+let private coordinates = Coordinates.GetSample()
 let private keyboard = KeyboardInfo.GetSample()
 
 let load (layout: Layout.Root) =
@@ -55,6 +58,17 @@ let load (layout: Layout.Root) =
         |> filterValuebleKeys
         |> Map.ofSeq
 
+    let createCoordinate (string: string) =
+        match string.Split(',', StringSplitOptions.RemoveEmptyEntries) with
+        | [| y; x |] -> Double.Parse x, Double.Parse y
+        | _ -> failwithf "Failed to parse coordinate %s" string
+
+    let coordinates =
+        coordinates.JsonValue.Properties
+        |> toPairs (Keys.StringKey >> Keys.create) (JsonExtensions.AsString >> createCoordinate)
+        |> filterValuebleKeys
+        |> Map.ofSeq
+
     let toSet numbers =
         numbers
         |> Seq.map (fun number -> [ Keys.Key(Hand.Left, byte number); Keys.Key(Hand.Right, byte number) ])
@@ -82,6 +96,7 @@ let load (layout: Layout.Root) =
     { Keys = Map(keys |> Map.toSeq |> Seq.append shifted)
       Shifted = shifted |> Seq.map (fun (char, _) -> Character.value char) |> HashSet<char>
       Efforts = efforts
+      Coordinates = coordinates
       TopKeys = keyboard.Top |> toSet |> HashSet<Keys.Key>
       HomeKeys = keyboard.Home |> toSet |> HashSet<Keys.Key>
       BottomKeys = keyboard.Bottom |> toSet |> HashSet<Keys.Key>
