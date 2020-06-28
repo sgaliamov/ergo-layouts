@@ -54,15 +54,16 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
             // todo: use async
             yield stream.ReadLine() }
 
+    let percentFromTotal total value = (100. * float value / float total)
+
     let formatMain state (builder: StringBuilder) =
-        let percentFromTotal value = (100. * float value / float state.TotalChars)
+        let percentFromTotal = percentFromTotal state.TotalChars
         builder
         |> appendValue "Left fingers" (state.LeftFingers.Values.Sum())
         |> appendLines state.LeftFingers state.TotalChars 0.0
         |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
         |> appendLines state.RightFingers state.TotalChars 0.0
         |> appendValue "Same finger" (percentFromTotal state.SameFinger)
-        |> appendValue "Shifts" (percentFromTotal state.Shifts)
         |> appendValue "Top keys" (percentFromTotal state.TopKeys)
         |> appendValue "Home keys" (percentFromTotal state.HomeKeys)
         |> appendValue "Bottom keys" (percentFromTotal state.BottomKeys)
@@ -89,6 +90,7 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
             |> appendLines letters state.TotalLetters 0.0
             |> appendValue "Symbols from total" state.TotalChars
             |> appendLines symbolsOnly state.TotalChars 0.0
+            |> appendValue "Shifts" (percentFromTotal state.TotalChars state.Shifts)
             |> ignore
         builder
         |> formatMain state
