@@ -19,7 +19,7 @@ let private spacer = new string(' ', Console.WindowWidth)
 let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
     let appendPair (sb: StringBuilder, i) (key, value) =
         if i % settings.columns = 0 then sb.AppendLine().Append("    ") |> ignore
-        sb.AppendFormat("{0,-2} : {1,-10:0.##}", key, value), i + 1
+        sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value), i + 1
     let getValue value =
         let div x y =
             match y with

@@ -34,6 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1
 		layouts\mtgap v1.json = layouts\mtgap v1.json
 		layouts\mtgap v2.json = layouts\mtgap v2.json
 		layouts\my v1.json = layouts\my v1.json
+		layouts\my v2.json = layouts\my v2.json
 		layouts\niro.json = layouts\niro.json
 		layouts\norman.json = layouts\norman.json
 		layouts\qfmlwy.json = layouts\qfmlwy.json
