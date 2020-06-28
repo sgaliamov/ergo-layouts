@@ -19,7 +19,7 @@ let private spacer = new string(' ', Console.WindowWidth)
 let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
     let appendPair (sb: StringBuilder, i) (key, value) =
         if i % settings.columns = 0 then sb.AppendLine().Append("    ") |> ignore
-        sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value), i + 1
+        sb.AppendFormat("{0,-2} : {1,-10:0.###0}", key, value), i + 1
     let getValue value =
         let div x y =
             match y with
@@ -45,7 +45,7 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
     else
 
     let appendValue (title: string) value (builder: StringBuilder) =
-        let format = sprintf "\n{0}: {1,-%d:0.###}" (settings.columns * 15 - title.Length - 2)
+        let format = sprintf "\n{0}: {1,-%d:0.###0}" (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
         
     let yieldLines (token: CancellationToken) filePath = seq {
@@ -131,4 +131,4 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
     |> formatState
     |> Console.WriteLine
 
-    Ok (sprintf "\nTime spent: %s" ((DateTime.UtcNow - start).ToString("c")))
+    Ok (sprintf "Time spent: %s" ((DateTime.UtcNow - start).ToString("c")))
