@@ -5,352 +5,365 @@
 
 ``` ini
 Left fingers: 5,024,467
-    Middle : 0,017.5   Index : 0,012.32  Ring : 0,009.02  Pinky : 0,001.49  Thumb : 0,000.17
+    Middle : 17.497    Index : 12.316    Ring : 09.016    Pinky : 01.493    Thumb : 00.174
 Right fingers: 7,382,924
-    Middle : 0,016.97  Index : 0,016.62  Thumb : 0,014.11  Ring : 0,009.51  Pinky : 0,002.29
-Same finger: 0,005.78
-Top keys: 0,024.85
-Home keys: 0,049.9
-Bottom keys: 0,025.25
-Inward rolls: 0,012.47
-Outward rolls: 0,011.49
-Left hand: 0,059.5
-Right hand: 0,040.5
-Left hand continuous: 0,008.45
-Right hand continuous: 0,016.18
-Efforts: 63,021,594.32
+    Middle : 16.970    Index : 16.623    Thumb : 14.108    Ring : 09.513    Pinky : 02.290
+Same finger: 05.78
+Top keys: 24.85
+Home keys: 49.90
+Bottom keys: 25.25
+Inward rolls: 12.47
+Outward rolls: 11.49
+Left hand: 59.50
+Right hand: 40.50
+Left hand continuous: 08.45
+Right hand continuous: 16.18
+Efforts: 20,639,137.47
 Distance: 19,826,891.16
-Result: 84,866,278.14
+Result: 27,722,023.26
 ```
+
 
 ## Collemak
 
 ``` ini
 Left fingers: 5,050,043
-    Index : 0,016.38  Middle : 0,011.21  Ring : 0,006.62  Pinky : 0,006.32  Thumb : 0,000.17
+    Index : 16.380    Middle : 11.208    Ring : 06.621    Pinky : 06.319    Thumb : 00.174
 Right fingers: 7,357,348
-    Index : 0,014.92  Thumb : 0,014.11  Middle : 0,014.03  Ring : 0,010.23  Pinky : 0,006
-Same finger: 0,004.86
-Top keys: 0,015.73
-Home keys: 0,057.65
-Bottom keys: 0,026.62
-Inward rolls: 0,012.81
-Outward rolls: 0,009.56
-Left hand: 0,059.3
-Right hand: 0,040.7
-Left hand continuous: 0,016.44
-Right hand continuous: 0,017.17
-Efforts: 66,392,714.62
+    Index : 14.921    Thumb : 14.108    Middle : 14.032    Ring : 10.232    Pinky : 065
+Same finger: 04.86
+Top keys: 15.73
+Home keys: 57.65
+Bottom keys: 26.62
+Inward rolls: 12.81
+Outward rolls: 09.56
+Left hand: 59.30
+Right hand: 40.70
+Left hand continuous: 16.44
+Right hand continuous: 17.17
+Efforts: 20,534,491.29
 Distance: 20,670,094.78
-Result: 88,358,159.37
+Result: 27,146,139.10
 ```
+
 
 ## Dvorak
 
 ``` ini
 Left fingers: 4,964,766
-    Middle : 0,013.56  Index : 0,012.68  Ring : 0,007.08  Pinky : 0,006.57  Thumb : 0,000.12
+    Middle : 13.556    Index : 12.681    Ring : 07.084    Pinky : 06.571    Thumb : 00.122
 Right fingers: 7,442,625
-    Ring : 0,014.95  Thumb : 0,014.11  Middle : 0,013.21  Index : 0,011.89  Pinky : 0,005.82
-Same finger: 0,005.82
-Top keys: 0,023.85
-Home keys: 0,055.13
-Bottom keys: 0,021.01
-Inward rolls: 0,011.86
-Outward rolls: 0,011.15
-Left hand: 0,059.99
-Right hand: 0,040.01
-Left hand continuous: 0,008.21
-Right hand continuous: 0,017.23
-Efforts: 78,131,280.4
+    Ring : 14.953    Thumb : 14.108    Middle : 13.213    Index : 11.893    Pinky : 05.818
+Same finger: 05.82
+Top keys: 23.85
+Home keys: 55.13
+Bottom keys: 21.01
+Inward rolls: 11.86
+Outward rolls: 11.15
+Left hand: 59.99
+Right hand: 40.01
+Left hand continuous: 08.21
+Right hand continuous: 17.23
+Efforts: 24,324,243.23
 Distance: 21,101,450.01
-Result: 104,726,747.16
+Result: 32,694,650.22
 ```
+
 
 ## Gelatin
 
 ``` ini
 Left fingers: 4,971,722
-    Index : 0,016.38  Middle : 0,011.21  Ring : 0,006.62  Pinky : 0,005.69  Thumb : 0,000.17
+    Index : 16.380    Middle : 11.208    Ring : 06.621    Pinky : 05.688    Thumb : 00.174
 Right fingers: 7,435,669
-    Index : 0,015.55  Thumb : 0,014.11  Middle : 0,014.03  Ring : 0,010.23  Pinky : 0,006
-Same finger: 0,006.66
-Top keys: 0,015.73
-Home keys: 0,057.65
-Bottom keys: 0,026.62
-Inward rolls: 0,011.77
-Outward rolls: 0,011.33
-Left hand: 0,059.93
-Right hand: 0,040.07
-Left hand continuous: 0,013.2
-Right hand continuous: 0,015.21
-Efforts: 67,508,647.86
+    Index : 15.552    Thumb : 14.108    Middle : 14.032    Ring : 10.232    Pinky : 065
+Same finger: 06.66
+Top keys: 15.73
+Home keys: 57.65
+Bottom keys: 26.62
+Inward rolls: 11.77
+Outward rolls: 11.33
+Left hand: 59.93
+Right hand: 40.07
+Left hand continuous: 13.20
+Right hand continuous: 15.21
+Efforts: 20,743,719.28
 Distance: 20,046,089.26
-Result: 88,286,789.76
+Result: 27,238,308.38
 ```
 
-## KAEHI
+
+## Kaehi
 
 ``` ini
 Left fingers: 5,198,632
-    Index : 0,016.29  Middle : 0,013.12  Ring : 0,006.62  Pinky : 0,005.69  Thumb : 0,000.17
+    Index : 16.292    Middle : 13.125    Ring : 06.621    Pinky : 05.688    Thumb : 00.174
 Right fingers: 7,208,759
-    Middle : 0,017.52  Thumb : 0,014.11  Index : 0,012.36  Ring : 0,007.94  Pinky : 0,006.17
-Same finger: 0,005.15
-Top keys: 0,021.26
-Home keys: 0,051.82
-Bottom keys: 0,026.92
-Inward rolls: 0,009.01
-Outward rolls: 0,011.16
-Left hand: 0,058.1
-Right hand: 0,041.9
-Left hand continuous: 0,013.63
-Right hand continuous: 0,011.96
-Efforts: 69,122,581.92
+    Middle : 17.523    Thumb : 14.108    Index : 12.361    Ring : 07.940    Pinky : 06.169
+Same finger: 05.15
+Top keys: 21.26
+Home keys: 51.82
+Bottom keys: 26.92
+Inward rolls: 09.01
+Outward rolls: 11.16
+Left hand: 58.10
+Right hand: 41.90
+Left hand continuous: 13.63
+Right hand continuous: 11.96
+Efforts: 21,203,984.64
 Distance: 19,579,550.54
-Result: 91,093,558.44
+Result: 28,051,998.27
 ```
 
-## MTGAP v1
+
+## Mtgap V1
 
 ``` ini
 Left fingers: 5,587,934
-    Middle : 0,016.87  Index : 0,012.77  Ring : 0,009.21  Pinky : 0,006.01  Thumb : 0,000.17
+    Middle : 16.872    Index : 12.765    Ring : 09.213    Pinky : 06.013    Thumb : 00.174
 Right fingers: 6,819,457
-    Thumb : 0,014.11  Middle : 0,013.47  Index : 0,011.16  Ring : 0,010.89  Pinky : 0,005.33
-Same finger: 0,004.74
-Top keys: 0,024.65
-Home keys: 0,052.4
-Bottom keys: 0,022.95
-Inward rolls: 0,011.43
-Outward rolls: 0,010.48
-Left hand: 0,054.96
-Right hand: 0,045.04
-Left hand continuous: 0,014.25
-Right hand continuous: 0,013.68
-Efforts: 70,217,301.2
+    Thumb : 14.108    Middle : 13.473    Index : 11.159    Ring : 10.891    Pinky : 05.332
+Same finger: 04.74
+Top keys: 24.65
+Home keys: 52.40
+Bottom keys: 22.95
+Inward rolls: 11.43
+Outward rolls: 10.48
+Left hand: 54.96
+Right hand: 45.04
+Left hand continuous: 14.25
+Right hand continuous: 13.68
+Efforts: 21,624,015.41
 Distance: 19,953,253.19
-Result: 92,342,053.36
+Result: 28,766,978.19
 ```
 
-## MTGAP v2
+
+## Mtgap V2
 
 ``` ini
 Left fingers: 5,004,456
-    Index : 0,014.97  Middle : 0,010.26  Ring : 0,009     Pinky : 0,005.99  Thumb : 0,000.12
+    Index : 14.971    Middle : 10.258    Ring : 08.998    Pinky : 05.985    Thumb : 00.122
 Right fingers: 7,402,935
-    Thumb : 0,014.11  Index : 0,013.98  Middle : 0,013.22  Ring : 0,011.98  Pinky : 0,006.38
-Same finger: 0,005.01
-Top keys: 0,022.41
-Home keys: 0,055.85
-Bottom keys: 0,021.74
-Inward rolls: 0,014.22
-Outward rolls: 0,014.56
-Left hand: 0,059.67
-Right hand: 0,040.33
-Left hand continuous: 0,018.31
-Right hand continuous: 0,020.71
-Efforts: 61,493,510.24
+    Thumb : 14.108    Index : 13.978    Middle : 13.217    Ring : 11.981    Pinky : 06.382
+Same finger: 05.01
+Top keys: 22.41
+Home keys: 55.85
+Bottom keys: 21.74
+Inward rolls: 14.22
+Outward rolls: 14.56
+Left hand: 59.67
+Right hand: 40.33
+Left hand continuous: 18.31
+Right hand continuous: 20.71
+Efforts: 18,927,229.89
 Distance: 21,237,339.98
-Result: 90,472,118.77
+Result: 27,847,199.75
 ```
+
 
 ## Niro
 
 ``` ini
 Left fingers: 5,783,635
-    Middle : 0,016.57  Index : 0,016.38  Ring : 0,007.17  Pinky : 0,006.32  Thumb : 0,000.17
+    Middle : 16.568    Index : 16.380    Ring : 07.174    Pinky : 06.319    Thumb : 00.174
 Right fingers: 6,623,756
-    Thumb : 0,014.11  Index : 0,013     Ring : 0,011.46  Middle : 0,008.81  Pinky : 0,006
-Same finger: 0,005.92
-Top keys: 0,017.09
-Home keys: 0,056.29
-Bottom keys: 0,026.62
-Inward rolls: 0,012.49
-Outward rolls: 0,011.24
-Left hand: 0,053.39
-Right hand: 0,046.61
-Left hand continuous: 0,024.5
-Right hand continuous: 0,013.56
-Efforts: 64,336,488.94
+    Thumb : 14.108    Index : 134    Ring : 11.463    Middle : 08.806    Pinky : 065
+Same finger: 05.92
+Top keys: 17.09
+Home keys: 56.29
+Bottom keys: 26.62
+Inward rolls: 12.49
+Outward rolls: 11.24
+Left hand: 53.39
+Right hand: 46.61
+Left hand continuous: 24.50
+Right hand continuous: 13.56
+Efforts: 19,908,971.43
 Distance: 20,230,518.75
-Result: 87,868,316.14
+Result: 26,941,336.80
 ```
+
 
 ## Norman
 
 ``` ini
 Left fingers: 5,471,297
-    Middle : 0,017.02  Index : 0,013.41  Ring : 0,007.17  Pinky : 0,006.32  Thumb : 0,000.17
+    Middle : 17.015    Index : 13.415    Ring : 07.174    Pinky : 06.319    Thumb : 00.174
 Right fingers: 6,936,094
-    Thumb : 0,014.11  Index : 0,014.06  Middle : 0,012.41  Ring : 0,012.3   Pinky : 0,003.02
-Same finger: 0,008.47
-Top keys: 0,018.96
-Home keys: 0,052.68
-Bottom keys: 0,028.36
-Inward rolls: 0,011.98
-Outward rolls: 0,011.79
-Left hand: 0,055.9
-Right hand: 0,044.1
-Left hand continuous: 0,021.66
-Right hand continuous: 0,015.7
-Efforts: 63,006,826.98
-Distance: 19,395,332.3
-Result: 82,935,207.91
+    Thumb : 14.108    Index : 14.061    Middle : 12.413    Ring : 12.299    Pinky : 03.022
+Same finger: 08.47
+Top keys: 18.96
+Home keys: 52.68
+Bottom keys: 28.36
+Inward rolls: 11.98
+Outward rolls: 11.79
+Left hand: 55.90
+Right hand: 44.10
+Left hand continuous: 21.66
+Right hand continuous: 15.70
+Efforts: 19,606,366.42
+Distance: 19,395,332.30
+Result: 25,930,094.81
 ```
 
-## QFMLWY
+## Qfmlwy
 
 ``` ini
 Left fingers: 5,241,293
-    Index : 0,019.08  Middle : 0,012.17  Ring : 0,007.99  Pinky : 0,002.83  Thumb : 0,000.17
+    Index : 19.077    Middle : 12.172    Ring : 07.992    Pinky : 02.828    Thumb : 00.174
 Right fingers: 7,166,098
-    Index : 0,018.69  Middle : 0,017.52  Thumb : 0,014.11  Ring : 0,006.87  Pinky : 0,000.57
-Same finger: 0,006.87
-Top keys: 0,020.88
-Home keys: 0,052.21
-Bottom keys: 0,026.91
-Inward rolls: 0,009.85
-Outward rolls: 0,010.08
-Left hand: 0,057.76
-Right hand: 0,042.24
-Left hand continuous: 0,013.84
-Right hand continuous: 0,011.52
-Efforts: 70,345,275.16
+    Index : 18.688    Middle : 17.523    Thumb : 14.108    Ring : 06.869    Pinky : 00.568
+Same finger: 06.87
+Top keys: 20.88
+Home keys: 52.21
+Bottom keys: 26.91
+Inward rolls: 09.85
+Outward rolls: 10.08
+Left hand: 57.76
+Right hand: 42.24
+Left hand continuous: 13.84
+Right hand continuous: 11.52
+Efforts: 23,007,242.83
 Distance: 18,853,846.87
-Result: 89,982,358.52
+Result: 29,397,548.79
 ```
 
-## QGMLWB
+
+## Qgmlwb
 
 ``` ini
 Left fingers: 5,164,317
-    Index : 0,016.98  Middle : 0,014.19  Ring : 0,007.45  Pinky : 0,002.83  Thumb : 0,000.17
+    Index : 16.983    Middle : 14.189    Ring : 07.449    Pinky : 02.828    Thumb : 00.174
 Right fingers: 7,243,074
-    Index : 0,017.57  Thumb : 0,014.11  Middle : 0,014.03  Ring : 0,009.64  Pinky : 0,003.02
-Same finger: 0,007.21
-Top keys: 0,015.92
-Home keys: 0,057.65
-Bottom keys: 0,026.43
-Inward rolls: 0,009.91
-Outward rolls: 0,010.88
-Left hand: 0,058.38
-Right hand: 0,041.62
-Left hand continuous: 0,013.59
-Right hand continuous: 0,012.5
-Efforts: 67,454,002.2
+    Index : 17.570    Thumb : 14.108    Middle : 14.032    Ring : 09.645    Pinky : 03.022
+Same finger: 07.21
+Top keys: 15.92
+Home keys: 57.65
+Bottom keys: 26.43
+Inward rolls: 09.91
+Outward rolls: 10.88
+Left hand: 58.38
+Right hand: 41.62
+Left hand continuous: 13.59
+Right hand continuous: 12.50
+Efforts: 21,592,424.98
 Distance: 19,297,528.53
-Result: 86,578,542.31
+Result: 27,772,921.63
 ```
 
-## QGMLWY
+## Qgmlwy
 
 ``` ini
 Left fingers: 5,072,780
-    Index : 0,016.25  Middle : 0,014.19  Ring : 0,007.45  Pinky : 0,002.83  Thumb : 0,000.17
+    Index : 16.245    Middle : 14.189    Ring : 07.449    Pinky : 02.828    Thumb : 00.174
 Right fingers: 7,334,611
-    Index : 0,017.91  Thumb : 0,014.11  Middle : 0,014.03  Ring : 0,010.04  Pinky : 0,003.02
-Same finger: 0,007.22
-Top keys: 0,016.66
-Home keys: 0,057.65
-Bottom keys: 0,025.69
-Inward rolls: 0,010.26
-Outward rolls: 0,011.28
-Left hand: 0,059.11
-Right hand: 0,040.89
-Left hand continuous: 0,012.9
-Right hand continuous: 0,013.21
-Efforts: 67,577,455.8
+    Index : 17.914    Thumb : 14.108    Middle : 14.032    Ring : 10.039    Pinky : 03.022
+Same finger: 07.22
+Top keys: 16.66
+Home keys: 57.65
+Bottom keys: 25.69
+Inward rolls: 10.26
+Outward rolls: 11.28
+Left hand: 59.11
+Right hand: 40.89
+Left hand continuous: 12.90
+Right hand continuous: 13.21
+Efforts: 21,633,546.48
 Distance: 19,651,448.32
-Result: 87,836,971.45
+Result: 28,192,285.28
 ```
 
-## QWERTY
+
+## Qwerty
 
 ``` ini
 Left fingers: 6,029,143
-    Index : 0,017.91  Middle : 0,017.02  Ring : 0,007.17  Pinky : 0,006.32  Thumb : 0,000.17
+    Index : 17.911    Middle : 17.015    Ring : 07.174    Pinky : 06.319    Thumb : 00.174
 Right fingers: 6,378,248
-    Index : 0,014.67  Ring : 0,014.15  Thumb : 0,014.11  Middle : 0,007.92  Pinky : 0,000.57
-Same finger: 0,009.03
-Top keys: 0,043.41
-Home keys: 0,024.82
-Bottom keys: 0,031.76
-Inward rolls: 0,013.77
-Outward rolls: 0,014.3
-Left hand: 0,051.41
-Right hand: 0,048.59
-Left hand continuous: 0,027.13
-Right hand continuous: 0,012.33
-Efforts: 90,643,274.2
+    Index : 14.667    Ring : 14.146    Thumb : 14.108    Middle : 07.917    Pinky : 00.568
+Same finger: 09.03
+Top keys: 43.41
+Home keys: 24.82
+Bottom keys: 31.76
+Inward rolls: 13.77
+Outward rolls: 14.30
+Left hand: 51.41
+Right hand: 48.59
+Left hand continuous: 27.13
+Right hand continuous: 12.33
+Efforts: 29,325,379.29
 Distance: 21,071,928.53
-Result: 130,204,950.77
+Result: 42,105,942.07
 ```
+
 
 ## Soul
 
 ``` ini
 Left fingers: 5,161,982
-    Index : 0,015.37  Middle : 0,012.57  Ring : 0,007.17  Pinky : 0,006.32  Thumb : 0,000.17
+    Index : 15.365    Middle : 12.572    Ring : 07.174    Pinky : 06.319    Thumb : 00.174
 Right fingers: 7,245,409
-    Thumb : 0,014.11  Middle : 0,014.03  Index : 0,014.02  Ring : 0,010.23  Pinky : 0,006
-Same finger: 0,005.21
-Top keys: 0,017.97
-Home keys: 0,055.01
-Bottom keys: 0,027.02
-Inward rolls: 0,011.81
-Outward rolls: 0,012.15
-Left hand: 0,058.4
-Right hand: 0,041.6
-Left hand continuous: 0,017.61
-Right hand continuous: 0,016.51
-Efforts: 62,843,938.36
+    Thumb : 14.108    Middle : 14.032    Index : 14.018    Ring : 10.232    Pinky : 065
+Same finger: 05.21
+Top keys: 17.97
+Home keys: 55.01
+Bottom keys: 27.02
+Inward rolls: 11.81
+Outward rolls: 12.15
+Left hand: 58.40
+Right hand: 41.60
+Left hand continuous: 17.61
+Right hand continuous: 16.51
+Efforts: 19,362,564.77
 Distance: 21,059,347.89
-Result: 87,955,816.64
+Result: 26,986,067.97
 ```
 
-## TNWMLC
+
+## Tnwmlc
 
 ``` ini
 Left fingers: 7,554,343
-    Ring : 0,021.09  Index : 0,019.03  Pinky : 0,015.58  Middle : 0,005.01  Thumb : 0,000.17
+    Ring : 21.089    Index : 19.031    Pinky : 15.578    Middle : 05.013    Thumb : 00.174
 Right fingers: 4,853,048
-    Thumb : 0,014.11  Ring : 0,011.26  Index : 0,009.23  Middle : 0,003.94  Pinky : 0,000.57
-Same finger: 0,015.32
-Top keys: 0,036.4
-Home keys: 0,021.07
-Bottom keys: 0,042.53
-Inward rolls: 0,016.3
-Outward rolls: 0,018.53
-Left hand: 0,039.11
-Right hand: 0,060.89
-Left hand continuous: 0,043.23
-Right hand continuous: 0,004.04
-Efforts: 96,384,239.22
+    Thumb : 14.108    Ring : 11.262    Index : 09.233    Middle : 03.943    Pinky : 00.568
+Same finger: 15.32
+Top keys: 36.40
+Home keys: 21.07
+Bottom keys: 42.53
+Inward rolls: 16.30
+Outward rolls: 18.53
+Left hand: 39.11
+Right hand: 60.89
+Left hand continuous: 43.23
+Right hand continuous: 04.04
+Efforts: 31,477,579.66
 Distance: 22,149,809.34
-Result: 143,316,664.5
+Result: 46,890,688.87
 ```
+
 
 ## Workman
 
 ``` ini
 Left fingers: 5,198,273
-    Index : 0,015.95  Middle : 0,010.65  Ring : 0,008.81  Pinky : 0,006.32  Thumb : 0,000.17
+    Index : 15.949    Middle : 10.646    Ring : 08.809    Pinky : 06.319    Thumb : 00.174
 Right fingers: 7,209,118
-    Thumb : 0,014.11  Middle : 0,014.03  Index : 0,012.87  Ring : 0,011.06  Pinky : 0,006.03
-Same finger: 0,006.02
-Top keys: 0,018.44
-Home keys: 0,052.68
-Bottom keys: 0,028.88
-Inward rolls: 0,012.83
-Outward rolls: 0,012.53
-Left hand: 0,058.1
-Right hand: 0,041.9
-Left hand continuous: 0,018.47
-Right hand continuous: 0,016.73
-Efforts: 64,553,896.88
-Distance: 20,861,397.9
-Result: 89,485,860.05
+    Thumb : 14.108    Middle : 14.032    Index : 12.872    Ring : 11.059    Pinky : 06.033
+Same finger: 06.02
+Top keys: 18.44
+Home keys: 52.68
+Bottom keys: 28.88
+Inward rolls: 12.83
+Outward rolls: 12.53
+Left hand: 58.10
+Right hand: 41.90
+Left hand continuous: 18.47
+Right hand continuous: 16.73
+Efforts: 19,877,583.69
+Distance: 20,861,397.90
+Result: 27,317,291
 ```
 
 ## Statistic of sample texts
@@ -366,17 +379,7 @@ Digraphs: 9,634,736
     am : 00.774    os : 00.762    su : 00.755    ev : 00.741    ad : 00.726    lo : 00.713
     ns : 00.709    mo : 00.706    ah : 00.681    ap : 00.677    di : 00.667    do : 00.657
     ou : 00.645    ei : 00.603    ss : 00.592    ru : 00.585    fi : 00.558    ll : 00.523
-    pr : 00.521    ch : 00.521    tu : 00.519    eg : 00.514    op : 00.495    be : 00.491
-    lp : 00.482    ty : 00.481    ew : 00.475    ef : 00.474    cn : 00.468    im : 00.445
-    ow : 00.438    lu : 00.433    tt : 00.429    rs : 00.413    hi : 00.406    ab : 00.398
-    cu : 00.398    ex : 00.396    ai : 00.384    ag : 00.384    nu : 00.381    ho : 00.379
-    mp : 00.373    iv : 00.365    cr : 00.361    oy : 00.355    bl : 00.345    sy : 00.340
-    ft : 00.337    eu : 00.324    bo : 00.323    iw : 00.323    eo : 00.322    gi : 00.317
-    dt : 00.316    av : 00.314    ly : 00.311    pt : 00.304    ee : 00.302    cs : 00.301
-    lt : 00.287    ds : 00.282    ps : 00.271    bu : 00.265    dl : 00.260    cl : 00.259
-    ay : 00.253    mu : 00.246    pp : 00.235    fr : 00.235    ls : 00.231    aw : 00.228
-    dr : 00.225    pu : 00.224    af : 00.223    ry : 00.221    tw : 00.218    nr : 00.213
-    hw : 00.213    au : 00.207    py : 00.205    hs : 00.205
+
 Letters: 9,839,555
     e  : 12.712    t  : 09.947    a  : 07.852    i  : 07.323    o  : 07.288    n  : 07.056
     s  : 06.931    r  : 06.233    l  : 04.326    c  : 04.280    h  : 03.526    d  : 03.451
@@ -387,6 +390,6 @@ Symbols from total: 12,407,391
        : 13.775    .  : 02.532    ,  : 00.806    (  : 00.333    )  : 00.332    "  : 00.214
     -  : 00.201    ;  : 00.194    /  : 00.193    :  : 00.149    {  : 00.084    }  : 00.083
     [  : 00.039    ]  : 00.038    _  : 00.030    #  : 00.018    '  : 00.018    ?  : 00.014
-    *  : 00.010    \  : 00.009    !  : 00.008    &  : 00.007    @  : 00.005    %  : 00.004
+    *  : 00.010    \  : 009    !  : 008    &  : 007    @  : 005    %  : 004
 Shifts: 05.97
 ```
