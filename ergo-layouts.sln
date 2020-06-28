@@ -31,8 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1
 		layouts\dvorak.json = layouts\dvorak.json
 		layouts\gelatin.json = layouts\gelatin.json
 		layouts\kaehi.json = layouts\kaehi.json
-		layouts\mtgap1.json = layouts\mtgap1.json
-		layouts\mtgap2.json = layouts\mtgap2.json
+		layouts\mtgap v1.json = layouts\mtgap v1.json
+		layouts\mtgap v2.json = layouts\mtgap v2.json
 		layouts\niro.json = layouts\niro.json
 		layouts\norman.json = layouts\norman.json
 		layouts\qfmlwy.json = layouts\qfmlwy.json
@@ -44,7 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1
 		layouts\workman.json = layouts\workman.json
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.fsproj", "{3B4B1BCA-80BB-4E3A-BADA-881601FED10D}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.fsproj", "{3B4B1BCA-80BB-4E3A-BADA-881601FED10D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
