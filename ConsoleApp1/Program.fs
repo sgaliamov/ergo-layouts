@@ -1,10 +1,9 @@
-module Program
-
+﻿open System
 open System.CommandLine
 open System.CommandLine.Invocation;
-open System
 
-let [<EntryPoint>] main args =
+[<EntryPoint>]
+let main args =
     let root = new RootCommand()
     let option = new Option<string>("--test")
     root.AddOption option
