@@ -13,5 +13,4 @@ Get-ChildItem $currDir\publish\layouts\*.json -Recurse | ForEach-Object {
     .\publish\edLayout.exe $currDir\samples *.txt false $_
     Write-Host "``````"
     Write-Host
-    Write-Host
 }
