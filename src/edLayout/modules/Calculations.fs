@@ -78,11 +78,18 @@ let private countFingers (fingers: FingersKeyMap) keys (hand: HashSet<Keys.Key>)
     |> FingersCounter
 
 let private getFactor keyboard prev key =
-    if prev = START_TOKEN then 1.0
-    else if key = prev then 0.2
+    if prev = START_TOKEN then 0.
+    else if key = prev then settings.doublePressPenalty
     else if isSameFinger keyboard key prev then settings.sameFingerPenalty
     else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
     else 1.0
+
+let private getDistance keyboard prev key =
+    let calcluateDistance (x1, y1) (x2, y2) = sqrt ((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
+    if prev = START_TOKEN then 1.
+    else if key = prev then 1.
+    else if not (isSameHand keyboard key prev) then 1.
+    else calcluateDistance keyboard.Coordinates.[key] keyboard.Coordinates.[prev]
 
 let private toKeys keyboard line =
     line
@@ -108,18 +115,36 @@ let collect (keyboard: Keyboard) line =
         line 
         |> Seq.map Char.ToLowerInvariant
         |> List.ofSeq
+
     let keysInLine = toKeys keyboard lowerLine
     let letters = calculate lowerLine countLetters
     let chars = calculate lowerLine countChars
     let digraphs = calculate lowerLine countDigraphs
-    let efforts =
+
+    let factorsMap =
         START_TOKEN::keysInLine
         |> Seq.pairwise
-        |> Seq.map (fun (prev, key) -> key, (getFactor keyboard prev key))
-        |> Seq.sumBy (fun (key, factor) ->
-            match keyboard.Efforts.TryGetValue key with
-            | (true, effort) -> effort * factor
-            | (false, _) -> failwithf "Can't find effort for '%s'" (key.ToString()))
+        |> Seq.map (fun (prev, key) -> key, getFactor keyboard prev key)
+        |> Map
+
+    let distanceMap =
+        START_TOKEN::keysInLine
+        |> Seq.pairwise
+        |> Seq.map (fun (prev, key) -> key, getDistance keyboard prev key)
+        |> Map
+
+    let efforts =
+        keysInLine
+        |> Seq.sumBy (fun key -> keyboard.Efforts.[key] * factorsMap.[key])
+
+    let distance =
+        keysInLine
+        |> Seq.sumBy (fun key -> distanceMap.[key])
+
+    let result =
+        keysInLine
+        |> Seq.sumBy (fun key -> keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
+
     let sameFinger =
         keysInLine
         |> Seq.pairwise
@@ -158,7 +183,9 @@ let collect (keyboard: Keyboard) line =
       TotalLetters = letters.Values |> Seq.sum
       TotalDigraphs = digraphs.Values |> Seq.sum
       TotalChars = chars.Values |> Seq.sum
+      Result = result
       Efforts = efforts
+      Distance = distance
       TopKeys = count keysInLine topKeys.Contains
       HomeKeys = count keysInLine homeKeys.Contains
       BottomKeys = count keysInLine bottomKeys.Contains
@@ -180,7 +207,9 @@ let aggregator state from =
       TotalLetters = from.TotalLetters + state.TotalLetters
       TotalDigraphs = from.TotalDigraphs + state.TotalDigraphs
       TotalChars = from.TotalChars + state.TotalChars
+      Result = from.Result + state.Result
       Efforts = from.Efforts + state.Efforts
+      Distance = from.Distance + state.Distance
       TopKeys = from.TopKeys + state.TopKeys
       HomeKeys = from.HomeKeys + state.HomeKeys
       BottomKeys = from.BottomKeys + state.BottomKeys
@@ -196,9 +225,7 @@ let aggregator state from =
       Shifts = from.Shifts + state.Shifts }
 
 let calculateLines keyboard lines =
-    let filtered line =
-        line
-        |> Seq.filter characters.Contains
+    let filtered line = line |> Seq.filter characters.Contains
     lines
     |> Seq.map (filtered >> collect keyboard)
     |> Seq.fold aggregator initialState

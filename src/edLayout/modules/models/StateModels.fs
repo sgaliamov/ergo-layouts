@@ -50,7 +50,9 @@ type State =
       TotalLetters: int
       TotalDigraphs: int
       TotalChars: int
+      Result: float
       Efforts: float
+      Distance: float
       TopKeys: int
       HomeKeys: int
       BottomKeys: int
@@ -72,7 +74,9 @@ let initialState =
       TotalLetters = 0
       TotalDigraphs = 0
       TotalChars = 0
+      Result = 0.
       Efforts = 0.
+      Distance = 0.
       TopKeys = 0
       HomeKeys = 0
       BottomKeys = 0
