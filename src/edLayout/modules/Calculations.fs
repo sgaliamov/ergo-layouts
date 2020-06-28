@@ -13,7 +13,6 @@ open Utilities
 type private Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 let private characters = [' '..'~'] |> HashSet<char>
 let private lettersOnly = ['a'..'z'] |> HashSet<char>
-let private END_TOKEN = Keys.StringKey "END"
 let private START_TOKEN = Keys.StringKey "START"
 
 let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
