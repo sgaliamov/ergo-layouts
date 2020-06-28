@@ -105,14 +105,15 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
 
     let folder state next =
         let newState = aggregator state next
-        let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
-        let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
-        if digraphsFinished && lettersFinished then
-            Console.SetCursorPosition(0, Console.CursorTop)
-            Console.Write spacer
-            printfn "\rCollected enough data."
-            subscription.Dispose()
-            cts.Cancel true
+        if Probability.value settings.precision > 0. then
+            let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
+            let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
+            if digraphsFinished && lettersFinished then
+                Console.SetCursorPosition(0, Console.CursorTop)
+                Console.Write spacer
+                printfn "\rCollected enough data."
+                subscription.Dispose()
+                cts.Cancel true
         stateChangedStream.OnNext newState
         newState
 

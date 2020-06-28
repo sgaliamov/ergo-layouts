@@ -32,6 +32,7 @@ module Probability =
     let create value = // todo: use Option
         if value < 0. || value > 100. then raise (ArgumentOutOfRangeException("value"))
         Probability (value / 100.)
+    let value (Probability probability) = probability
 
 type Finger =
     | Thumb = 'T'
