@@ -74,6 +74,8 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
         |> appendValue "Left hand continuous" (percentFromTotal state.LeftHandContinuous)
         |> appendValue "Right hand continuous" (percentFromTotal state.RightHandContinuous)
         |> appendValue "Efforts" state.Efforts
+        |> appendValue "Distance" state.Distance
+        |> appendValue "Result" state.Result
 
     let formatState state =
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))

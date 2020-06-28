@@ -108,9 +108,11 @@ let collect (keyboard: Keyboard) line =
         keyboard.LeftKeys,
         keyboard.RightKeys,
         keyboard.FingersMap
+
+    let line = line |> Seq.cache
     let isSameHand (a, b) = isSameHand keyboard a b
     let isSameFinger (a, b) = isSameFinger keyboard a b
-    let line = line |> Seq.cache
+
     let lowerLine =
         line 
         |> Seq.map Char.ToLowerInvariant
@@ -150,6 +152,7 @@ let collect (keyboard: Keyboard) line =
         |> Seq.pairwise
         |> Seq.filter isSameFinger
         |> Seq.length
+
     let inwards =
         keysInLine
         |> Seq.pairwise
@@ -158,6 +161,7 @@ let collect (keyboard: Keyboard) line =
             if topKeys.Contains(a) && not (topKeys.Contains(b)) then count + 1
             else if homeKeys.Contains(a) && bottomKeys.Contains(b) then count + 1
             else count) 0
+
     let outwards =
         keysInLine
         |> Seq.pairwise
@@ -166,11 +170,13 @@ let collect (keyboard: Keyboard) line =
             if bottomKeys.Contains(a) && not (bottomKeys.Contains(b)) then count + 1
             else if homeKeys.Contains(a) && topKeys.Contains(b) then count + 1
             else count) 0
+
     let shifts =
         line
         |> Seq.zip lowerLine
         |> Seq.filter (fun (a, b) -> a <> b || keyboard.Shifted.Contains a)
         |> Seq.length
+
     let letterKeys =
         lowerLine
         |> Seq.filter lettersOnly.Contains
