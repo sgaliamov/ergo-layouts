@@ -17,7 +17,7 @@ module Character =
 module Digraph =
     type Digraph = Digraph of string
     type Digraphs = ConcurrentDictionary<Digraph, int>
-    let create string = Digraph string
+    let create string = Digraph (string |> Seq.sort |> Array.ofSeq |> String)
     let value (Digraph digraph) = digraph
 
 module Letter =
@@ -32,6 +32,7 @@ module Probability =
     let create value = // todo: use Option
         if value < 0. || value > 100. then raise (ArgumentOutOfRangeException("value"))
         Probability (value / 100.)
+    let value (Probability probability) = probability
 
 type Finger =
     | Thumb = 'T'
@@ -49,7 +50,9 @@ type State =
       TotalLetters: int
       TotalDigraphs: int
       TotalChars: int
+      Result: float
       Efforts: float
+      Distance: float
       TopKeys: int
       HomeKeys: int
       BottomKeys: int
@@ -71,7 +74,9 @@ let initialState =
       TotalLetters = 0
       TotalDigraphs = 0
       TotalChars = 0
+      Result = 0.
       Efforts = 0.
+      Distance = 0.
       TopKeys = 0
       HomeKeys = 0
       BottomKeys = 0

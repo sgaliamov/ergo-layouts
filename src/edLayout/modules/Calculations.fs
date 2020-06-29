@@ -3,7 +3,6 @@
 open System
 open System.Collections.Concurrent
 open System.Collections.Generic
-open FSharp.Collections.ParallelSeq
 open Configs
 open KeyboardModelds
 open StateModels
@@ -13,7 +12,7 @@ open Utilities
 type private Counter<'TIn, 'TOut> = seq<'TIn> -> seq<'TOut * int>
 let private characters = [' '..'~'] |> HashSet<char>
 let private lettersOnly = ['a'..'z'] |> HashSet<char>
-let private endToken = Keys.StringKey "END"
+let private START_TOKEN = Keys.StringKey "START"
 
 let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
@@ -78,12 +77,19 @@ let private countFingers (fingers: FingersKeyMap) keys (hand: HashSet<Keys.Key>)
     |> Map.ofSeq
     |> FingersCounter
 
-let private getFactor keyboard key next =
-    if next = endToken then 1.0
-    else if not (isSameHand keyboard key next) then settings.handSwitchPenalty
-    else if key = next then 0.2
-    else if isSameFinger keyboard key next then settings.sameFingerPenalty
+let private getFactor keyboard prev key =
+    if prev = START_TOKEN then 0.
+    else if key = prev then settings.doublePressPenalty
+    else if isSameFinger keyboard key prev then settings.sameFingerPenalty
+    else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
     else 1.0
+
+let private getDistance keyboard prev key =
+    let calcluateDistance (x1, y1) (x2, y2) = sqrt ((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
+    if prev = START_TOKEN then 1.
+    else if key = prev then 1.
+    else if not (isSameHand keyboard key prev) then 1.
+    else calcluateDistance keyboard.Coordinates.[key] keyboard.Coordinates.[prev]
 
 let private toKeys keyboard line =
     line
@@ -102,30 +108,51 @@ let collect (keyboard: Keyboard) line =
         keyboard.LeftKeys,
         keyboard.RightKeys,
         keyboard.FingersMap
+
+    let line = line |> Seq.cache
     let isSameHand (a, b) = isSameHand keyboard a b
     let isSameFinger (a, b) = isSameFinger keyboard a b
-    let line = line |> Seq.cache
+
     let lowerLine =
         line 
         |> Seq.map Char.ToLowerInvariant
         |> List.ofSeq
+
     let keysInLine = toKeys keyboard lowerLine
     let letters = calculate lowerLine countLetters
     let chars = calculate lowerLine countChars
     let digraphs = calculate lowerLine countDigraphs
-    let efforts =
-        keysInLine @ [endToken]
+
+    let factorsMap =
+        START_TOKEN::keysInLine
         |> Seq.pairwise
-        |> Seq.map (fun (key, next) -> key, (getFactor keyboard key next))
-        |> Seq.sumBy (fun (key, factor) ->
-            match keyboard.Efforts.TryGetValue key with
-            | (true, effort) -> effort * factor
-            | (false, _) -> failwithf "Can't find effort for '%s'" (key.ToString()))
+        |> Seq.map (fun (prev, key) -> key, getFactor keyboard prev key)
+        |> Map
+
+    let distanceMap =
+        START_TOKEN::keysInLine
+        |> Seq.pairwise
+        |> Seq.map (fun (prev, key) -> key, getDistance keyboard prev key)
+        |> Map
+
+    let efforts =
+        keysInLine
+        |> Seq.sumBy (fun key -> keyboard.Efforts.[key] * factorsMap.[key])
+
+    let distance =
+        keysInLine
+        |> Seq.sumBy (fun key -> distanceMap.[key])
+
+    let result =
+        keysInLine
+        |> Seq.sumBy (fun key -> keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
+
     let sameFinger =
         keysInLine
         |> Seq.pairwise
         |> Seq.filter isSameFinger
         |> Seq.length
+
     let inwards =
         keysInLine
         |> Seq.pairwise
@@ -134,6 +161,7 @@ let collect (keyboard: Keyboard) line =
             if topKeys.Contains(a) && not (topKeys.Contains(b)) then count + 1
             else if homeKeys.Contains(a) && bottomKeys.Contains(b) then count + 1
             else count) 0
+
     let outwards =
         keysInLine
         |> Seq.pairwise
@@ -142,11 +170,13 @@ let collect (keyboard: Keyboard) line =
             if bottomKeys.Contains(a) && not (bottomKeys.Contains(b)) then count + 1
             else if homeKeys.Contains(a) && topKeys.Contains(b) then count + 1
             else count) 0
+
     let shifts =
         line
         |> Seq.zip lowerLine
         |> Seq.filter (fun (a, b) -> a <> b || keyboard.Shifted.Contains a)
         |> Seq.length
+
     let letterKeys =
         lowerLine
         |> Seq.filter lettersOnly.Contains
@@ -159,7 +189,9 @@ let collect (keyboard: Keyboard) line =
       TotalLetters = letters.Values |> Seq.sum
       TotalDigraphs = digraphs.Values |> Seq.sum
       TotalChars = chars.Values |> Seq.sum
+      Result = result
       Efforts = efforts
+      Distance = distance
       TopKeys = count keysInLine topKeys.Contains
       HomeKeys = count keysInLine homeKeys.Contains
       BottomKeys = count keysInLine bottomKeys.Contains
@@ -181,7 +213,9 @@ let aggregator state from =
       TotalLetters = from.TotalLetters + state.TotalLetters
       TotalDigraphs = from.TotalDigraphs + state.TotalDigraphs
       TotalChars = from.TotalChars + state.TotalChars
+      Result = from.Result + state.Result
       Efforts = from.Efforts + state.Efforts
+      Distance = from.Distance + state.Distance
       TopKeys = from.TopKeys + state.TopKeys
       HomeKeys = from.HomeKeys + state.HomeKeys
       BottomKeys = from.BottomKeys + state.BottomKeys
@@ -197,9 +231,7 @@ let aggregator state from =
       Shifts = from.Shifts + state.Shifts }
 
 let calculateLines keyboard lines =
-    let filtered line =
-        line
-        |> Seq.filter characters.Contains
+    let filtered line = line |> Seq.filter characters.Contains
     lines
-    |> PSeq.map (filtered >> collect keyboard)
-    |> PSeq.fold aggregator initialState
+    |> Seq.map (filtered >> collect keyboard)
+    |> Seq.fold aggregator initialState

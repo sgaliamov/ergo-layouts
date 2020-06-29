@@ -18,6 +18,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="coordinates.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
       <Content Include="efforts.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
