@@ -26,24 +26,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E13E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1BDC0-517F-404E-9B03-A902D17EB7F6}"
 	ProjectSection(SolutionItems) = preProject
-		layouts\breakl15.json = layouts\breakl15.json
-		layouts\collemak.json = layouts\collemak.json
-		layouts\dvorak.json = layouts\dvorak.json
-		layouts\gelatin.json = layouts\gelatin.json
-		layouts\kaehi.json = layouts\kaehi.json
-		layouts\mtgap v1.json = layouts\mtgap v1.json
 		layouts\mtgap v2.json = layouts\mtgap v2.json
 		layouts\my v1.json = layouts\my v1.json
 		layouts\my v2.json = layouts\my v2.json
-		layouts\niro.json = layouts\niro.json
 		layouts\norman.json = layouts\norman.json
-		layouts\qfmlwy.json = layouts\qfmlwy.json
-		layouts\qgmlwb.json = layouts\qgmlwb.json
-		layouts\qgmlwy.json = layouts\qgmlwy.json
-		layouts\qwerty.json = layouts\qwerty.json
 		layouts\soul.json = layouts\soul.json
-		layouts\tnwmlc.json = layouts\tnwmlc.json
-		layouts\workman.json = layouts\workman.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extra", "extra", "{9F171061-6EB4-48A0-9BFE-09AD9D36BE1D}"
+	ProjectSection(SolutionItems) = preProject
+		layouts-ex\breakl15.json = layouts-ex\breakl15.json
+		layouts-ex\collemak.json = layouts-ex\collemak.json
+		layouts-ex\dvorak.json = layouts-ex\dvorak.json
+		layouts-ex\gelatin.json = layouts-ex\gelatin.json
+		layouts-ex\kaehi.json = layouts-ex\kaehi.json
+		layouts-ex\mtgap v1.json = layouts-ex\mtgap v1.json
+		layouts-ex\niro.json = layouts-ex\niro.json
+		layouts-ex\qfmlwy.json = layouts-ex\qfmlwy.json
+		layouts-ex\qgmlwb.json = layouts-ex\qgmlwb.json
+		layouts-ex\qgmlwy.json = layouts-ex\qgmlwy.json
+		layouts-ex\qwerty.json = layouts-ex\qwerty.json
+		layouts-ex\tnwmlc.json = layouts-ex\tnwmlc.json
+		layouts-ex\workman.json = layouts-ex\workman.json
 	EndProjectSection
 EndProject
 Global
@@ -67,6 +71,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E13E840A-A8A9-4E5B-82E3-1A12CFF86132} = {672E0C03-8A08-4D48-BD57-E06025439E3A}
 		{AFC1BDC0-517F-404E-9B03-A902D17EB7F6} = {672E0C03-8A08-4D48-BD57-E06025439E3A}
+		{9F171061-6EB4-48A0-9BFE-09AD9D36BE1D} = {AFC1BDC0-517F-404E-9B03-A902D17EB7F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1EF56F16-2A51-4C23-BE6C-6F237E6C6037}
