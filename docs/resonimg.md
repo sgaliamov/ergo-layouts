@@ -4,6 +4,7 @@
 
 1. 26 letters
 1. 11 standard symbolic buttons
+1. Copy/Paste buttons are not a problem, because we access them using extra layer.
 1. potential unshifted symbols, need to check statistic:
 
     1. "

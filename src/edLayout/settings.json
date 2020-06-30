@@ -1,7 +1,7 @@
 ﻿{
-  "sameFingerPenalty": 1.1,
+  "sameFingerPenalty": 2,
   "doublePressPenalty": 0.2,
-  "handSwitchPenalty": 2.5,
+  "handSwitchPenalty": 5,
   "precision": 0.0,
   "columns": 6,
   "minDigraphs": 0.1
