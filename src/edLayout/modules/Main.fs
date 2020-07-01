@@ -34,25 +34,32 @@ let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (
     |> ignore
     builder
 
-let calculate path search detailed (layout: string) (cts: CancellationTokenSource) =
+let calculate samplesPath search detailed (layoutsPath: string) (cts: CancellationTokenSource) =
     // todo: find better way to validate input parameters
-    if not (Directory.Exists path) then
+    if not (Directory.Exists samplesPath) then
         cts.Cancel true
         Error "Samples direcotry does not exist."
-    else if not (File.Exists layout) then
+    else if not (Directory.Exists layoutsPath) then
         cts.Cancel true
-        Error "Layout file does not exist."
+        Error "Layouts direcotry does not exist."
     else
 
     let appendValue (title: string) value (builder: StringBuilder) =
         let format = sprintf "\n{0}: {1,-%d:0,0.00}" (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
+
         
     let yieldLines (token: CancellationToken) filePath = seq {
         use stream = File.OpenText filePath
         while not stream.EndOfStream && not token.IsCancellationRequested do
             // todo: use async
             yield stream.ReadLine() }
+
+    let loadSamples (token: CancellationToken) =
+        Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
+        |> Seq.takeWhile (fun _ -> not cts.IsCancellationRequested)
+        |> Seq. yieldLines token
+        |> List.ofSeq
 
     let percentFromTotal total value = (100. * float value / float total)
 
@@ -120,10 +127,11 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
         newState
 
     let start = DateTime.UtcNow
-    let keyboard = Keyboard.load <| Layout.Load layout
+    let keyboard = Keyboard.load <| Layout.Load layoutsPath
 
-    Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
-    |> Seq.takeWhile (fun _ -> not cts.IsCancellationRequested)
+    let loadKeyboards =
+
+    loadSamples cts.Token
     |> PSeq.map (yieldLines cts.Token >> calculateLines keyboard)
     |> PSeq.fold folder initialState
     |> formatState
