@@ -55,10 +55,12 @@ let calculate samplesPath search detailed (layoutsPath: string) (cts: Cancellati
             // todo: use async
             yield stream.ReadLine() }
 
+    let notCancelled _ = not cts.IsCancellationRequested
+
     let loadSamples (token: CancellationToken) =
         Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
-        |> Seq.takeWhile (fun _ -> not cts.IsCancellationRequested)
-        |> Seq. yieldLines token
+        |> Seq.takeWhile notCancelled
+        |> Seq.map (yieldLines token)
         |> List.ofSeq
 
     let percentFromTotal total value = (100. * float value / float total)
@@ -127,11 +129,12 @@ let calculate samplesPath search detailed (layoutsPath: string) (cts: Cancellati
         newState
 
     let start = DateTime.UtcNow
-    let keyboard = Keyboard.load <| Layout.Load layoutsPath
 
-    let loadKeyboards =
+    let samples = loadSamples cts.Token
 
-    loadSamples cts.Token
+    Directory.EnumerateFiles(layoutsPath, "*.json", SearchOption.AllDirectories)
+    |> Seq.map (Layout.Load >> Keyboard.load)
+    |> Seq.takeWhile notCancelled
     |> PSeq.map (yieldLines cts.Token >> calculateLines keyboard)
     |> PSeq.fold folder initialState
     |> formatState
