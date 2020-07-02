@@ -145,7 +145,7 @@ let collect (keyboard: Keyboard) line =
 
     let effortsMap =
         keysInLine
-        |> Seq.map (fun key -> keyboard.Chars.[key], keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
+        |> Seq.map (fun key -> Character.value keyboard.Chars.[key], keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
         |> Map.ofSeq
         |> ConcurrentDictionary
 

@@ -16,16 +16,10 @@ open StateModels
 
 let private spacer = new string(' ', Console.WindowWidth)
 
-let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
+let private appendLines (pairs: seq<KeyValuePair<'TKey, 'Value>>) getValue minValue (builder: StringBuilder) =
     let appendPair (sb: StringBuilder, i) (key, value) =
         if i % settings.columns = 0 then sb.AppendLine().Append("  ") |> ignore
         sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value), i + 1
-    let getValue value =
-        let div x y =
-            match y with
-            | 0 -> 0.0
-            | _ -> float x / float y
-        100.0 * div value total
     pairs
     |> Seq.map (fun pair -> pair.Key, getValue pair.Value)
     |> Seq.filter (fun (_, value) -> value >= minValue)
@@ -44,6 +38,12 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         Error "Layout does not exist."
     else
 
+    let div x y =
+        match y with
+        | 0 -> 0.0
+        | _ -> float x / float y
+
+
     let appendValue (title: string) value (builder: StringBuilder) =
         let format = sprintf "\n{0}: {1,-%d:0,0.00}" (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
@@ -56,25 +56,27 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
 
     let notCancelled _ = not token.IsCancellationRequested
 
-    let percentFromTotal total value = (100. * float value / float total)
+    let percentFromTotal total value = (100. * div value total)
 
     let formatMain state (builder: StringBuilder) =
         let percentFromTotal = percentFromTotal state.TotalChars
         builder
         |> appendValue "Left fingers" (state.LeftFingers.Values.Sum())
-        |> appendLines state.LeftFingers state.TotalChars 0.0
+        |> appendLines state.LeftFingers percentFromTotal 0.0
         |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
-        |> appendLines state.RightFingers state.TotalChars 0.0
+        |> appendLines state.RightFingers percentFromTotal 0.0
         |> appendValue "Same finger" (percentFromTotal state.SameFinger)
         |> appendValue "Top keys" (percentFromTotal state.TopKeys)
         |> appendValue "Home keys" (percentFromTotal state.HomeKeys)
         |> appendValue "Bottom keys" (percentFromTotal state.BottomKeys)
+        |> appendLines state.CharEfforts id 0.0
         |> appendValue "Inward rolls" (percentFromTotal state.InwardRolls)
         |> appendValue "Outward rolls" (percentFromTotal state.OutwardRolls)
         |> appendValue "Left hand" (percentFromTotal state.LeftHandTotal)
         |> appendValue "Right hand" (percentFromTotal state.RightHandTotal)
         |> appendValue "Left hand continuous" (percentFromTotal state.LeftHandContinuous)
         |> appendValue "Right hand continuous" (percentFromTotal state.RightHandContinuous)
+        |> appendValue "Hand switch" (percentFromTotal state.HandSwitch)
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance
         |> appendValue "Result" state.Result
@@ -87,11 +89,11 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         if detailed then
             builder
             |> appendValue "Digraphs" state.TotalDigraphs
-            |> appendLines digraphs state.TotalDigraphs settings.minDigraphs
+            |> appendLines digraphs (percentFromTotal state.TotalDigraphs) settings.minDigraphs
             |> appendValue "Letters" state.TotalLetters
-            |> appendLines letters state.TotalLetters 0.0
+            |> appendLines letters (percentFromTotal state.TotalLetters) 0.0
             |> appendValue "Characters" state.TotalChars
-            |> appendLines characters state.TotalChars 0.0
+            |> appendLines characters (percentFromTotal state.TotalChars) 0.0
             |> appendValue "Shifts" (percentFromTotal state.TotalChars state.Shifts)
             |> ignore
         builder
