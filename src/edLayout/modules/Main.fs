@@ -40,9 +40,8 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
 
     let div x y =
         match y with
-        | 0 -> 0.0
-        | _ -> float x / float y
-
+        | 0. -> 0.0
+        | _ -> x / y
 
     let appendValue (title: string) value (builder: StringBuilder) =
         let format = sprintf "\n{0}: {1,-%d:0,0.00}" (settings.columns * 15 - title.Length - 2)
@@ -57,31 +56,33 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
     let notCancelled _ = not token.IsCancellationRequested
 
     let percentFromTotal total value = (100. * div value total)
+    let percentFromTotalInt total value = percentFromTotal (float total) (float value)
 
     let formatMain state (builder: StringBuilder) =
-        let percentFromTotal = percentFromTotal state.TotalChars
+        let percentFromTotalInt = percentFromTotalInt state.TotalChars
         builder
         |> appendValue "Left fingers" (state.LeftFingers.Values.Sum())
-        |> appendLines state.LeftFingers percentFromTotal 0.0
+        |> appendLines state.LeftFingers percentFromTotalInt 0.0
         |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
-        |> appendLines state.RightFingers percentFromTotal 0.0
-        |> appendValue "Same finger" (percentFromTotal state.SameFinger)
-        |> appendValue "Top keys" (percentFromTotal state.TopKeys)
-        |> appendValue "Home keys" (percentFromTotal state.HomeKeys)
-        |> appendValue "Bottom keys" (percentFromTotal state.BottomKeys)
-        |> appendLines state.CharEfforts id 0.0
-        |> appendValue "Inward rolls" (percentFromTotal state.InwardRolls)
-        |> appendValue "Outward rolls" (percentFromTotal state.OutwardRolls)
-        |> appendValue "Left hand" (percentFromTotal state.LeftHandTotal)
-        |> appendValue "Right hand" (percentFromTotal state.RightHandTotal)
-        |> appendValue "Left hand continuous" (percentFromTotal state.LeftHandContinuous)
-        |> appendValue "Right hand continuous" (percentFromTotal state.RightHandContinuous)
-        |> appendValue "Hand switch" (percentFromTotal state.HandSwitch)
+        |> appendLines state.RightFingers percentFromTotalInt 0.0
+        |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
+        |> appendValue "Top keys" (percentFromTotalInt state.TopKeys)
+        |> appendValue "Home keys" (percentFromTotalInt state.HomeKeys)
+        |> appendValue "Bottom keys" (percentFromTotalInt state.BottomKeys)
+        |> appendLines state.CharEfforts (fun value -> percentFromTotal state.Result value) 0.0
+        |> appendValue "Inward rolls" (percentFromTotalInt state.InwardRolls)
+        |> appendValue "Outward rolls" (percentFromTotalInt state.OutwardRolls)
+        |> appendValue "Left hand" (percentFromTotalInt state.LeftHandTotal)
+        |> appendValue "Right hand" (percentFromTotalInt state.RightHandTotal)
+        |> appendValue "Left hand continuous" (percentFromTotalInt state.LeftHandContinuous)
+        |> appendValue "Right hand continuous" (percentFromTotalInt state.RightHandContinuous)
+        |> appendValue "Hand switch" (percentFromTotalInt state.HandSwitch)
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance
         |> appendValue "Result" state.Result
 
-    let formatState state =
+    let printState state =
+        Console.SetCursorPosition(0, Console.CursorTop)
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
         let characters = state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
         let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
@@ -89,12 +90,12 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         if detailed then
             builder
             |> appendValue "Digraphs" state.TotalDigraphs
-            |> appendLines digraphs (percentFromTotal state.TotalDigraphs) settings.minDigraphs
+            |> appendLines digraphs (percentFromTotalInt state.TotalDigraphs) settings.minDigraphs
             |> appendValue "Letters" state.TotalLetters
-            |> appendLines letters (percentFromTotal state.TotalLetters) 0.0
+            |> appendLines letters (percentFromTotalInt state.TotalLetters) 0.0
             |> appendValue "Characters" state.TotalChars
-            |> appendLines characters (percentFromTotal state.TotalChars) 0.0
-            |> appendValue "Shifts" (percentFromTotal state.TotalChars state.Shifts)
+            |> appendLines characters (percentFromTotalInt state.TotalChars) 0.0
+            |> appendValue "Shifts" (percentFromTotalInt state.TotalChars state.Shifts)
             |> ignore
         builder
         |> formatMain state
@@ -130,7 +131,7 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
     |> Seq.takeWhile notCancelled
     |> PSeq.map (yieldLines >> calculateLines keyboard)
     |> PSeq.fold folder initialState
-    |> formatState
+    |> printState
     |> Console.WriteLine
 
     Ok (sprintf "Time spent: %s" ((DateTime.UtcNow - start).ToString("c")))

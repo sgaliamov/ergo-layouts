@@ -8,7 +8,7 @@ let private handler path search detailed layout =
     let cancel () = cts.Cancel true
 
     Task.Run((fun () ->
-        printfn "Press any key to finish..."
+        printf "Press any key to finish..."
         Console.ReadKey true |> ignore
         cancel ()), cts.Token) |> ignore
 
