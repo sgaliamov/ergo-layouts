@@ -18,7 +18,7 @@ let private spacer = new string(' ', Console.WindowWidth)
 
 let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
     let appendPair (sb: StringBuilder, i) (key, value) =
-        if i % settings.columns = 0 then sb.AppendLine().Append("    ") |> ignore
+        if i % settings.columns = 0 then sb.AppendLine().Append("  ") |> ignore
         sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value), i + 1
     let getValue value =
         let div x y =
@@ -34,34 +34,27 @@ let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (
     |> ignore
     builder
 
-let calculate samplesPath search detailed (layoutsPath: string) (cts: CancellationTokenSource) =
+let calculate samplesPath search detailed (layoutPath: string) (token: CancellationToken) cancel =
     // todo: find better way to validate input parameters
     if not (Directory.Exists samplesPath) then
-        cts.Cancel true
+        cancel ()
         Error "Samples direcotry does not exist."
-    else if not (Directory.Exists layoutsPath) then
-        cts.Cancel true
-        Error "Layouts direcotry does not exist."
+    else if not (File.Exists layoutPath) then
+        cancel ()
+        Error "Layout does not exist."
     else
 
     let appendValue (title: string) value (builder: StringBuilder) =
         let format = sprintf "\n{0}: {1,-%d:0,0.00}" (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
-
         
-    let yieldLines (token: CancellationToken) filePath = seq {
+    let yieldLines filePath = seq {
         use stream = File.OpenText filePath
         while not stream.EndOfStream && not token.IsCancellationRequested do
             // todo: use async
             yield stream.ReadLine() }
 
-    let notCancelled _ = not cts.IsCancellationRequested
-
-    let loadSamples (token: CancellationToken) =
-        Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
-        |> Seq.takeWhile notCancelled
-        |> Seq.map (yieldLines token)
-        |> List.ofSeq
+    let notCancelled _ = not token.IsCancellationRequested
 
     let percentFromTotal total value = (100. * float value / float total)
 
@@ -124,18 +117,16 @@ let calculate samplesPath search detailed (layoutsPath: string) (cts: Cancellati
                 Console.Write spacer
                 printfn "\rCollected enough data."
                 subscription.Dispose()
-                cts.Cancel true
+                cancel ()
         stateChangedStream.OnNext newState
         newState
 
     let start = DateTime.UtcNow
+    let keyboard = Keyboard.load <| Layout.Load layoutPath
 
-    let samples = loadSamples cts.Token
-
-    Directory.EnumerateFiles(layoutsPath, "*.json", SearchOption.AllDirectories)
-    |> Seq.map (Layout.Load >> Keyboard.load)
+    Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
     |> Seq.takeWhile notCancelled
-    |> PSeq.map (yieldLines cts.Token >> calculateLines keyboard)
+    |> PSeq.map (yieldLines >> calculateLines keyboard)
     |> PSeq.fold folder initialState
     |> formatState
     |> Console.WriteLine

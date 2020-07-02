@@ -5,12 +5,14 @@ open System.Threading.Tasks
 
 let private handler path search detailed layout =
     use cts = new CancellationTokenSource()
-    Task.Run((fun () ->
-        printf "Press any key to finish..."
-        Console.ReadKey true |> ignore
-        cts.Cancel true), cts.Token) |> ignore
+    let cancel () = cts.Cancel true
 
-    let result = calculate path search detailed layout cts
+    Task.Run((fun () ->
+        printfn "Press any key to finish..."
+        Console.ReadKey true |> ignore
+        cancel ()), cts.Token) |> ignore
+
+    let result = calculate path search detailed layout cts.Token cancel
     match result with
     | Ok ok ->
         Console.WriteLine ok
