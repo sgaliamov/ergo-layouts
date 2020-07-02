@@ -14,7 +14,7 @@ let private characters = [' '..'~'] |> HashSet<char>
 let private lettersOnly = ['a'..'z'] |> HashSet<char>
 let private START_TOKEN = Keys.StringKey "START"
 
-let private calculate<'TIn, 'TOut> line (counter: Counter<'TIn, 'TOut>) =
+let private calculate line (counter: Counter<'TIn, 'TOut>) =
     let folder result (key, count) = addOrUpdate result key count (+)
     line
     |> counter
@@ -143,14 +143,24 @@ let collect (keyboard: Keyboard) line =
         keysInLine
         |> Seq.sumBy (fun key -> distanceMap.[key])
 
-    let result =
+    let effortsMap =
         keysInLine
-        |> Seq.sumBy (fun key -> keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
+        |> Seq.map (fun key -> keyboard.Chars.[key], keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
+        |> Map.ofSeq
+        |> ConcurrentDictionary
+
+    let result = effortsMap |> Seq.sumBy (fun x -> x.Value)
 
     let sameFinger =
         keysInLine
         |> Seq.pairwise
         |> Seq.filter isSameFinger
+        |> Seq.length
+
+    let handSwitch =
+        keysInLine
+        |> Seq.pairwise
+        |> Seq.filter (fun x -> not (isSameHand x))
         |> Seq.length
 
     let inwards =
@@ -204,12 +214,14 @@ let collect (keyboard: Keyboard) line =
       RightHandTotal = count keysInLine leftKeys.Contains
       LeftHandContinuous = countCountinuous letterKeys leftKeys
       RightHandContinuous = countCountinuous letterKeys rightKeys
-      Shifts = shifts }
+      Shifts = shifts
+      CharEfforts = effortsMap
+      HandSwitch = handSwitch }
 
 let aggregator state from =
-    { Letters = sumValues from.Letters state.Letters
-      Digraphs = sumValues from.Digraphs state.Digraphs
-      Chars = sumValues from.Chars state.Chars
+    { Letters = sumValues from.Letters state.Letters (+)
+      Digraphs = sumValues from.Digraphs state.Digraphs (+)
+      Chars = sumValues from.Chars state.Chars (+)
       TotalLetters = from.TotalLetters + state.TotalLetters
       TotalDigraphs = from.TotalDigraphs + state.TotalDigraphs
       TotalChars = from.TotalChars + state.TotalChars
@@ -222,13 +234,15 @@ let aggregator state from =
       SameFinger = from.SameFinger + state.SameFinger
       InwardRolls = from.InwardRolls + state.InwardRolls
       OutwardRolls = from.OutwardRolls + state.OutwardRolls
-      LeftFingers = sumValues from.LeftFingers state.LeftFingers
-      RightFingers = sumValues from.RightFingers state.RightFingers
+      LeftFingers = sumValues from.LeftFingers state.LeftFingers (+)
+      RightFingers = sumValues from.RightFingers state.RightFingers (+)
       LeftHandTotal = from.LeftHandTotal + state.LeftHandTotal
       RightHandTotal = from.RightHandTotal + state.RightHandTotal
       LeftHandContinuous = from.LeftHandContinuous + state.LeftHandContinuous
       RightHandContinuous = from.RightHandContinuous + state.RightHandContinuous
-      Shifts = from.Shifts + state.Shifts }
+      Shifts = from.Shifts + state.Shifts
+      HandSwitch = from.HandSwitch + state.HandSwitch
+      CharEfforts = sumValues from.CharEfforts state.CharEfforts (+) }
 
 let calculateLines keyboard lines =
     let filtered line = line |> Seq.filter characters.Contains

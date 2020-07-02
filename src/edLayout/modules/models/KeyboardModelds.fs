@@ -51,6 +51,7 @@ type FingersKeyMap = ConcurrentDictionary<Keys.Key, Finger>
 
 type Keyboard =
     { Keys: Map<Character.Char, Keys.Key>
+      Chars: Map<Keys.Key, Character.Char>
       Shifted: HashSet<char>
       Efforts: Map<Keys.Key, float>
       Coordinates: Map<Keys.Key, float * float>

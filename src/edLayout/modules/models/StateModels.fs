@@ -56,6 +56,7 @@ type State =
       TopKeys: int
       HomeKeys: int
       BottomKeys: int
+      CharEfforts: ConcurrentDictionary<Character.Char, float>
       SameFinger: int
       InwardRolls: int
       OutwardRolls: int
@@ -63,6 +64,7 @@ type State =
       RightFingers: FingersCounter
       LeftHandTotal: int
       RightHandTotal: int
+      HandSwitch: int
       LeftHandContinuous: int
       RightHandContinuous: int
       Shifts: int }
@@ -80,6 +82,7 @@ let initialState =
       TopKeys = 0
       HomeKeys = 0
       BottomKeys = 0
+      CharEfforts = ConcurrentDictionary<Character.Char, float>()
       SameFinger = 0
       InwardRolls = 0
       OutwardRolls = 0
@@ -87,6 +90,7 @@ let initialState =
       RightFingers = FingersCounter()
       LeftHandTotal = 0
       RightHandTotal = 0
+      HandSwitch = 0
       LeftHandContinuous = 0
       RightHandContinuous = 0
       Shifts = 0 }

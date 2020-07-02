@@ -93,7 +93,10 @@ let load (layout: Layout.Root) =
         |> Map.ofSeq
         |> ConcurrentDictionary<Keys.Key, Finger>
 
-    { Keys = Map(keys |> Map.toSeq |> Seq.append shifted)
+    let allKeys = keys |> Map.toSeq |> Seq.append shifted
+
+    { Keys = Map(allKeys)
+      Chars = Map(allKeys |> Seq.map flipTuple)
       Shifted = shifted |> Seq.map (fun (char, _) -> Character.value char) |> HashSet<char>
       Efforts = efforts
       Coordinates = coordinates
