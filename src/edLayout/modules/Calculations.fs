@@ -143,13 +143,15 @@ let collect (keyboard: Keyboard) line =
         keysInLine
         |> Seq.sumBy (fun key -> distanceMap.[key])
 
-    let effortsMap =
-        keysInLine
-        |> Seq.map (fun key -> Character.value keyboard.Chars.[key], keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
+    let heatMap =
+        lowerLine
+        |> Seq.map (fun char ->
+            let key = keyboard.Keys.[Character.fromChar char]
+            char, keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
         |> Map.ofSeq
         |> ConcurrentDictionary
 
-    let result = effortsMap |> Seq.sumBy (fun x -> x.Value)
+    let result = heatMap |> Seq.sumBy (fun x -> x.Value)
 
     let sameFinger =
         keysInLine
@@ -215,7 +217,7 @@ let collect (keyboard: Keyboard) line =
       LeftHandContinuous = countCountinuous letterKeys leftKeys
       RightHandContinuous = countCountinuous letterKeys rightKeys
       Shifts = shifts
-      CharEfforts = effortsMap
+      HeatMap = heatMap
       HandSwitch = handSwitch }
 
 let aggregator state from =
@@ -242,7 +244,7 @@ let aggregator state from =
       RightHandContinuous = from.RightHandContinuous + state.RightHandContinuous
       Shifts = from.Shifts + state.Shifts
       HandSwitch = from.HandSwitch + state.HandSwitch
-      CharEfforts = sumValues from.CharEfforts state.CharEfforts (+) }
+      HeatMap = sumValues from.HeatMap state.HeatMap (+) }
 
 let calculateLines keyboard lines =
     let filtered line = line |> Seq.filter characters.Contains

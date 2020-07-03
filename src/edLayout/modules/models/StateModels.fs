@@ -56,7 +56,7 @@ type State =
       TopKeys: int
       HomeKeys: int
       BottomKeys: int
-      CharEfforts: ConcurrentDictionary<char, float>
+      HeatMap: ConcurrentDictionary<char, float>
       SameFinger: int
       InwardRolls: int
       OutwardRolls: int
@@ -82,7 +82,7 @@ let initialState =
       TopKeys = 0
       HomeKeys = 0
       BottomKeys = 0
-      CharEfforts = ConcurrentDictionary<char, float>()
+      HeatMap = ConcurrentDictionary<char, float>()
       SameFinger = 0
       InwardRolls = 0
       OutwardRolls = 0

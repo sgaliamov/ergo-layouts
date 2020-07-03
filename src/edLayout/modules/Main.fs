@@ -69,7 +69,6 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         |> appendValue "Top keys" (percentFromTotalInt state.TopKeys)
         |> appendValue "Home keys" (percentFromTotalInt state.HomeKeys)
         |> appendValue "Bottom keys" (percentFromTotalInt state.BottomKeys)
-        |> appendLines state.CharEfforts (fun value -> percentFromTotal state.Result value) 0.0
         |> appendValue "Inward rolls" (percentFromTotalInt state.InwardRolls)
         |> appendValue "Outward rolls" (percentFromTotalInt state.OutwardRolls)
         |> appendValue "Left hand" (percentFromTotalInt state.LeftHandTotal)
@@ -79,10 +78,12 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         |> appendValue "Hand switch" (percentFromTotalInt state.HandSwitch)
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance
+        |> appendLines state.HeatMap (fun value -> percentFromTotal state.Result value) 0.0
         |> appendValue "Result" state.Result
 
+    let initialTop = Console.CursorTop
     let printState state =
-        Console.SetCursorPosition(0, Console.CursorTop - 1)
+        Console.SetCursorPosition(0, max (initialTop - 1) 0)
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
         let characters = state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
         let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
@@ -99,6 +100,7 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
             |> ignore
         builder
         |> formatMain state
+        |> Console.WriteLine
 
     let onStateChanged state =
         let initialPosition = (Console.CursorLeft, Console.CursorTop)
@@ -128,10 +130,9 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
     let keyboard = Keyboard.load <| Layout.Load layoutPath
 
     Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
-    |> Seq.takeWhile notCancelled
+    |> PSeq.takeWhile notCancelled
     |> PSeq.map (yieldLines >> calculateLines keyboard)
     |> PSeq.fold folder initialState
     |> printState
-    |> Console.WriteLine
 
     Ok (sprintf "Time spent: %s" ((DateTime.UtcNow - start).ToString("c")))
