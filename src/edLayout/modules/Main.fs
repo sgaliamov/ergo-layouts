@@ -82,7 +82,7 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         |> appendValue "Result" state.Result
 
     let printState state =
-        Console.SetCursorPosition(0, Console.CursorTop)
+        Console.SetCursorPosition(0, Console.CursorTop - 1)
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
         let characters = state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
         let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))

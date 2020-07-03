@@ -44,6 +44,7 @@ let load (layout: Layout.Root) =
         | (true, key) -> (Some key, Some shifted)
         | (false, _) -> (None, None)
 
+    // tod: add
     let shifted =
         keyboard.Shifted.JsonValue.Properties
         |> toPairs Character.fromString (JsonExtensions.AsString >> Character.fromString)

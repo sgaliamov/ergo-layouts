@@ -14,8 +14,7 @@ let private handler path search detailed layout =
 
     let result = calculate path search detailed layout cts.Token cancel
     match result with
-    | Ok ok ->
-        Console.WriteLine ok
+    | Ok ->
         0
     | Error error ->
         printf "\n\n%s" error
