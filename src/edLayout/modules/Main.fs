@@ -45,7 +45,7 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         | _ -> x / y
 
     let appendValue (title: string) value (builder: StringBuilder) =
-        let format = sprintf "{0}: {1,-%d:0,0.00}\n" (settings.columns * 15 - title.Length - 2)
+        let format = sprintf "{0}: {1,-%d:0,0.##}\n" (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
         
     let yieldLines filePath = seq {
