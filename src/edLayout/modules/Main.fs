@@ -14,20 +14,6 @@ open Configs
 open KeyboardModelds
 open StateModels
 
-let private spacer = new string(' ', Console.WindowWidth)
-
-let private appendLines (pairs: seq<KeyValuePair<'TKey, 'Value>>) getValue minValue (builder: StringBuilder) =
-    let appendPair (sb: StringBuilder, i) (key, value) =
-        if i % settings.columns = 0 then sb.AppendLine().Append("  ") |> ignore
-        sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value), i + 1
-    pairs
-    |> Seq.map (fun pair -> pair.Key, getValue pair.Value)
-    |> Seq.filter (fun (_, value) -> value >= minValue)
-    |> Seq.sortByDescending (fun (_, value) -> value)
-    |> Seq.fold appendPair (builder, 0)
-    |> ignore
-    builder
-
 let calculate samplesPath search detailed (layoutPath: string) (token: CancellationToken) cancel =
     // todo: find better way to validate input parameters
     if not (Directory.Exists samplesPath) then
@@ -38,13 +24,28 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         Error "Layout does not exist."
     else
 
+    let appendLines (pairs: seq<KeyValuePair<'TKey, 'Value>>) getValue minValue (builder: StringBuilder) =
+        let appendPair (sb: StringBuilder, i) (key, value) =
+            if i % settings.columns = 0 then 
+                if i = 0 then sb.Append("  ")
+                else sb.AppendLine().Append("  ") 
+                |> ignore
+            sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value), i + 1
+        pairs
+        |> Seq.map (fun pair -> pair.Key, getValue pair.Value)
+        |> Seq.filter (fun (_, value) -> value >= minValue)
+        |> Seq.sortByDescending (fun (_, value) -> value)
+        |> Seq.fold appendPair (builder, 0)
+        |> ignore
+        builder.AppendLine()
+
     let div x y =
         match y with
         | 0. -> 0.0
         | _ -> x / y
 
     let appendValue (title: string) value (builder: StringBuilder) =
-        let format = sprintf "\n{0}: {1,-%d:0,0.00}" (settings.columns * 15 - title.Length - 2)
+        let format = sprintf "{0}: {1,-%d:0,0.00}\n" (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
         
     let yieldLines filePath = seq {
@@ -61,11 +62,6 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
     let formatMain state (builder: StringBuilder) =
         let percentFromTotalInt = percentFromTotalInt state.TotalChars
         builder
-        |> appendValue "Left fingers" (state.LeftFingers.Values.Sum())
-        |> appendLines state.LeftFingers percentFromTotalInt 0.0
-        |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
-        |> appendLines state.RightFingers percentFromTotalInt 0.0
-        |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
         |> appendValue "Top keys" (percentFromTotalInt state.TopKeys)
         |> appendValue "Home keys" (percentFromTotalInt state.HomeKeys)
         |> appendValue "Bottom keys" (percentFromTotalInt state.BottomKeys)
@@ -76,14 +72,16 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         |> appendValue "Left hand continuous" (percentFromTotalInt state.LeftHandContinuous)
         |> appendValue "Right hand continuous" (percentFromTotalInt state.RightHandContinuous)
         |> appendValue "Hand switch" (percentFromTotalInt state.HandSwitch)
-        |> appendValue "Efforts" state.Efforts
-        |> appendValue "Distance" state.Distance
+        |> appendValue "Left fingers" (state.LeftFingers.Values.Sum())
+        |> appendLines state.LeftFingers percentFromTotalInt 0.0
+        |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
+        |> appendLines state.RightFingers percentFromTotalInt 0.0
+        |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
         |> appendLines state.HeatMap (fun value -> percentFromTotal state.Result value) 0.0
-        |> appendValue "Result" state.Result
+        |> appendValue "Efforts" state.Efforts
+        |> appendValue "Distance" state.Distance|> appendValue "Result" state.Result
 
-    let initialTop = Console.CursorTop
     let printState state =
-        Console.SetCursorPosition(0, max (initialTop - 1) 0)
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
         let characters = state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
         let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
@@ -111,6 +109,7 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
 
     use stateChangedStream = new Subject<State>()
     use subscription = stateChangedStream.Sample(TimeSpan.FromSeconds(0.500)).Subscribe onStateChanged
+    let spacer = new string(' ', Console.WindowWidth)
 
     let folder state next =
         let newState = aggregator state next
