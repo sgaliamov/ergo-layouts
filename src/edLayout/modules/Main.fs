@@ -111,11 +111,11 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
             builder
             |> appendValue "Digraphs" state.TotalDigraphs
             |> appendLines digraphs (percentFromTotalInt state.TotalDigraphs) settings.minDigraphs
-            |> appendValue "Letters" state.TotalLetters
-            |> appendLines letters (percentFromTotalInt state.TotalLetters) 0.0
             |> appendValue "Characters" state.TotalChars
             |> appendLines characters (percentFromTotalInt state.TotalChars) 0.0
             |> appendValue "Shifts" (percentFromTotalInt state.TotalChars state.Shifts)
+            |> appendValue "Letters" state.TotalLetters
+            |> appendLines letters (percentFromTotalInt state.TotalLetters) 0.0
             |> ignore
         builder
         |> formatMain state

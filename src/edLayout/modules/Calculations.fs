@@ -54,6 +54,7 @@ let private countDigraphs line =
     line
     |> Seq.filter Char.IsLetter
     |> Seq.pairwise
+    |> Seq.filter (fun (a, b) -> a <> b)
     |> Seq.map (toString >> Digraph.create)
     |> Seq.countBy id
 
