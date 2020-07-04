@@ -26,11 +26,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E13E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1BDC0-517F-404E-9B03-A902D17EB7F6}"
 	ProjectSection(SolutionItems) = preProject
+		layouts\arensito.json = layouts\arensito.json
+		layouts\asset.json = layouts\asset.json
+		layouts\capewell.json = layouts\capewell.json
+		layouts\collemak.json = layouts\collemak.json
 		layouts\mtgap v2.json = layouts\mtgap v2.json
 		layouts\my v1.json = layouts\my v1.json
 		layouts\my v2.json = layouts\my v2.json
-		layouts\norman.json = layouts\norman.json
-		layouts\soul.json = layouts\soul.json
+		layouts\my v3.json = layouts\my v3.json
+		layouts\my v4.json = layouts\my v4.json
+		layouts\norman l.json = layouts\norman l.json
+		layouts\norman lr.json = layouts\norman lr.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extra", "extra", "{9F171061-6EB4-48A0-9BFE-09AD9D36BE1D}"
@@ -49,13 +55,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extra", "extra", "{9F171061
 		layouts-ex\kaehi.json = layouts-ex\kaehi.json
 		layouts-ex\klausler.json = layouts-ex\klausler.json
 		layouts-ex\mtgap v1.json = layouts-ex\mtgap v1.json
+		layouts-ex\mtgap v2.json = layouts-ex\mtgap v2.json
+		layouts-ex\my v1.json = layouts-ex\my v1.json
+		layouts-ex\my v2.json = layouts-ex\my v2.json
+		layouts-ex\my v3.json = layouts-ex\my v3.json
+		layouts-ex\my v4.json = layouts-ex\my v4.json
 		layouts-ex\niro.json = layouts-ex\niro.json
 		layouts-ex\norman l.json = layouts-ex\norman l.json
 		layouts-ex\norman lr.json = layouts-ex\norman lr.json
+		layouts-ex\norman.json = layouts-ex\norman.json
 		layouts-ex\qfmlwy.json = layouts-ex\qfmlwy.json
 		layouts-ex\qgmlwb.json = layouts-ex\qgmlwb.json
 		layouts-ex\qgmlwy.json = layouts-ex\qgmlwy.json
 		layouts-ex\qwerty.json = layouts-ex\qwerty.json
+		layouts-ex\soul.json = layouts-ex\soul.json
 		layouts-ex\tnwmlc.json = layouts-ex\tnwmlc.json
 		layouts-ex\workman.json = layouts-ex\workman.json
 	EndProjectSection
