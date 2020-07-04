@@ -186,7 +186,7 @@ let collect (keyboard: Keyboard) line =
     let shifts =
         line
         |> Seq.zip lowerLine
-        |> Seq.filter (fun (a, b) -> a <> b || keyboard.Shifted.Contains a)
+        |> Seq.filter (fun (a, b) -> a <> b || keyboard.Shifts.Contains a)
         |> Seq.length
 
     let letterKeys =

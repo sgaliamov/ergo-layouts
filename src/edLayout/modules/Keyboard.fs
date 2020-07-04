@@ -44,10 +44,14 @@ let load (layout: Layout.Root) =
         | (true, key) -> (Some key, Some shifted)
         | (false, _) -> (None, None)
 
-    let shifted =
+    let shiftedKeys =
         keyboard.Shifted.JsonValue.Properties
         |> toPairs Character.fromString (JsonExtensions.AsString >> Character.fromString)
         |> filterValuebles
+        |> Seq.cache
+
+    let shifted =
+        shiftedKeys
         |> Seq.map mapShifted
         |> filterValuebles
         |> Seq.map flipTuple
@@ -95,8 +99,9 @@ let load (layout: Layout.Root) =
 
     let allKeys = keys |> Map.toSeq |> Seq.append shifted
 
-    { Keys = Map(allKeys)
-      Shifted = shifted |> Seq.map (fun (char, _) -> Character.value char) |> HashSet<char>
+    { Keys = Map allKeys
+      PairedChars = Map (shiftedKeys |> Seq.append (shiftedKeys |> Seq.map flipTuple))
+      Shifts = shifted |> Seq.map (fun (char, _) -> Character.value char) |> HashSet<char>
       Efforts = efforts
       Coordinates = coordinates
       TopKeys = keyboard.Top |> toSet |> HashSet<Keys.Key>

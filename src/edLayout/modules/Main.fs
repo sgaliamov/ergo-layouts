@@ -30,7 +30,7 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
                 if i = 0 then sb.Append("  ")
                 else sb.AppendLine().Append("  ") 
                 |> ignore
-            sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value), i + 1
+            sb.AppendFormat("{0,2} : {1,-10:0.###}", key, value), i + 1
         pairs
         |> Seq.map (fun pair -> pair.Key, getValue pair.Value)
         |> Seq.filter (fun (_, value) -> value >= minValue)
@@ -80,10 +80,26 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         |> appendLines state.HeatMap (fun value -> percentFromTotal state.Result value) 0.0
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance|> appendValue "Result" state.Result
-
+    
+    let keyboard = Keyboard.load <| Layout.Load layoutPath
+    
     let printState state =
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
-        let characters = state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
+        let characters =
+            state.Chars
+            |> Seq.map (fun (x: KeyValuePair<Character.Char, int>) -> x.Key, x.Value)
+            |> Seq.map (fun (char, count) ->
+                match keyboard.PairedChars.TryGetValue(char) with
+                | (true, shifted) ->
+                    let chars =
+                        [Character.value shifted; Character.value char]
+                        |> List.sort
+                    String.Join("", chars), (state.Chars.[shifted] + count)
+                | _ -> (Character.value char).ToString(), count)
+            |> Seq.distinct
+            |> Map
+            |> Dictionary
+
         let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
         let builder = StringBuilder()
         if detailed then
@@ -126,7 +142,6 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         newState
 
     let start = DateTime.UtcNow
-    let keyboard = Keyboard.load <| Layout.Load layoutPath
 
     Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
     |> PSeq.takeWhile notCancelled
