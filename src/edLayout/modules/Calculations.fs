@@ -66,6 +66,7 @@ let private count keys by =
 let private countCountinuous keys (hand: HashSet<Keys.Key>) =
     keys
     |> Seq.pairwise
+    |> Seq.filter (fun (a, b) -> a <> b)
     |> Seq.fold (fun count (a, b) ->
         if hand.Contains(a) && hand.Contains(b) then count + 1
         else count) 0
