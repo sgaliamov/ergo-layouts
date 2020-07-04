@@ -24,6 +24,8 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         Error "Layout does not exist."
     else
 
+    let keyboard = Keyboard.load <| Layout.Load layoutPath
+
     let appendLines (pairs: seq<KeyValuePair<'TKey, 'Value>>) getValue minValue (builder: StringBuilder) =
         let appendPair (sb: StringBuilder, i) (key, value) =
             if i % settings.columns = 0 then 
@@ -55,11 +57,30 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
             yield stream.ReadLine() }
 
     let notCancelled _ = not token.IsCancellationRequested
-
     let percentFromTotal total value = (100. * div value total)
     let percentFromTotalInt total value = percentFromTotal (float total) (float value)
 
+    let combinePairedChars add (items: IDictionary<Character.Char, 'T>) =
+        items
+        |> Seq.map (fun (x: KeyValuePair<Character.Char, 'T>) -> x.Key, x.Value)
+        |> Seq.map (fun (char, count) ->
+            match keyboard.PairedChars.TryGetValue(char) with
+            | (true, shifted) ->
+                let chars =
+                    [Character.value shifted; Character.value char]
+                    |> List.sort
+                let combinedCount =
+                    if items.ContainsKey(shifted) 
+                        then (add items.[shifted] count)
+                        else count
+                String.Join("", chars), combinedCount
+            | _ -> (Character.value char).ToString(), count)
+        |> Seq.distinct
+        |> Map
+        |> Dictionary
+
     let formatMain state (builder: StringBuilder) =
+        let heatMap = combinePairedChars (+) state.HeatMap
         let percentFromTotalInt = percentFromTotalInt state.TotalChars
         builder
         |> appendValue "Top keys" (percentFromTotalInt state.TopKeys)
@@ -77,29 +98,13 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
         |> appendLines state.RightFingers percentFromTotalInt 0.0
         |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
-        |> appendLines state.HeatMap (fun value -> percentFromTotal state.Result value) 0.0
+        |> appendLines heatMap (fun value -> percentFromTotal state.Result value) 0.0
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance|> appendValue "Result" state.Result
     
-    let keyboard = Keyboard.load <| Layout.Load layoutPath
-    
     let printState state =
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
-        let characters =
-            state.Chars
-            |> Seq.map (fun (x: KeyValuePair<Character.Char, int>) -> x.Key, x.Value)
-            |> Seq.map (fun (char, count) ->
-                match keyboard.PairedChars.TryGetValue(char) with
-                | (true, shifted) ->
-                    let chars =
-                        [Character.value shifted; Character.value char]
-                        |> List.sort
-                    String.Join("", chars), (state.Chars.[shifted] + count)
-                | _ -> (Character.value char).ToString(), count)
-            |> Seq.distinct
-            |> Map
-            |> Dictionary
-
+        let characters = combinePairedChars (+) state.Chars
         let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
         let builder = StringBuilder()
         if detailed then

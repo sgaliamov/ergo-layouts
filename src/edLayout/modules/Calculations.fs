@@ -144,9 +144,10 @@ let collect (keyboard: Keyboard) line =
         |> Seq.sumBy (fun key -> distanceMap.[key])
 
     let heatMap =
-        lowerLine
-        |> Seq.map (fun char ->
-            let key = keyboard.Keys.[Character.fromChar char]
+        chars
+        |> Seq.map (fun pair ->
+            let char = pair.Key
+            let key = keyboard.Keys.[char]
             char, keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
         |> Map.ofSeq
         |> ConcurrentDictionary
