@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1
 		layouts\kaehi.json = layouts\kaehi.json
 		layouts\klausler.json = layouts\klausler.json
 		layouts\mtgap v1.json = layouts\mtgap v1.json
+		layouts\my v1.json = layouts\my v1.json
+		layouts\my v2.json = layouts\my v2.json
 		layouts\niro.json = layouts\niro.json
 		layouts\norman lr.json = layouts\norman lr.json
 		layouts\norman.json = layouts\norman.json
@@ -56,12 +58,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "good", "good", "{0EC4DF59-8
 		layouts-good\arensito.json = layouts-good\arensito.json
 		layouts-good\capewell.json = layouts-good\capewell.json
 		layouts-good\mtgap v2.json = layouts-good\mtgap v2.json
-		layouts-good\my v1.json = layouts-good\my v1.json
-		layouts-good\my v2.json = layouts-good\my v2.json
 		layouts-good\my v3.json = layouts-good\my v3.json
 		layouts-good\my v4.json = layouts-good\my v4.json
 		layouts-good\my v5.json = layouts-good\my v5.json
 		layouts-good\my v6.json = layouts-good\my v6.json
+		layouts-good\my v7.json = layouts-good\my v7.json
 		layouts-good\norman l.json = layouts-good\norman l.json
 	EndProjectSection
 EndProject
