@@ -11,7 +11,7 @@ let private handler path search detailed layout =
         Console.ReadKey true |> ignore
         cancel ()), cts.Token) |> ignore
 
-    let result = calculate path search detailed layout cts.Token cancel
+    let result = calculate false path search detailed layout cts.Token cancel
     match result with
     | Ok ->
         0

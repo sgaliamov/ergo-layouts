@@ -14,7 +14,7 @@ open Configs
 open KeyboardModelds
 open StateModels
 
-let calculate samplesPath search detailed (layoutPath: string) (token: CancellationToken) cancel =
+let calculate showProgress samplesPath search detailed (layoutPath: string) (token: CancellationToken) cancel =
     // todo: find better way to validate input parameters
     if not (Directory.Exists samplesPath) then
         cancel ()
@@ -125,14 +125,15 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
             |> ignore
         builder
         |> formatMain state
-        |> Console.WriteLine
+        |> Console.Write
 
     let onStateChanged state =
-        let initialPosition = (Console.CursorLeft, Console.CursorTop)
-        StringBuilder()
-        |> formatMain state
-        |> Console.Write
-        Console.SetCursorPosition initialPosition
+        if showProgress then
+            let initialPosition = (Console.CursorLeft, Console.CursorTop)
+            StringBuilder()
+            |> formatMain state
+            |> Console.Write
+            Console.SetCursorPosition initialPosition
 
     use stateChangedStream = new Subject<State>()
     use subscription = stateChangedStream.Sample(TimeSpan.FromSeconds(0.500)).Subscribe onStateChanged

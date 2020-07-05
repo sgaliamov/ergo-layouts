@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{672E0C03-8A08-4D48-BD57-E06025439E3A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		docs\layouts.md = docs\layouts.md
 		scripts\lint.ps1 = scripts\lint.ps1
 		readme.md = readme.md
 		docs\resonimg.md = docs\resonimg.md
@@ -26,29 +27,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E13E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1BDC0-517F-404E-9B03-A902D17EB7F6}"
 	ProjectSection(SolutionItems) = preProject
-		layouts\arensito.json = layouts\arensito.json
 		layouts\asset.json = layouts\asset.json
 		layouts\breakl15.json = layouts\breakl15.json
 		layouts\c-qwerty 1-2.json = layouts\c-qwerty 1-2.json
 		layouts\c-qwerty n.json = layouts\c-qwerty n.json
 		layouts\c-qwerty.json = layouts\c-qwerty.json
 		layouts\capewell-dvorak.json = layouts\capewell-dvorak.json
-		layouts\capewell.json = layouts\capewell.json
 		layouts\collemak.json = layouts\collemak.json
 		layouts\dvorak.json = layouts\dvorak.json
 		layouts\gelatin.json = layouts\gelatin.json
 		layouts\kaehi.json = layouts\kaehi.json
 		layouts\klausler.json = layouts\klausler.json
 		layouts\mtgap v1.json = layouts\mtgap v1.json
-		layouts\mtgap v2.json = layouts\mtgap v2.json
-		layouts\my v1.json = layouts\my v1.json
-		layouts\my v2.json = layouts\my v2.json
-		layouts\my v3.json = layouts\my v3.json
-		layouts\my v4.json = layouts\my v4.json
-		layouts\my v5.json = layouts\my v5.json
-		layouts\my v6.json = layouts\my v6.json
 		layouts\niro.json = layouts\niro.json
-		layouts\norman l.json = layouts\norman l.json
 		layouts\norman lr.json = layouts\norman lr.json
 		layouts\norman.json = layouts\norman.json
 		layouts\qfmlwy.json = layouts\qfmlwy.json
@@ -58,6 +49,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1
 		layouts\soul.json = layouts\soul.json
 		layouts\tnwmlc.json = layouts\tnwmlc.json
 		layouts\workman.json = layouts\workman.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "good", "good", "{0EC4DF59-8C2C-43DD-BCDF-A832FC687F18}"
+	ProjectSection(SolutionItems) = preProject
+		layouts-good\arensito.json = layouts-good\arensito.json
+		layouts-good\capewell.json = layouts-good\capewell.json
+		layouts-good\mtgap v2.json = layouts-good\mtgap v2.json
+		layouts-good\my v1.json = layouts-good\my v1.json
+		layouts-good\my v2.json = layouts-good\my v2.json
+		layouts-good\my v3.json = layouts-good\my v3.json
+		layouts-good\my v4.json = layouts-good\my v4.json
+		layouts-good\my v5.json = layouts-good\my v5.json
+		layouts-good\my v6.json = layouts-good\my v6.json
+		layouts-good\norman l.json = layouts-good\norman l.json
 	EndProjectSection
 EndProject
 Global
@@ -81,6 +86,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E13E840A-A8A9-4E5B-82E3-1A12CFF86132} = {672E0C03-8A08-4D48-BD57-E06025439E3A}
 		{AFC1BDC0-517F-404E-9B03-A902D17EB7F6} = {672E0C03-8A08-4D48-BD57-E06025439E3A}
+		{0EC4DF59-8C2C-43DD-BCDF-A832FC687F18} = {AFC1BDC0-517F-404E-9B03-A902D17EB7F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1EF56F16-2A51-4C23-BE6C-6F237E6C6037}
