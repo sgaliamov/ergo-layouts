@@ -62,6 +62,8 @@ type State =
       OutwardRolls: int
       LeftFingers: FingersCounter
       RightFingers: FingersCounter
+      LeftFingersContinuous: FingersCounter
+      RightFingersContinuous: FingersCounter
       LeftHandTotal: int
       RightHandTotal: int
       HandSwitch: int
@@ -88,6 +90,8 @@ let initialState =
       OutwardRolls = 0
       LeftFingers = FingersCounter()
       RightFingers = FingersCounter()
+      LeftFingersContinuous = FingersCounter()
+      RightFingersContinuous = FingersCounter()
       LeftHandTotal = 0
       RightHandTotal = 0
       HandSwitch = 0

@@ -51,11 +51,15 @@ let private countChars line =
     |> Seq.countBy id
 
 let private countDigraphs line =
-    line
-    |> Seq.filter Char.IsLetter
-    |> Seq.pairwise
-    |> Seq.filter (fun (a, b) -> a <> b)
-    |> Seq.map (toString >> Digraph.create)
+    let string =
+        line
+        |> Array.ofSeq
+        |> String
+    string.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+    |> Seq.collect (Seq.filter Char.IsLetter>>
+        Seq.pairwise>>
+        Seq.filter (fun (a, b) -> a <> b)>>
+        Seq.map (toString >> Digraph.create))
     |> Seq.countBy id
 
 let private count keys by =
@@ -156,11 +160,21 @@ let collect (keyboard: Keyboard) line =
 
     let result = heatMap |> Seq.sumBy (fun x -> x.Value)
 
-    let sameFinger =
+    let sameFingerKeys =
         keysInLine
         |> Seq.pairwise
+        |> Seq.filter (fun (a, b) -> a <> b)
         |> Seq.filter isSameFinger
-        |> Seq.length
+        |> Seq.map (fun (a, _) -> a)
+        |> Seq.cache
+
+    let getSameFingerMap (hand: HashSet<Keys.Key>) =
+        sameFingerKeys
+        |> Seq.filter hand.Contains
+        |> Seq.groupBy (getFinger fingersMap)
+        |> Seq.map (fun (finger, keys) -> (finger, keys |> Seq.length))
+        |> Map.ofSeq
+        |> FingersCounter
 
     let handSwitch =
         keysInLine
@@ -210,15 +224,17 @@ let collect (keyboard: Keyboard) line =
       TopKeys = count keysInLine topKeys.Contains
       HomeKeys = count keysInLine homeKeys.Contains
       BottomKeys = count keysInLine bottomKeys.Contains
-      SameFinger = sameFinger
+      SameFinger = sameFingerKeys |> Seq.length
       InwardRolls = inwards
       OutwardRolls = outwards
       LeftFingers = countFingers fingersMap keysInLine leftKeys
       RightFingers = countFingers fingersMap keysInLine rightKeys
-      LeftHandTotal = count keysInLine rightKeys.Contains
-      RightHandTotal = count keysInLine leftKeys.Contains
+      LeftHandTotal = count keysInLine leftKeys.Contains
+      RightHandTotal = count keysInLine rightKeys.Contains
       LeftHandContinuous = countCountinuous letterKeys leftKeys
       RightHandContinuous = countCountinuous letterKeys rightKeys
+      LeftFingersContinuous = getSameFingerMap leftKeys
+      RightFingersContinuous = getSameFingerMap rightKeys
       Shifts = shifts
       HeatMap = heatMap
       HandSwitch = handSwitch }
@@ -245,6 +261,8 @@ let aggregator state from =
       RightHandTotal = from.RightHandTotal + state.RightHandTotal
       LeftHandContinuous = from.LeftHandContinuous + state.LeftHandContinuous
       RightHandContinuous = from.RightHandContinuous + state.RightHandContinuous
+      LeftFingersContinuous = sumValues from.LeftFingersContinuous state.LeftFingersContinuous (+)
+      RightFingersContinuous = sumValues from.RightFingersContinuous state.RightFingersContinuous (+)
       Shifts = from.Shifts + state.Shifts
       HandSwitch = from.HandSwitch + state.HandSwitch
       HeatMap = sumValues from.HeatMap state.HeatMap (+) }

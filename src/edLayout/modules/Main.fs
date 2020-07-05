@@ -82,12 +82,12 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
     let formatMain state (builder: StringBuilder) =
         let heatMap = combinePairedChars (+) state.HeatMap
         let percentFromTotalInt = percentFromTotalInt state.TotalChars
+        let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
+        let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
         builder
         |> appendValue "Top keys" (percentFromTotalInt state.TopKeys)
         |> appendValue "Home keys" (percentFromTotalInt state.HomeKeys)
         |> appendValue "Bottom keys" (percentFromTotalInt state.BottomKeys)
-        |> appendValue "Inward rolls" (percentFromTotalInt state.InwardRolls)
-        |> appendValue "Outward rolls" (percentFromTotalInt state.OutwardRolls)
         |> appendValue "Left hand" (percentFromTotalInt state.LeftHandTotal)
         |> appendValue "Right hand" (percentFromTotalInt state.RightHandTotal)
         |> appendValue "Left hand continuous" (percentFromTotalInt state.LeftHandContinuous)
@@ -97,8 +97,12 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         |> appendLines state.LeftFingers percentFromTotalInt 0.0
         |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
         |> appendLines state.RightFingers percentFromTotalInt 0.0
-        |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
-        |> appendLines heatMap (fun value -> percentFromTotal state.Result value) 0.0
+        |> appendValue "Left fingers continuous" (percentFromTotal (float state.SameFinger) (float leftFingersContinuous))
+        |> appendLines state.LeftFingersContinuous (float >> (percentFromTotal (float (leftFingersContinuous)))) 0.0
+        |> appendValue "Right fingers continuous" (percentFromTotal (float state.SameFinger) (float rightFingersContinuous))
+        |> appendLines state.RightFingersContinuous (float >> (percentFromTotal (float (rightFingersContinuous)))) 0.0
+        |> appendValue "Same finger, total" (percentFromTotalInt state.SameFinger)
+        |> appendLines heatMap (percentFromTotal state.Result) 0.0
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance|> appendValue "Result" state.Result
     
@@ -109,6 +113,8 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         let builder = StringBuilder()
         if detailed then
             builder
+            |> appendValue "Inward rolls" (percentFromTotalInt state.InwardRolls)
+            |> appendValue "Outward rolls" (percentFromTotalInt state.OutwardRolls)
             |> appendValue "Digraphs" state.TotalDigraphs
             |> appendLines digraphs (percentFromTotalInt state.TotalDigraphs) settings.minDigraphs
             |> appendValue "Characters" state.TotalChars
