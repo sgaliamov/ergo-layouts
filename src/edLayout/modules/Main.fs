@@ -93,9 +93,9 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         |> appendValue "Left hand continuous" (percentFromTotalInt state.LeftHandContinuous)
         |> appendValue "Right hand continuous" (percentFromTotalInt state.RightHandContinuous)
         |> appendValue "Hand switch" (percentFromTotalInt state.HandSwitch)
-        |> appendValue "Left fingers" (state.LeftFingers.Values.Sum())
+        |> appendValue "Left fingers" (percentFromTotal (float state.TotalChars) (float (state.LeftFingers.Values.Sum())))
         |> appendLines state.LeftFingers percentFromTotalInt 0.0
-        |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
+        |> appendValue "Right fingers" (percentFromTotal (float state.TotalChars) (float (state.RightFingers.Values.Sum())))
         |> appendLines state.RightFingers percentFromTotalInt 0.0
         |> appendValue "Left fingers continuous" (percentFromTotal (float state.SameFinger) (float leftFingersContinuous))
         |> appendLines state.LeftFingersContinuous (float >> (percentFromTotal (float (leftFingersContinuous)))) 0.0
@@ -113,15 +113,15 @@ let calculate samplesPath search detailed (layoutPath: string) (token: Cancellat
         let builder = StringBuilder()
         if detailed then
             builder
-            |> appendValue "Inward rolls" (percentFromTotalInt state.InwardRolls)
-            |> appendValue "Outward rolls" (percentFromTotalInt state.OutwardRolls)
             |> appendValue "Digraphs" state.TotalDigraphs
             |> appendLines digraphs (percentFromTotalInt state.TotalDigraphs) settings.minDigraphs
             |> appendValue "Characters" state.TotalChars
             |> appendLines characters (percentFromTotalInt state.TotalChars) 0.0
-            |> appendValue "Shifts" (percentFromTotalInt state.TotalChars state.Shifts)
             |> appendValue "Letters" state.TotalLetters
             |> appendLines letters (percentFromTotalInt state.TotalLetters) 0.0
+            |> appendValue "Shifts" (percentFromTotalInt state.TotalChars state.Shifts)
+            |> appendValue "Outward rolls" (percentFromTotalInt state.TotalChars state.OutwardRolls)
+            |> appendValue "Inward rolls" (percentFromTotalInt state.TotalChars state.InwardRolls)
             |> ignore
         builder
         |> formatMain state

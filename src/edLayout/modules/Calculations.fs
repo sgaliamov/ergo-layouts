@@ -56,10 +56,11 @@ let private countDigraphs line =
         |> Array.ofSeq
         |> String
     string.Split(' ', StringSplitOptions.RemoveEmptyEntries)
-    |> Seq.collect (Seq.filter Char.IsLetter>>
-        Seq.pairwise>>
-        Seq.filter (fun (a, b) -> a <> b)>>
-        Seq.map (toString >> Digraph.create))
+    |> Seq.collect (
+        Seq.filter Char.IsLetter
+        >> Seq.pairwise
+        >> Seq.filter (fun (a, b) -> a <> b)
+        >> Seq.map (toString >> Digraph.create))
     |> Seq.countBy id
 
 let private count keys by =
@@ -124,10 +125,11 @@ let collect (keyboard: Keyboard) line =
         |> Seq.map Char.ToLowerInvariant
         |> List.ofSeq
 
-    let keysInLine = toKeys keyboard lowerLine
-    let letters = calculate lowerLine countLetters
-    let chars = calculate lowerLine countChars
     let digraphs = calculate lowerLine countDigraphs
+    let lowerLineWithoutSpace = lowerLine |> Seq.filter ((<>) ' ') |> Seq.cache
+    let keysInLine = toKeys keyboard lowerLineWithoutSpace
+    let letters = calculate lowerLineWithoutSpace countLetters
+    let chars = calculate lowerLineWithoutSpace countChars
 
     let factorsMap =
         START_TOKEN::keysInLine
@@ -202,12 +204,13 @@ let collect (keyboard: Keyboard) line =
 
     let shifts =
         line
-        |> Seq.zip lowerLine
+        |> Seq.filter ((<>) ' ')
+        |> Seq.zip lowerLineWithoutSpace
         |> Seq.filter (fun (a, b) -> a <> b || keyboard.Shifts.Contains a)
         |> Seq.length
 
     let letterKeys =
-        lowerLine
+        lowerLineWithoutSpace
         |> Seq.filter lettersOnly.Contains
         |> toKeys keyboard
         |> List.ofSeq
