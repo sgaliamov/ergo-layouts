@@ -617,10 +617,6 @@ Right hand: 48.25
 Left hand continuous: 25.98
 Right hand continuous: 18.16
 Hand switch: 46.4
-Left fingers: 51.75
-  Index : 16.557    Middle : 16.199    Ring : 16.064    Pinky : 2.928
-Right fingers: 48.25
-  Index : 14.895    Ring : 14.884    Middle : 13.616    Pinky : 4.856
 Left fingers continuous: 52.62
   Middle : 53.713    Index : 34.67     Ring : 11.212    Pinky : 0.404
 Right fingers continuous: 47.38
@@ -706,6 +702,29 @@ Efforts: 65,297,142.58
 Distance: 13,853,991.19
 Result: 32,210,862.17
 
+```
+
+## My V7
+``` ini
+Hand switch: 45.51
+Same finger, total: 04.32
+Left hand continuous: 23.86
+Right hand continuous: 21.1
+Left fingers continuous: 56.01
+  Middle : 66.268    Index : 23.281    Ring : 9.921     Pinky : 0.53
+Right fingers continuous: 43.99
+  Middle : 43.553    Index : 31.525    Ring : 24.045    Pinky : 0.878
+   u : 6.058      c : 5.899     ,< : 5.036      i : 4.688      o : 4.508      b : 4.041
+   d : 3.84       l : 3.763      h : 3.676      y : 3.596      p : 3.428      k : 3.223
+  .> : 3.187      f : 3.106      m : 3.078     )0 : 3.003      v : 2.937      w : 2.737
+  (9 : 2.413      g : 2.303     :; : 2.132      a : 1.749      s : 1.618      e : 1.559
+   t : 1.496     !1 : 1.466      n : 1.457     -_ : 1.264      r : 1.202      x : 1.16
+  += : 1.123      j : 1.052     2@ : 0.95      %5 : 0.782      q : 0.779     $4 : 0.754
+  6^ : 0.727     [{ : 0.667     #3 : 0.658     &7 : 0.6       "' : 0.57      /? : 0.514
+  ]} : 0.463     *8 : 0.39       z : 0.185     \| : 0.155     `~ : 0.005
+Efforts: 66,832,389.68
+Distance: 13,930,663.58
+Result: 32,435,338.29
 ```
 
 ## Niro

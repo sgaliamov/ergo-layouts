@@ -28,9 +28,9 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
 
     let appendLines (pairs: seq<KeyValuePair<'TKey, 'Value>>) getValue minValue (builder: StringBuilder) =
         let appendPair (sb: StringBuilder, i) (key, value) =
-            if i % settings.columns = 0 then 
-                if i = 0 then sb.Append("  ")
-                else sb.AppendLine().Append("  ") 
+            if i % settings.columns = 0 then
+                if i = 0 then sb.Append("    ")
+                else sb.AppendLine().Append("    ")
                 |> ignore
             sb.AppendFormat("{0,2} : {1,-10:0.###}", key, value), i + 1
         pairs
@@ -46,8 +46,11 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         | 0. -> 0.0
         | _ -> x / y
 
+    let appendFormat format args (builder: StringBuilder) =
+        builder.AppendFormat(format, args)
+
     let appendValue (title: string) value (builder: StringBuilder) =
-        let format = sprintf "{0}: {1,-%d:0,0.##}\n" (settings.columns * 15 - title.Length - 2)
+        let format = sprintf "{0,-11}: {1,-%d:0,0.##}\n" (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
         
     let yieldLines filePath = seq {
@@ -85,26 +88,24 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
         let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
         builder
-        |> appendValue "Top keys" (percentFromTotalInt state.TopKeys)
-        |> appendValue "Home keys" (percentFromTotalInt state.HomeKeys)
-        |> appendValue "Bottom keys" (percentFromTotalInt state.BottomKeys)
-        |> appendValue "Left hand" (percentFromTotalInt state.LeftHandTotal)
-        |> appendValue "Right hand" (percentFromTotalInt state.RightHandTotal)
-        |> appendValue "Left hand continuous" (percentFromTotalInt state.LeftHandContinuous)
-        |> appendValue "Right hand continuous" (percentFromTotalInt state.RightHandContinuous)
         |> appendValue "Hand switch" (percentFromTotalInt state.HandSwitch)
-        |> appendValue "Left fingers" (percentFromTotal (float state.TotalChars) (float (state.LeftFingers.Values.Sum())))
+        |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
+        |> appendFormat "Left       : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
+            [| (percentFromTotalInt state.LeftHandTotal)
+               (percentFromTotalInt state.LeftHandContinuous)
+               (percentFromTotal (float state.SameFinger) (float leftFingersContinuous)) |]
         |> appendLines state.LeftFingers percentFromTotalInt 0.0
-        |> appendValue "Right fingers" (percentFromTotal (float state.TotalChars) (float (state.RightFingers.Values.Sum())))
-        |> appendLines state.RightFingers percentFromTotalInt 0.0
-        |> appendValue "Left fingers continuous" (percentFromTotal (float state.SameFinger) (float leftFingersContinuous))
         |> appendLines state.LeftFingersContinuous (float >> (percentFromTotal (float (leftFingersContinuous)))) 0.0
-        |> appendValue "Right fingers continuous" (percentFromTotal (float state.SameFinger) (float rightFingersContinuous))
+        |> appendFormat "Right      : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
+            [| (percentFromTotalInt state.RightHandTotal)
+               (percentFromTotalInt state.RightHandContinuous)
+               (percentFromTotal (float state.SameFinger) (float rightFingersContinuous)) |]
+        |> appendLines state.RightFingers percentFromTotalInt 0.0
         |> appendLines state.RightFingersContinuous (float >> (percentFromTotal (float (rightFingersContinuous)))) 0.0
-        |> appendValue "Same finger, total" (percentFromTotalInt state.SameFinger)
-        |> appendLines heatMap (percentFromTotal state.Result) 0.0
         |> appendValue "Efforts" state.Efforts
-        |> appendValue "Distance" state.Distance|> appendValue "Result" state.Result
+        |> appendValue "Distance" state.Distance
+        |> appendLines heatMap (percentFromTotal state.Result) 0.0
+        |> appendValue "Result" state.Result
     
     let printState state =
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
@@ -122,6 +123,10 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
             |> appendValue "Shifts" (percentFromTotalInt state.TotalChars state.Shifts)
             |> appendValue "Outward rolls" (percentFromTotalInt state.TotalChars state.OutwardRolls)
             |> appendValue "Inward rolls" (percentFromTotalInt state.TotalChars state.InwardRolls)
+            |> appendValue "Top keys" (percentFromTotalInt state.TotalChars state.TopKeys)
+            |> appendValue "Home keys" (percentFromTotalInt state.TotalChars state.HomeKeys)
+            |> appendValue "Bottom keys" (percentFromTotalInt state.TotalChars state.BottomKeys)
+            
             |> ignore
         builder
         |> formatMain state
