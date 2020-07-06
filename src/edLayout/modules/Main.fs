@@ -88,8 +88,6 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
         let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
         builder
-        |> appendValue "Hand switch" (percentFromTotalInt state.HandSwitch)
-        |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
         |> appendFormat "Left       : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
             [| (percentFromTotalInt state.LeftHandTotal)
                (percentFromTotalInt state.LeftHandContinuous)
@@ -105,6 +103,8 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance
         |> appendLines heatMap (percentFromTotal state.Result) 0.0
+        |> appendValue "Hand switch" (percentFromTotalInt state.HandSwitch)
+        |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
         |> appendValue "Result" state.Result
     
     let printState state =
