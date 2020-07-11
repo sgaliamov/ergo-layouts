@@ -25,51 +25,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E13E
 		scripts\run.ps1 = scripts\run.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "layouts", "layouts", "{AFC1BDC0-517F-404E-9B03-A902D17EB7F6}"
-	ProjectSection(SolutionItems) = preProject
-		layouts\mtgap v1.json = layouts\mtgap v1.json
-		layouts\my v1.json = layouts\my v1.json
-		layouts\my v2.json = layouts\my v2.json
-		layouts\niro.json = layouts\niro.json
-		layouts\norman lr.json = layouts\norman lr.json
-		layouts\norman.json = layouts\norman.json
-		layouts\workman.json = layouts\workman.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "good", "good", "{0EC4DF59-8C2C-43DD-BCDF-A832FC687F18}"
-	ProjectSection(SolutionItems) = preProject
-		layouts-good\arensito.json = layouts-good\arensito.json
-		layouts-good\capewell.json = layouts-good\capewell.json
-		layouts-good\mtgap v2.json = layouts-good\mtgap v2.json
-		layouts-good\my v3.json = layouts-good\my v3.json
-		layouts-good\my v4.json = layouts-good\my v4.json
-		layouts-good\my v5.json = layouts-good\my v5.json
-		layouts-good\my v6.json = layouts-good\my v6.json
-		layouts-good\my v7.json = layouts-good\my v7.json
-		layouts-good\norman l.json = layouts-good\norman l.json
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bad", "bad", "{9D984624-25F9-4AE4-86E1-8068581113FA}"
-	ProjectSection(SolutionItems) = preProject
-		layouts-bad\asset.json = layouts-bad\asset.json
-		layouts-bad\breakl15.json = layouts-bad\breakl15.json
-		layouts-bad\c-qwerty 1-2.json = layouts-bad\c-qwerty 1-2.json
-		layouts-bad\c-qwerty n.json = layouts-bad\c-qwerty n.json
-		layouts-bad\c-qwerty.json = layouts-bad\c-qwerty.json
-		layouts-bad\capewell-dvorak.json = layouts-bad\capewell-dvorak.json
-		layouts-bad\collemak.json = layouts-bad\collemak.json
-		layouts-bad\dvorak.json = layouts-bad\dvorak.json
-		layouts-bad\gelatin.json = layouts-bad\gelatin.json
-		layouts-bad\kaehi.json = layouts-bad\kaehi.json
-		layouts-bad\klausler.json = layouts-bad\klausler.json
-		layouts-bad\qfmlwy.json = layouts-bad\qfmlwy.json
-		layouts-bad\qgmlwb.json = layouts-bad\qgmlwb.json
-		layouts-bad\qgmlwy.json = layouts-bad\qgmlwy.json
-		layouts-bad\qwerty.json = layouts-bad\qwerty.json
-		layouts-bad\soul.json = layouts-bad\soul.json
-		layouts-bad\tnwmlc.json = layouts-bad\tnwmlc.json
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,9 +45,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E13E840A-A8A9-4E5B-82E3-1A12CFF86132} = {672E0C03-8A08-4D48-BD57-E06025439E3A}
-		{AFC1BDC0-517F-404E-9B03-A902D17EB7F6} = {672E0C03-8A08-4D48-BD57-E06025439E3A}
-		{0EC4DF59-8C2C-43DD-BCDF-A832FC687F18} = {AFC1BDC0-517F-404E-9B03-A902D17EB7F6}
-		{9D984624-25F9-4AE4-86E1-8068581113FA} = {AFC1BDC0-517F-404E-9B03-A902D17EB7F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1EF56F16-2A51-4C23-BE6C-6F237E6C6037}
