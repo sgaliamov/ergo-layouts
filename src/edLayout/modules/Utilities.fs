@@ -42,3 +42,7 @@ let filterValuebles seq =
     |> Seq.map (fun (key, value) -> key.Value, value.Value)
 
 let flipTuple (a, b) = (b, a)
+
+let first (a, _) = a
+
+let second (_, b) = b

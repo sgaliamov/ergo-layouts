@@ -13,6 +13,7 @@ open Calculations
 open Configs
 open KeyboardModelds
 open StateModels
+open Utilities
 
 let calculate showProgress samplesPath search detailed (layoutPath: string) (token: CancellationToken) cancel =
     // todo: find better way to validate input parameters
@@ -82,12 +83,35 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         |> Map
         |> Dictionary
 
+    let charsMap =
+        keyboard.Keys
+        |> Seq.map (fun pair -> pair.Value, pair.Key)
+        |> Seq.groupBy first
+        |> Seq.map (fun (key, chars) -> 
+            let line = chars |> Seq.map second |> Array.ofSeq
+            key, String.Join ("", line))
+        |> Map
+
+    let appendKeyboard builder =
+        let appendKeysLine keys builder =
+            keys
+            |> Seq.fold (fun (sb: StringBuilder) key ->
+                sb.AppendFormat("{0}\t", charsMap.[key]))
+                builder
+            |> ignore
+            builder.AppendLine()
+        builder
+        |> appendKeysLine keyboard.TopKeys
+        |> appendKeysLine keyboard.HomeKeys
+        |> appendKeysLine keyboard.BottomKeys
+
     let formatMain state (builder: StringBuilder) =
         let heatMap = combinePairedChars (+) state.HeatMap
         let percentFromTotalInt = percentFromTotalInt state.TotalChars
         let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
         let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
         builder
+        |> appendKeyboard
         |> appendFormat "Left       : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
             [| (percentFromTotalInt state.LeftHandTotal)
                (percentFromTotalInt state.LeftHandContinuous)
