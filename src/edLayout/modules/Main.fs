@@ -36,7 +36,7 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
                 if i = 0 then sb.Append("    ")
                 else sb.AppendLine().Append("    ")
                 |> ignore
-            sb.AppendFormat("{0,2} : {1,-10:0.###}", key, value), i + 1
+            sb.AppendFormat("{0,2}: {1,-10:0.###}", key, value), i + 1
         pairs
         |> Seq.map (fun pair -> pair.Key, getValue pair.Value)
         |> Seq.filter (fun (_, value) -> value >= minValue)
@@ -87,42 +87,50 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         keyboard.Keys
         |> Seq.map (fun pair -> pair.Value, pair.Key)
         |> Seq.groupBy first
-        |> Seq.map (fun (key, chars) -> 
-            let line = chars |> Seq.map (second >> Character.value) |> Array.ofSeq
-            key, String.Join ("", line))
+        |> Seq.map (fun (key, chars) ->
+            let pair = chars |> Seq.map second |> Array.ofSeq
+            key, pair)
         |> Map
 
-    let appendKeyboard builder =
-        let appendKeysLine keys builder =
-            keys
-            |> Seq.fold (fun (sb: StringBuilder) key ->
-                sb.AppendFormat("{0,-4}", charsMap.[key]))
-                builder
-        let appendRow keys builder =
-            builder
-            |> appendKeysLine (keys |> Seq.filter keyboard.LeftKeys.Contains |> Seq.sort)
-            |> append "    "
-            |> appendKeysLine (keys |> Seq.filter keyboard.RightKeys.Contains |> Seq.sort |> Seq.rev)
-            |> appendNewLine
-        builder
-        |> appendRow keyboard.TopKeys
-        |> appendRow keyboard.HomeKeys
-        |> appendRow keyboard.BottomKeys
-
     let formatMain state (builder: StringBuilder) =
+        let appendKeyboard builder =
+            let appendKeysLine keys builder =
+                keys
+                |> Seq.fold (fun (sb: StringBuilder) key ->
+                    let text = charsMap.[key] |> Array.map Character.value |> String
+                    let sum =
+                        charsMap.[key]
+                        |> Seq.map (fun a -> state.HeatMap.TryGetValue(a))
+                        |> Seq.filter (fun (has, _) -> has)
+                        |> Seq.map second
+                        |> Seq.sum
+                    sb.AppendFormat("{0,2}: {1,-6:0.##}", text, (percentFromTotal state.Result sum)))
+                    builder
+            let appendRow keys builder =
+                builder
+                |> appendKeysLine (keys |> Seq.filter keyboard.LeftKeys.Contains |> Seq.sort)
+                |> append "    "
+                |> appendKeysLine (keys |> Seq.filter keyboard.RightKeys.Contains |> Seq.sort |> Seq.rev)
+                |> appendNewLine
+            builder
+            |> appendRow keyboard.TopKeys
+            |> appendRow keyboard.HomeKeys
+            |> appendRow keyboard.BottomKeys
+
         let heatMap = combinePairedChars (+) state.HeatMap
         let percentFromTotalInt = percentFromTotalInt state.TotalChars
         let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
         let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
+
         builder
         |> appendKeyboard
-        |> appendFormat "Left       : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
+        |> appendFormat "Left      : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
             [| (percentFromTotalInt state.LeftHandTotal)
                (percentFromTotalInt state.LeftHandContinuous)
                (percentFromTotal (float state.SameFinger) (float leftFingersContinuous)) |]
         |> appendLines state.LeftFingers percentFromTotalInt 0.0
         |> appendLines state.LeftFingersContinuous (float >> (percentFromTotal (float (leftFingersContinuous)))) 0.0
-        |> appendFormat "Right      : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
+        |> appendFormat "Right     : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
             [| (percentFromTotalInt state.RightHandTotal)
                (percentFromTotalInt state.RightHandContinuous)
                (percentFromTotal (float state.SameFinger) (float rightFingersContinuous)) |]
