@@ -26,7 +26,7 @@ let [<EntryPoint>] main args =
     root.AddOption (Option<string>([| "--input"; "-i" |]))
     root.AddOption (Option<string> ([| "--pattern"; "-p" |], fun () -> "*.txt"))
     root.AddOption (Option<string>([| "--layout"; "-l" |]))
-    root.AddOption (Option<bool>([| "--show-progress"; "-sp" |]))
+    root.AddOption (Option<bool>([| "--show-progress"; "-sp" |], fun () -> true))
     root.AddOption (Option<bool>([| "--detailed"; "-d" |]))
     root.Handler <- CommandHandler.Create(fun input pattern layout showProgress detailed -> handler input pattern layout showProgress detailed)
     root.Invoke args

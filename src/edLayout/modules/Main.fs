@@ -26,6 +26,9 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
     else
 
     let keyboard = Keyboard.load <| Layout.Load layoutPath
+    let appendNewLine (builder: StringBuilder) = builder.AppendLine()
+    let append (text: string) (builder: StringBuilder) = builder.Append(text)
+    let appendFormat format args (builder: StringBuilder) = builder.AppendFormat(format, args)
 
     let appendLines (pairs: seq<KeyValuePair<'TKey, 'Value>>) getValue minValue (builder: StringBuilder) =
         let appendPair (sb: StringBuilder, i) (key, value) =
@@ -39,16 +42,13 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         |> Seq.filter (fun (_, value) -> value >= minValue)
         |> Seq.sortByDescending (fun (_, value) -> value)
         |> Seq.fold appendPair (builder, 0)
-        |> ignore
-        builder.AppendLine()
+        |> first
+        |> appendNewLine
 
     let div x y =
         match y with
         | 0. -> 0.0
         | _ -> x / y
-
-    let appendFormat format args (builder: StringBuilder) =
-        builder.AppendFormat(format, args)
 
     let appendValue (title: string) value (builder: StringBuilder) =
         let format = sprintf "{0,-11}: {1,-%d:0,0.##}\n" (settings.columns * 15 - title.Length - 2)
@@ -88,7 +88,7 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         |> Seq.map (fun pair -> pair.Value, pair.Key)
         |> Seq.groupBy first
         |> Seq.map (fun (key, chars) -> 
-            let line = chars |> Seq.map second |> Array.ofSeq
+            let line = chars |> Seq.map (second >> Character.value) |> Array.ofSeq
             key, String.Join ("", line))
         |> Map
 
@@ -96,14 +96,18 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         let appendKeysLine keys builder =
             keys
             |> Seq.fold (fun (sb: StringBuilder) key ->
-                sb.AppendFormat("{0}\t", charsMap.[key]))
+                sb.AppendFormat("{0,-4}", charsMap.[key]))
                 builder
-            |> ignore
-            builder.AppendLine()
+        let appendRow keys builder =
+            builder
+            |> appendKeysLine (keys |> Seq.filter keyboard.LeftKeys.Contains |> Seq.sort)
+            |> append "    "
+            |> appendKeysLine (keys |> Seq.filter keyboard.RightKeys.Contains |> Seq.sort |> Seq.rev)
+            |> appendNewLine
         builder
-        |> appendKeysLine keyboard.TopKeys
-        |> appendKeysLine keyboard.HomeKeys
-        |> appendKeysLine keyboard.BottomKeys
+        |> appendRow keyboard.TopKeys
+        |> appendRow keyboard.HomeKeys
+        |> appendRow keyboard.BottomKeys
 
     let formatMain state (builder: StringBuilder) =
         let heatMap = combinePairedChars (+) state.HeatMap
