@@ -5,3 +5,5 @@ Get-ChildItem -Include "bin", "obj", "publish" -Recurse | Remove-Item -Force -Re
 dotnet publish .\src\edLayout -o .\publish -c release -r win-x64 -p:PublishSingleFile=true
 
 Copy-Item .\layouts -Destination .\publish\layouts -Recurse
+
+Copy-Item .\layouts-good\*.* -Destination .\publish\layouts -Recurse
