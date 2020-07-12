@@ -83,23 +83,14 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         |> Map
         |> Dictionary
 
-    let charsMap =
-        keyboard.Keys
-        |> Seq.map (fun pair -> pair.Value, pair.Key)
-        |> Seq.groupBy first
-        |> Seq.map (fun (key, chars) ->
-            let pair = chars |> Seq.map second |> Array.ofSeq
-            key, pair)
-        |> Map
-
     let formatMain state (builder: StringBuilder) =
         let appendKeyboard builder =
             let appendKeysLine keys builder =
                 keys
                 |> Seq.fold (fun (sb: StringBuilder) key ->
-                    let text = charsMap.[key] |> Array.map Character.value |> String
+                    let text = keyboard.Chars.[key] |> Array.map Character.value |> String
                     let sum =
-                        charsMap.[key]
+                        keyboard.Chars.[key]
                         |> Seq.map (fun a -> state.HeatMap.TryGetValue(a))
                         |> Seq.filter (fun (has, _) -> has)
                         |> Seq.map second
@@ -127,15 +118,15 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         |> appendFormat "Left      : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
             [| (percentFromTotalInt state.LeftHandTotal)
                (percentFromTotalInt state.LeftHandContinuous)
-               (percentFromTotal (float state.SameFinger) (float leftFingersContinuous)) |]
+               (percentFromTotalInt leftFingersContinuous) |]
         |> appendLines state.LeftFingers percentFromTotalInt 0.0
-        |> appendLines state.LeftFingersContinuous (float >> (percentFromTotal (float (leftFingersContinuous)))) 0.0
+        |> appendLines state.LeftFingersContinuous percentFromTotalInt 0.0
         |> appendFormat "Right     : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
             [| (percentFromTotalInt state.RightHandTotal)
                (percentFromTotalInt state.RightHandContinuous)
-               (percentFromTotal (float state.SameFinger) (float rightFingersContinuous)) |]
+               (percentFromTotalInt rightFingersContinuous) |]
         |> appendLines state.RightFingers percentFromTotalInt 0.0
-        |> appendLines state.RightFingersContinuous (float >> (percentFromTotal (float (rightFingersContinuous)))) 0.0
+        |> appendLines state.RightFingersContinuous percentFromTotalInt 0.0
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance
         |> appendLines heatMap (percentFromTotal state.Result) 0.0

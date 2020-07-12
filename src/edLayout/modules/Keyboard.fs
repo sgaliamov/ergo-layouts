@@ -99,7 +99,16 @@ let load (layout: Layout.Root) =
 
     let allKeys = keys |> Map.toSeq |> Seq.append shifted
 
+    let charsMap =
+        allKeys
+        |> Seq.groupBy second
+        |> Seq.map (fun (key, chars) ->
+            let value = chars |> Seq.map first |> Array.ofSeq
+            key, value)
+        |> Map
+
     { Keys = Map allKeys
+      Chars = charsMap
       PairedChars = Map (shiftedKeys |> Seq.append (shiftedKeys |> Seq.map flipTuple))
       Shifts = shifted |> Seq.map (fun (char, _) -> Character.value char) |> HashSet<char>
       Efforts = efforts
