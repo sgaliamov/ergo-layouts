@@ -1,6 +1,7 @@
 ﻿module Calculations
 
 open System
+open System.Linq
 open System.Collections.Concurrent
 open System.Collections.Generic
 open Configs
@@ -84,8 +85,10 @@ let private countFingers (fingers: FingersKeyMap) keys (hand: HashSet<Keys.Key>)
     |> Map.ofSeq
     |> FingersCounter
 
-let private getFactor keyboard prev key =
+let private getFactor (keyboard: Keyboard) prev key =
+    let isPunctuation () = keyboard.Chars.[key].Select(Character.value >> Char.IsPunctuation).Where(id).Any()
     if prev = START_TOKEN then 0.
+    else if isPunctuation() then 0.
     else if key = prev then settings.doublePressPenalty
     else if isSameFinger keyboard key prev then settings.sameFingerPenalty
     else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
@@ -108,13 +111,14 @@ let private toKeys keyboard line =
     |> List.ofSeq
 
 let collect (keyboard: Keyboard) line =
-    let (topKeys, homeKeys, bottomKeys, leftKeys, rightKeys, fingersMap) =
+    let (topKeys, homeKeys, bottomKeys, leftKeys, rightKeys, fingersMap, charsMap) =
         keyboard.TopKeys,
         keyboard.HomeKeys,
         keyboard.BottomKeys,
         keyboard.LeftKeys,
         keyboard.RightKeys,
-        keyboard.FingersMap
+        keyboard.FingersMap,
+        keyboard.Chars
 
     let line = line |> Seq.cache
     let isSameHand (a, b) = isSameHand keyboard a b
@@ -167,7 +171,7 @@ let collect (keyboard: Keyboard) line =
         |> Seq.pairwise
         |> Seq.filter (fun (a, b) -> a <> b)
         |> Seq.filter isSameFinger
-        |> Seq.map (fun (a, _) -> a)
+        |> Seq.map first
         |> Seq.cache
 
     let getSameFingerMap (hand: HashSet<Keys.Key>) =
