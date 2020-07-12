@@ -85,14 +85,7 @@ let private countFingers (fingers: FingersKeyMap) keys (hand: HashSet<Keys.Key>)
     |> Map.ofSeq
     |> FingersCounter
 
-let private getFactor (keyboard: Keyboard) prev key =
-    let isPunctuation () = keyboard.Chars.[key].Select(Character.value >> Char.IsPunctuation).Where(id).Any()
-    if prev = START_TOKEN then 0.
-    else if isPunctuation() then 0.
-    else if key = prev then settings.doublePressPenalty
-    else if isSameFinger keyboard key prev then settings.sameFingerPenalty
-    else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
-    else 1.0
+
 
 let private getDistance keyboard prev key =
     let calcluateDistance (x1, y1) (x2, y2) = sqrt ((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
@@ -121,9 +114,6 @@ let collect (keyboard: Keyboard) line =
         keyboard.Chars
 
     let line = line |> Seq.cache
-    let isSameHand (a, b) = isSameHand keyboard a b
-    let isSameFinger (a, b) = isSameFinger keyboard a b
-
     let lowerLine =
         line 
         |> Seq.map Char.ToLowerInvariant
@@ -135,17 +125,30 @@ let collect (keyboard: Keyboard) line =
     let letters = calculate lowerLineWithoutSpace countLetters
     let chars = calculate lowerLineWithoutSpace countChars
 
-    let factorsMap =
-        START_TOKEN::keysInLine
-        |> Seq.pairwise
-        |> Seq.map (fun (prev, key) -> key, getFactor keyboard prev key)
-        |> Map
-
     let distanceMap =
         START_TOKEN::keysInLine
         |> Seq.pairwise
         |> Seq.map (fun (prev, key) -> key, getDistance keyboard prev key)
         |> Map
+
+    let getFactor prev key =
+        let isPunctuation () = keyboard.Chars.[key].Select(Character.value >> Char.IsPunctuation).Where(id).Any()
+        if prev = START_TOKEN then 0.
+        else if isPunctuation() then 1. / distanceMap.[key]
+        else if key = prev then settings.doublePressPenalty
+        else if isSameFinger keyboard key prev then settings.sameFingerPenalty
+        else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
+        else 1.0
+
+    let isSameHand (a, b) = isSameHand keyboard a b
+    let isSameFinger (a, b) = isSameFinger keyboard a b
+
+    let factorsMap =
+        START_TOKEN::keysInLine
+        |> Seq.pairwise
+        |> Seq.map (fun (prev, key) -> key, getFactor prev key)
+        |> Map
+
 
     let efforts =
         keysInLine
