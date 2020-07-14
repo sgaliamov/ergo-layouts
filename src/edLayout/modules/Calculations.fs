@@ -132,12 +132,7 @@ let collect (keyboard: Keyboard) line =
         |> Map
 
     let getFactor prev key =
-        let isPunctuation () = keyboard.Chars.[key].Select(Character.value >> Char.IsPunctuation).Where(id).Any()
         if prev = START_TOKEN then 0.
-        else if isPunctuation() then 
-            if isSameFinger keyboard key prev
-            then 1. / distanceMap.[key] / settings.sameFingerPenalty
-            else 1. / distanceMap.[key]
         else if key = prev then settings.doublePressPenalty
         else if isSameFinger keyboard key prev then settings.sameFingerPenalty
         else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
@@ -152,10 +147,18 @@ let collect (keyboard: Keyboard) line =
         |> Seq.map (fun (prev, key) -> key, getFactor prev key)
         |> Map
 
+    let isPunctuation key =
+        keyboard.Chars.[key]
+            .Select(Character.value >> Char.IsPunctuation)  
+            .Where(id)
+            .Any()
 
     let efforts =
         keysInLine
-        |> Seq.sumBy (fun key -> keyboard.Efforts.[key] * factorsMap.[key])
+        |> Seq.sumBy (fun key ->
+            if isPunctuation key
+            then keyboard.Efforts.[key]
+            else keyboard.Efforts.[key] * factorsMap.[key])
 
     let distance =
         keysInLine
@@ -166,7 +169,11 @@ let collect (keyboard: Keyboard) line =
         |> Seq.map (fun pair ->
             let char = pair.Key
             let key = keyboard.Keys.[char]
-            char, keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key])
+            let value =
+                if isPunctuation key
+                then keyboard.Efforts.[key]
+                else keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key]
+            char, value)
         |> Map.ofSeq
         |> ConcurrentDictionary
 
