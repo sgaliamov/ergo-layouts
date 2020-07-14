@@ -134,7 +134,10 @@ let collect (keyboard: Keyboard) line =
     let getFactor prev key =
         let isPunctuation () = keyboard.Chars.[key].Select(Character.value >> Char.IsPunctuation).Where(id).Any()
         if prev = START_TOKEN then 0.
-        else if isPunctuation() then 1. / distanceMap.[key]
+        else if isPunctuation() then 
+            if isSameFinger keyboard key prev
+            then 1. / distanceMap.[key] / settings.sameFingerPenalty
+            else 1. / distanceMap.[key]
         else if key = prev then settings.doublePressPenalty
         else if isSameFinger keyboard key prev then settings.sameFingerPenalty
         else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
