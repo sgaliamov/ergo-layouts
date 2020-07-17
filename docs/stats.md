@@ -1,6 +1,4 @@
-# Results
-
-## Statistic of sample texts
+# Statistic of sample texts
 
 ``` ini
 Digraphs: 7,865,071

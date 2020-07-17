@@ -188,7 +188,7 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
     let start = DateTime.UtcNow
 
     Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
-    |> PSeq.takeWhile notCancelled
+    |> Seq.takeWhile notCancelled
     |> PSeq.map (yieldLines >> calculateLines keyboard)
     |> PSeq.fold folder initialState
     |> printState
