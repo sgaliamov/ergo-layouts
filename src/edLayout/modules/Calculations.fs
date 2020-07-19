@@ -185,6 +185,7 @@ let collect (keyboard: Keyboard) line =
         |> Seq.pairwise
         |> Seq.filter (fun (a, b) -> a <> b)
         |> Seq.filter isSameFinger
+        |> Seq.filter (fun (a, b) -> not (isPunctuation a || isPunctuation b))
         |> Seq.map first
         |> Seq.cache
 
