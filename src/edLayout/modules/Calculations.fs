@@ -85,8 +85,6 @@ let private countFingers (fingers: FingersKeyMap) keys (hand: HashSet<Keys.Key>)
     |> Map.ofSeq
     |> FingersCounter
 
-
-
 let private getDistance keyboard prev key =
     let calcluateDistance (x1, y1) (x2, y2) = sqrt ((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
     if prev = START_TOKEN then 1.
@@ -104,14 +102,13 @@ let private toKeys keyboard line =
     |> List.ofSeq
 
 let collect (keyboard: Keyboard) line =
-    let (topKeys, homeKeys, bottomKeys, leftKeys, rightKeys, fingersMap, charsMap) =
+    let (topKeys, homeKeys, bottomKeys, leftKeys, rightKeys, fingersMap) =
         keyboard.TopKeys,
         keyboard.HomeKeys,
         keyboard.BottomKeys,
         keyboard.LeftKeys,
         keyboard.RightKeys,
-        keyboard.FingersMap,
-        keyboard.Chars
+        keyboard.FingersMap
 
     let line = line |> Seq.cache
     let lowerLine =
@@ -132,9 +129,13 @@ let collect (keyboard: Keyboard) line =
         |> Map
 
     let getFactor prev key =
+        let sameColumn () =
+            let (prevX, _) = keyboard.Coordinates.[prev]
+            let (keyX, _) = keyboard.Coordinates.[key]
+            prevX = keyX
         if prev = START_TOKEN then 0.
         else if key = prev then settings.doublePressPenalty
-        else if isSameFinger keyboard key prev then settings.sameFingerPenalty
+        else if sameColumn() then settings.sameFingerPenalty
         else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
         else 1.0
 
@@ -171,7 +172,7 @@ let collect (keyboard: Keyboard) line =
             let key = keyboard.Keys.[char]
             let value =
                 if isPunctuation key
-                then keyboard.Efforts.[key]
+                then keyboard.Efforts.[key] * factorsMap.[key] 
                 else keyboard.Efforts.[key] * factorsMap.[key] * distanceMap.[key]
             char, value)
         |> Map.ofSeq
