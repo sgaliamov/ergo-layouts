@@ -13,97 +13,163 @@ open Calculations
 open Configs
 open KeyboardModelds
 open StateModels
+open Utilities
 
-let private spacer = new string(' ', Console.WindowWidth)
-
-let private appendLines<'T> (pairs: seq<KeyValuePair<'T, int>>) total minValue (builder: StringBuilder) =
-    let appendPair (sb: StringBuilder, i) (key, value) =
-        if i % settings.columns = 0 then sb.AppendLine().Append("    ") |> ignore
-        sb.AppendFormat("{0,-2} : {1,-10:0.###}", key, value), i + 1
-    let getValue value =
-        let div x y =
-            match y with
-            | 0 -> 0.0
-            | _ -> float x / float y
-        100.0 * div value total
-    pairs
-    |> Seq.map (fun pair -> pair.Key, getValue pair.Value)
-    |> Seq.filter (fun (_, value) -> value >= minValue)
-    |> Seq.sortByDescending (fun (_, value) -> value)
-    |> Seq.fold appendPair (builder, 0)
-    |> ignore
-    builder
-
-let calculate path search detailed (layout: string) (cts: CancellationTokenSource) =
+let calculate showProgress samplesPath search detailed (layoutPath: string) (token: CancellationToken) cancel =
     // todo: find better way to validate input parameters
-    if not (Directory.Exists path) then
-        cts.Cancel true
+    if not (Directory.Exists samplesPath) then
+        cancel ()
         Error "Samples direcotry does not exist."
-    else if not (File.Exists layout) then
-        cts.Cancel true
-        Error "Layout file does not exist."
+    else if not (File.Exists layoutPath) then
+        cancel ()
+        Error "Layout does not exist."
     else
 
+    let keyboard = Keyboard.load <| Layout.Load layoutPath
+    let appendNewLine (builder: StringBuilder) = builder.AppendLine()
+    let append (text: string) (builder: StringBuilder) = builder.Append(text)
+    let appendFormat format args (builder: StringBuilder) = builder.AppendFormat(format, args)
+
+    let appendLines (pairs: seq<KeyValuePair<'TKey, 'Value>>) getValue minValue (builder: StringBuilder) =
+        let appendPair (sb: StringBuilder, i) (key, value) =
+            if i % settings.columns = 0 then
+                if i = 0 then sb.Append("    ")
+                else sb.AppendLine().Append("    ")
+                |> ignore
+            sb.AppendFormat("{0,2}: {1,-10:0.###}", key, value), i + 1
+        pairs
+        |> Seq.map (fun pair -> pair.Key, getValue pair.Value)
+        |> Seq.filter (fun (_, value) -> value >= minValue)
+        |> Seq.sortByDescending (fun (_, value) -> value)
+        |> Seq.fold appendPair (builder, 0)
+        |> first
+        |> appendNewLine
+
+    let div x y =
+        match y with
+        | 0. -> 0.0
+        | _ -> x / y
+
     let appendValue (title: string) value (builder: StringBuilder) =
-        let format = sprintf "\n{0}: {1,-%d:0,0.00}" (settings.columns * 15 - title.Length - 2)
+        let format = sprintf "{0,-11}: {1,-%d:0,0.##}\n" (settings.columns * 15 - title.Length - 2)
         builder.AppendFormat(format, title, value)
         
-    let yieldLines (token: CancellationToken) filePath = seq {
+    let yieldLines filePath = seq {
         use stream = File.OpenText filePath
         while not stream.EndOfStream && not token.IsCancellationRequested do
             // todo: use async
             yield stream.ReadLine() }
 
-    let percentFromTotal total value = (100. * float value / float total)
+    let notCancelled _ = not token.IsCancellationRequested
+    let percentFromTotal total value = (100. * div value total)
+    let percentFromTotalInt total value = percentFromTotal (float total) (float value)
+
+    let combinePairedChars add (items: IDictionary<Character.Char, 'T>) =
+        items
+        |> Seq.map (fun (x: KeyValuePair<Character.Char, 'T>) -> x.Key, x.Value)
+        |> Seq.map (fun (char, count) ->
+            match keyboard.PairedChars.TryGetValue(char) with
+            | (true, shifted) ->
+                let chars =
+                    [Character.value shifted; Character.value char]
+                    |> List.sort
+                let combinedCount =
+                    if items.ContainsKey(shifted) 
+                        then (add items.[shifted] count)
+                        else count
+                String.Join("", chars), combinedCount
+            | _ -> (Character.value char).ToString(), count)
+        |> Seq.distinct
+        |> Map
+        |> Dictionary
 
     let formatMain state (builder: StringBuilder) =
-        let percentFromTotal = percentFromTotal state.TotalChars
+        let appendKeyboard builder =
+            let appendKeysLine keys builder =
+                keys
+                |> Seq.fold (fun (sb: StringBuilder) key ->
+                    let text = keyboard.Chars.[key] |> Array.map Character.value |> String
+                    let sum =
+                        keyboard.Chars.[key]
+                        |> Seq.map (fun a -> state.HeatMap.TryGetValue(a))
+                        |> Seq.filter (fun (has, _) -> has)
+                        |> Seq.map second
+                        |> Seq.sum
+                    sb.AppendFormat("{0,2}: {1,-6:0.##}", text, (percentFromTotal state.Result sum)))
+                    builder
+            let appendRow keys builder =
+                builder
+                |> appendKeysLine (keys |> Seq.filter keyboard.LeftKeys.Contains |> Seq.sort)
+                |> append "    "
+                |> appendKeysLine (keys |> Seq.filter keyboard.RightKeys.Contains |> Seq.sort |> Seq.rev)
+                |> appendNewLine
+            builder
+            |> appendRow keyboard.TopKeys
+            |> appendRow keyboard.HomeKeys
+            |> appendRow keyboard.BottomKeys
+
+        let heatMap = combinePairedChars (+) state.HeatMap
+        let percentFromTotalInt = percentFromTotalInt state.TotalChars
+        let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
+        let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
+
         builder
-        |> appendValue "Left fingers" (state.LeftFingers.Values.Sum())
-        |> appendLines state.LeftFingers state.TotalChars 0.0
-        |> appendValue "Right fingers" (state.RightFingers.Values.Sum())
-        |> appendLines state.RightFingers state.TotalChars 0.0
-        |> appendValue "Same finger" (percentFromTotal state.SameFinger)
-        |> appendValue "Top keys" (percentFromTotal state.TopKeys)
-        |> appendValue "Home keys" (percentFromTotal state.HomeKeys)
-        |> appendValue "Bottom keys" (percentFromTotal state.BottomKeys)
-        |> appendValue "Inward rolls" (percentFromTotal state.InwardRolls)
-        |> appendValue "Outward rolls" (percentFromTotal state.OutwardRolls)
-        |> appendValue "Left hand" (percentFromTotal state.LeftHandTotal)
-        |> appendValue "Right hand" (percentFromTotal state.RightHandTotal)
-        |> appendValue "Left hand continuous" (percentFromTotal state.LeftHandContinuous)
-        |> appendValue "Right hand continuous" (percentFromTotal state.RightHandContinuous)
+        |> appendKeyboard
+        |> appendFormat "Left      : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
+            [| (percentFromTotalInt state.LeftHandTotal)
+               (percentFromTotalInt state.LeftHandContinuous)
+               (percentFromTotalInt leftFingersContinuous) |]
+        |> appendLines state.LeftFingers percentFromTotalInt 0.0
+        |> appendLines state.LeftFingersContinuous percentFromTotalInt 0.0
+        |> appendFormat "Right     : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
+            [| (percentFromTotalInt state.RightHandTotal)
+               (percentFromTotalInt state.RightHandContinuous)
+               (percentFromTotalInt rightFingersContinuous) |]
+        |> appendLines state.RightFingers percentFromTotalInt 0.0
+        |> appendLines state.RightFingersContinuous percentFromTotalInt 0.0
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance
+        |> appendLines heatMap (percentFromTotal state.Result) 0.0
+        |> appendValue "Hand switch" (percentFromTotalInt state.HandSwitch)
+        |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
         |> appendValue "Result" state.Result
-
-    let formatState state =
+    
+    let printState state =
         let digraphs = state.Digraphs.ToDictionary((fun x -> Digraph.value x.Key), (fun y -> y.Value))
-        let characters = state.Chars.ToDictionary((fun x -> Character.value x.Key), (fun y -> y.Value))
+        let characters = combinePairedChars (+) state.Chars
         let letters = state.Letters.ToDictionary((fun x -> Letter.value x.Key), (fun y -> y.Value))
         let builder = StringBuilder()
         if detailed then
             builder
             |> appendValue "Digraphs" state.TotalDigraphs
-            |> appendLines digraphs state.TotalDigraphs settings.minDigraphs
-            |> appendValue "Letters" state.TotalLetters
-            |> appendLines letters state.TotalLetters 0.0
+            |> appendLines digraphs (percentFromTotalInt state.TotalDigraphs) settings.minDigraphs
             |> appendValue "Characters" state.TotalChars
-            |> appendLines characters state.TotalChars 0.0
-            |> appendValue "Shifts" (percentFromTotal state.TotalChars state.Shifts)
+            |> appendLines characters (percentFromTotalInt state.TotalChars) 0.0
+            |> appendValue "Letters" state.TotalLetters
+            |> appendLines letters (percentFromTotalInt state.TotalLetters) 0.0
+            |> appendValue "Shifts" (percentFromTotalInt state.TotalChars state.Shifts)
+            |> appendValue "Outward rolls" (percentFromTotalInt state.TotalChars state.OutwardRolls)
+            |> appendValue "Inward rolls" (percentFromTotalInt state.TotalChars state.InwardRolls)
+            |> appendValue "Top keys" (percentFromTotalInt state.TotalChars state.TopKeys)
+            |> appendValue "Home keys" (percentFromTotalInt state.TotalChars state.HomeKeys)
+            |> appendValue "Bottom keys" (percentFromTotalInt state.TotalChars state.BottomKeys)
+            
             |> ignore
         builder
         |> formatMain state
+        |> Console.Write
 
     let onStateChanged state =
-        let initialPosition = (Console.CursorLeft, Console.CursorTop)
-        StringBuilder()
-        |> formatMain state
-        |> Console.Write
-        Console.SetCursorPosition initialPosition
+        if showProgress then
+            let initialPosition = (Console.CursorLeft, Console.CursorTop)
+            StringBuilder()
+            |> formatMain state
+            |> Console.Write
+            Console.SetCursorPosition initialPosition
 
     use stateChangedStream = new Subject<State>()
     use subscription = stateChangedStream.Sample(TimeSpan.FromSeconds(0.500)).Subscribe onStateChanged
+    let spacer = new string(' ', Console.WindowWidth)
 
     let folder state next =
         let newState = aggregator state next
@@ -115,18 +181,16 @@ let calculate path search detailed (layout: string) (cts: CancellationTokenSourc
                 Console.Write spacer
                 printfn "\rCollected enough data."
                 subscription.Dispose()
-                cts.Cancel true
+                cancel ()
         stateChangedStream.OnNext newState
         newState
 
     let start = DateTime.UtcNow
-    let keyboard = Keyboard.load <| Layout.Load layout
 
-    Directory.EnumerateFiles(path, search, SearchOption.AllDirectories)
-    |> Seq.takeWhile (fun _ -> not cts.IsCancellationRequested)
-    |> PSeq.map (yieldLines cts.Token >> calculateLines keyboard)
+    Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
+    |> Seq.takeWhile notCancelled
+    |> PSeq.map (yieldLines >> calculateLines keyboard)
     |> PSeq.fold folder initialState
-    |> formatState
-    |> Console.WriteLine
+    |> printState
 
     Ok (sprintf "Time spent: %s" ((DateTime.UtcNow - start).ToString("c")))

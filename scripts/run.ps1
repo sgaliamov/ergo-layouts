@@ -10,7 +10,7 @@ Get-ChildItem $currDir\publish\layouts\*.json -Recurse | ForEach-Object {
     Write-Host "## $($TextInfo.ToTitleCase($_.Basename))"
     Write-Host
     Write-Host "`````` ini"
-    .\publish\edLayout.exe $currDir\samples *.txt false $_
+    .\publish\edLayout.exe -i $currDir\samples -l $_ -sp false
     Write-Host "``````"
     Write-Host
 }

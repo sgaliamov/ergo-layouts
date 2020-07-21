@@ -4,6 +4,7 @@
 
 1. 26 letters
 1. 11 standard symbolic buttons
+1. Copy/Paste buttons are not a problem, because we access them using extra layer.
 1. potential unshifted symbols, need to check statistic:
 
     1. "
@@ -18,7 +19,7 @@ No need to care about `shift`, `space`, `enter` and others because they will be 
 
 1. Efforts based on configuration. Should go down.
 1. Same fingers. Should go down.
-1. Сharacters printed with one hand without changing.. Should go up.
+1. Сharacters typed with one hand without changing hand should scored more.
 1. Hands balance. Left and right hands should be used equally.
 1. Inward rolls are more preferable than outward.
 1. Fingers statistic.

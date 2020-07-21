@@ -8,3 +8,5 @@ obj/
 publish/
 *.user
 samples/
+samples-dev/
+log.md

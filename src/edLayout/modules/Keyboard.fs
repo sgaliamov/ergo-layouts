@@ -44,10 +44,14 @@ let load (layout: Layout.Root) =
         | (true, key) -> (Some key, Some shifted)
         | (false, _) -> (None, None)
 
-    let shifted =
+    let shiftedKeys =
         keyboard.Shifted.JsonValue.Properties
         |> toPairs Character.fromString (JsonExtensions.AsString >> Character.fromString)
         |> filterValuebles
+        |> Seq.cache
+
+    let shifted =
+        shiftedKeys
         |> Seq.map mapShifted
         |> filterValuebles
         |> Seq.map flipTuple
@@ -93,8 +97,20 @@ let load (layout: Layout.Root) =
         |> Map.ofSeq
         |> ConcurrentDictionary<Keys.Key, Finger>
 
-    { Keys = Map(keys |> Map.toSeq |> Seq.append shifted)
-      Shifted = shifted |> Seq.map (fun (char, _) -> Character.value char) |> HashSet<char>
+    let allKeys = keys |> Map.toSeq |> Seq.append shifted
+
+    let charsMap =
+        allKeys
+        |> Seq.groupBy second
+        |> Seq.map (fun (key, chars) ->
+            let value = chars |> Seq.map first |> Array.ofSeq
+            key, value)
+        |> Map
+
+    { Keys = Map allKeys
+      Chars = charsMap
+      PairedChars = Map (shiftedKeys |> Seq.append (shiftedKeys |> Seq.map flipTuple))
+      Shifts = shifted |> Seq.map (fun (char, _) -> Character.value char) |> HashSet<char>
       Efforts = efforts
       Coordinates = coordinates
       TopKeys = keyboard.Top |> toSet |> HashSet<Keys.Key>
