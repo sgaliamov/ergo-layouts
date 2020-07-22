@@ -32,4 +32,3 @@ No need to care about `shift`, `space`, `enter` and others because they will be 
 * https://kennetchaz.github.io/symmetric-typing/results.html
 * https://geekhack.org/index.php?topic=67604.50s
 * https://mtgap.wordpress.com/2009/08/07/optimized-evolutionary-algorithm-for-keyboard-design-part-1/
-* http://mkweb.bcgsc.ca/carpalx/?full_optimization
