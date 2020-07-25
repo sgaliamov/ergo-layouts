@@ -5,7 +5,7 @@ open System.CommandLine
 open System.CommandLine.Invocation;
 open Main
 
-let private handler input pattern layout showProgress detailed =
+let private handler input pattern layout output showProgress detailed =
     use cts = new CancellationTokenSource()
     let cancel () = cts.Cancel true
 
@@ -13,7 +13,7 @@ let private handler input pattern layout showProgress detailed =
         Console.ReadKey true |> ignore
         cancel ()), cts.Token) |> ignore
 
-    let result = calculate showProgress input pattern detailed layout cts.Token cancel
+    let result = calculate showProgress input pattern detailed layout output cts.Token cancel
     match result with
     | Ok ->
         0
@@ -26,7 +26,8 @@ let [<EntryPoint>] main args =
     root.AddOption (Option<string>([| "--input"; "-i" |]))
     root.AddOption (Option<string> ([| "--pattern"; "-p" |], fun () -> "*.txt"))
     root.AddOption (Option<string>([| "--layout"; "-l" |]))
+    root.AddOption (Option<string>([| "--output"; "-o" |]))
     root.AddOption (Option<bool>([| "--show-progress"; "-sp" |], fun () -> true))
     root.AddOption (Option<bool>([| "--detailed"; "-d" |]))
-    root.Handler <- CommandHandler.Create(fun input pattern layout showProgress detailed -> handler input pattern layout showProgress detailed)
+    root.Handler <- CommandHandler.Create(fun input pattern layout output showProgress detailed -> handler input pattern layout output showProgress detailed)
     root.Invoke args
