@@ -2,6 +2,20 @@
 
 Is a utility to examine layouts for ErgoDox keyboard.
 
+When you buy a keyboard that costs almost 400€ you probably want use it 100%.
+Initially I planned to configure peripheral keys. Но так как пришлось все равно учиться печатать заного, я подумал почему бы не выучить новую раскладку?
+после недолгого расследования выяснилось что дворак не намного лучше кверти. и от колемака люди не особо в восторге.
+
+в процессе создания оценочного метода стало ясно что ни одна из существующих клавиатур не подойдет под него.
+и даже первая неглубокая попытка создать раскладку которая бы подходила бы под метод дала хорошие результаты.
+
+я всегда пердпочиталь шоткаты.
+что хотелось
+- меньше черодовать руки. это важно. например колемак часто критикуют за это.
+- меньше повторять пальцы.
+- расположить часто используемые диграфы на одной стороне.
+- шоткаты во внимание не принимались так так на клаве можно настроить экста слои.
+
 ## Why?
 
 ErgoDox is such a keyboard for which you first need to learn a functional programming language with static typing, and then create a utility to find the most optimal configuration for it.
@@ -39,9 +53,12 @@ Do I recommend to buy the ErgoDox keyboard? Er... not sure. This keyboard is def
 If you are not a keyboard geek, or you are not ready for a radical new experience, then more traditional ergonomic keyboard is much wiser option.
 
 There is another trap that you can get into. If you are perfectionist, like me, you risk to spend a lot of time trying to find the best possible configuration.
-But the truth is that there is no perfect configuration.
+But the truth is that there is no perfect configuration. Almost every attempt based on statistics and common sense will provide better result than Qwerty or Dvorak.
+The time that you spend on configuring it most probably will not pay off.
 
-Everything depends on the estimation method, used keyboard, and personal preferenses of an author
+Everything depends on the estimation method, used keyboard, and personal preferences of an author.
+
+It will be always a compromise. Everything depends on what you value.
 
 In addition, authors of those layouts assume that you use fingers strictly vertically.
 But in my case it does not work.
@@ -56,6 +73,8 @@ I don't know who is mutant in this case.
 1. Hands balance. Left and right hands should be used equally.
 1. Inward rolls are more preferable than outward.
 1. Fingers statistic.
+
+Why do I think that this estimation method is applicable? Because the results that it gives, correlates with other methods. `Qwerty` is bad, `MTGAP` is good as expected.
 
 ## To run
 

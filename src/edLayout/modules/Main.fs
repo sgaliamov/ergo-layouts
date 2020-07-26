@@ -189,7 +189,7 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) outp
     let save state =
         let percentFromTotalChars = percentFromTotalChars state
         if not (File.Exists output) then
-            File.AppendAllText(output, "Title,Result,Hand switch,Same finger,Left hand,Right hand,Left hand continuos,Right hand continuos,Left finger continuos,Right finger continuos,Efforts,Distance,Outward rolls,Inward rolls\n")
+            File.AppendAllText(output, "Title,Result,Hand switch,Same finger,Left hand,Right hand,Left hand continuos,Right hand continuos,Left finger continuos,Right finger continuos,Outward rolls,Inward rolls,Efforts,Distance\n")
         let title = Path.GetFileName layoutPath |> CultureInfo.InvariantCulture.TextInfo.ToTitleCase
         let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
         let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
