@@ -131,6 +131,8 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) outp
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance
         |> appendLines heatMap (percentFromTotal state.Result) 0.0
+        |> appendValue "Outward rolls" (percentFromTotalChars state.OutwardRolls)
+        |> appendValue "Inward rolls" (percentFromTotalChars state.InwardRolls)
         |> appendValue "Hand switch" (percentFromTotalChars state.HandSwitch)
         |> appendValue "Same finger" (percentFromTotalChars state.SameFinger)
         |> appendValue "Result" state.Result
@@ -149,8 +151,6 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) outp
             |> appendValue "Letters" state.TotalLetters
             |> appendLines letters (percentFromTotalInt state.TotalLetters) 0.0
             |> appendValue "Shifts" (percentFromTotalInt state.TotalChars state.Shifts)
-            |> appendValue "Outward rolls" (percentFromTotalInt state.TotalChars state.OutwardRolls)
-            |> appendValue "Inward rolls" (percentFromTotalInt state.TotalChars state.InwardRolls)
             |> appendValue "Top keys" (percentFromTotalInt state.TotalChars state.TopKeys)
             |> appendValue "Home keys" (percentFromTotalInt state.TotalChars state.HomeKeys)
             |> appendValue "Bottom keys" (percentFromTotalInt state.TotalChars state.BottomKeys)
@@ -189,13 +189,13 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) outp
     let save state =
         let percentFromTotalChars = percentFromTotalChars state
         if not (File.Exists output) then
-            File.AppendAllText(output, "Title,Result,Hand switch,Same finger,Left hand,Right hand,Left hand continuos,Right hand continuos,Left finger continuos,Right finger continuos,Efforts,Distance\n")
+            File.AppendAllText(output, "Title,Result,Hand switch,Same finger,Left hand,Right hand,Left hand continuos,Right hand continuos,Left finger continuos,Right finger continuos,Efforts,Distance,Outward rolls,Inward rolls\n")
         let title = Path.GetFileName layoutPath |> CultureInfo.InvariantCulture.TextInfo.ToTitleCase
         let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
         let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
         let line =
             sprintf
-                "%s,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n"
+                "%s,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n"
                 title
                 state.Result
                 (percentFromTotalChars state.HandSwitch)
@@ -206,6 +206,8 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) outp
                 (percentFromTotalChars state.RightHandContinuous)
                 (percentFromTotalChars leftFingersContinuous)
                 (percentFromTotalChars rightFingersContinuous)
+                (percentFromTotalChars state.OutwardRolls)
+                (percentFromTotalChars state.InwardRolls)
                 state.Efforts
                 state.Distance
 

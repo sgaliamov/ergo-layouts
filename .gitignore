@@ -1,12 +1,10 @@
+.ionide/
 .vs/
 .vscode/
+*.user
 ~*
 bin/
-launchSettings.json
 obj/
-.ionide/
 publish/
-*.user
 samples/
-samples-dev/
-log.md
+launchSettings.json
