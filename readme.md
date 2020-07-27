@@ -2,9 +2,22 @@
 
 Is a utility to examine layouts for ErgoDox keyboard.
 
+## Why?
+
+ErgoDox is such a keyboard for which you first need to learn a functional programming language with static typing, and then create a utility to find the most optimal configuration for it.
+Joke.
+A functional language with dynamic typing is also suitable.
+
 When you buy a keyboard that costs almost 400€ you probably want use it 100%.
-Initially I planned to configure peripheral keys. Но так как пришлось все равно учиться печатать заного, я подумал почему бы не выучить новую раскладку?
-после недолгого расследования выяснилось что дворак не намного лучше кверти. и от колемака люди не особо в восторге.
+Initially I planned to configure peripheral keys only. Но так как пришлось все равно учиться печатать заново, я подумал почему бы не выучить новую раскладку? на ум приходил только дворак.
+но после недолгого расследования выяснилось, что дворак не намного лучше кверти. да и от колемака люди не особо в восторге.
+
+люди создали довольно много различных раскладок. и как обычно, большое разнообразие только замедляет и усложняет процесс выбора.
+
+что бы выбор был осознанны, я задумался над тем что важно для меня.
+
+I wanted to try F# for some small project and scope of this assignment is perfect for F#.
+I feel I returned 10 years back - learning how to type, learning how to program again. Very interesting experience.
 
 в процессе создания оценочного метода стало ясно что ни одна из существующих клавиатур не подойдет под него.
 и даже первая неглубокая попытка создать раскладку которая бы подходила бы под метод дала хорошие результаты.
@@ -13,21 +26,17 @@ Initially I planned to configure peripheral keys. Но так как пришл�
 что хотелось
 - меньше черодовать руки. это важно. например колемак часто критикуют за это.
 - меньше повторять пальцы.
+- минимизировать использование мизинца. мизинец и так чрезмерно используется при нажатии шифтов и контролов. для самого слабого пальца, это слишком большая нагрузка.
 - расположить часто используемые диграфы на одной стороне.
 - шоткаты во внимание не принимались так так на клаве можно настроить экста слои.
 
-## Why?
 
-ErgoDox is such a keyboard for which you first need to learn a functional programming language with static typing, and then create a utility to find the most optimal configuration for it.
-Joke.
-A functional language with dynamic typing is also suitable.
 
 There are plenty tools already that estimate layouts.
 But they all have the one fatal flaw: they based on standard keyboards.
 
-ErgoDox keyboard is very different, and it's bigger than a regular laptop keyboard.
+ErgoDox keyboard is very different, and it's bigger than a regular laptop keyboard, all buttons are strictly vertical.
 On a regular keyboard for example, you don't have to tilt your wrist when you press button N because all buttons are shifted.
-On ErgoDox all buttons are strictly vertical.
 On the other hand, in the literal and figurative sense, button B is more reachable now.
 
 It's much easier to use pinky fingers on top row on a regular keyboard.
@@ -35,8 +44,7 @@ On my laptop I can reach P and Q without any efforts using pinkies, but on ErgoD
 Maybe it's because of "bad habits" or adaptation period, but I just don't see how should I place my hands to enable pinkies 100%, even if I want.
 
 
-Another reason, I wanted to try F# for some small project and scope of this assignment is perfect for F#.
-I feel I returned 10 years back - learning how to type, learning how to program again. Very interesting experience.
+Another reason, 
 
 ## Results
 
@@ -84,9 +92,9 @@ edLayout.exe -i ./samples -l ./layouts/qwerty.json -o ./results.csv
 
 ## Useful links
 
-* <http://patorjk.com/keyboard-layout-analyzer/#/main>.
-* <https://elliotgeorge.net/2018/11/22/the-kaehi-keyboard-layout/>.
-* <http://mkweb.bcgsc.ca/carpalx/>.
-* <https://kennetchaz.github.io/symmetric-typing/results.html>.
-* <https://geekhack.org/index.php?topic=67604.50s>.
-* <https://mtgap.wordpress.com/2009/08/07/optimized-evolutionary-algorithm-for-keyboard-design-part-1/>.
+- <http://patorjk.com/keyboard-layout-analyzer/#/main>.
+- <https://elliotgeorge.net/2018/11/22/the-kaehi-keyboard-layout/>.
+- <http://mkweb.bcgsc.ca/carpalx/>.
+- <https://kennetchaz.github.io/symmetric-typing/results.html>.
+- <https://geekhack.org/index.php?topic=67604.50s>.
+- <https://mtgap.wordpress.com/2009/08/07/optimized-evolutionary-algorithm-for-keyboard-design-part-1/>.
