@@ -1,6 +1,4 @@
-﻿# All layouts
-
-## Arensito Customized
+﻿## Arensito Customized
 
 ``` ini
  q: 1.17   l: 2.84   a: 4.17   p: 4.14  "': 0.45       x: 2.72   f: 2.69   i: 3.66   d: 3.81  :;: 1.99
@@ -462,6 +460,64 @@ Inward rolls: 01.94
 Hand switch: 42.56
 Same finger: 04.63
 Result     : 15,987,219.65
+```
+
+## Custom V15
+
+``` ini
+ k: 3.95   h: 3.02   i: 4.4    w: 3.4   "': 0.49       x: 1.6    m: 3.63   u: 3.95   l: 3.48   z: 1.12
+ g: 2.3    n: 2.88   a: 3.76   t: 3.23   f: 2.5       >.: 1.97   s: 3.19   e: 3.53   r: 3.51   y: 3.68
+ q: 1.51   b: 3.04   v: 2.09   o: 3.45  :;: 2.34      <,: 2.34   c: 3.31   p: 3.3    d: 4.31   j: 1.28
+Left      : 49.32/24.91/03.95 (total/hand continuous/fingers continuous)
+    Index: 19.805    Middle: 15.664    Ring: 11.259    Pinky: 2.594
+    Index: 2.883     Middle: 0.952     Ring: 0.112     Pinky: 0.008
+Right     : 50.68/21.11/02.29 (total/hand continuous/fingers continuous)
+    Middle: 18.032    Index: 17.456    Ring: 13.087    Pinky: 2.103
+    Middle: 1.228     Ring: 0.539     Index: 0.516     Pinky: 0.007
+Efforts    : 34,672,021.4
+Distance   : 14,087,042.07
+     i: 4.397      d: 4.311      k: 3.954      u: 3.947      a: 3.761      y: 3.682
+     m: 3.625      e: 3.533      r: 3.515      l: 3.475      o: 3.451      w: 3.395
+     c: 3.314      p: 3.302      t: 3.233      s: 3.187      b: 3.044      h: 3.018
+     n: 2.879      f: 2.501     :;: 2.342     ,<: 2.338      g: 2.305      v: 2.094
+    )0: 2.031     .>: 1.969      x: 1.605     (9: 1.554      q: 1.507     -_: 1.405
+    !1: 1.361      j: 1.285      z: 1.124     +=: 1.045     2@: 0.849     $4: 0.762
+    6^: 0.725     /?: 0.659     #3: 0.622     [{: 0.614     %5: 0.553     "': 0.493
+    &7: 0.449     ]}: 0.323     *8: 0.305     \|: 0.151     `~: 0.007
+Outward rolls: 02.88
+Inward rolls: 03.53
+Hand switch: 44.26
+Same finger: 06.24
+Result     : 16,424,511.71
+```
+
+## Custom V16
+
+``` ini
+ z: 0.47   h: 2.64   i: 4.56   g: 2.81   k: 2.7       "': 0.45   y: 2.79   o: 4.48   l: 3.6    j: 1.01
+ d: 5.46   n: 3.91   a: 3.63   t: 3.21  >.: 3.21       f: 2.5    s: 3.46   e: 4.37   r: 2.97   p: 3.56
+ q: 1.53   v: 2.43   w: 2.29   c: 3.37  <,: 4         :;: 1.04   u: 2.46   b: 2.78   m: 3.99   x: 1.62
+Left      : 49.84/22.98/01.97 (total/hand continuous/fingers continuous)
+    Index: 19.523    Middle: 15.9      Ring: 10.661    Pinky: 3.757
+    Index: 1.024     Middle: 0.821     Ring: 0.116     Pinky: 0.006
+Right     : 50.16/24.49/02.63 (total/hand continuous/fingers continuous)
+    Middle: 21.039    Index: 13.208    Ring: 12.493    Pinky: 3.419
+    Index: 1.254     Middle: 0.98      Ring: 0.339     Pinky: 0.055
+Efforts    : 34,266,404
+Distance   : 14,422,586.9
+     d: 5.463      i: 4.56       o: 4.479      e: 4.37      ,<: 4          m: 3.99
+     n: 3.906      a: 3.632      l: 3.598      p: 3.559      s: 3.463      c: 3.37
+     t: 3.214     .>: 3.206      r: 2.971      g: 2.807      y: 2.789      b: 2.781
+     k: 2.701      h: 2.637      f: 2.496      u: 2.456      v: 2.435      w: 2.292
+    )0: 1.926     (9: 1.805      x: 1.62       q: 1.535     -_: 1.499     !1: 1.152
+    +=: 1.099     :;: 1.036      j: 1.009     6^: 0.694     $4: 0.694     2@: 0.657
+    %5: 0.573     /?: 0.534     &7: 0.52       z: 0.474     "': 0.45      #3: 0.418
+    *8: 0.352     [{: 0.344     ]}: 0.276     \|: 0.154     `~: 0.007
+Outward rolls: 02.99
+Inward rolls: 02.01
+Hand switch: 42.56
+Same finger: 04.59
+Result     : 15,888,498.95
 ```
 
 ## Custom V2

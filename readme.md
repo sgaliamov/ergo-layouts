@@ -9,18 +9,19 @@ But they all have the one [fatal flaw](https://www.drdobbs.com/windows/a-brief-h
 
 Most standard keyboards are shifted: upper rows slightly moved left relatively lower rows.
 What is completely reasonable for the right hand.
-But the only explanations, that I can find for why do we have the same shift for the left hand, is a reactionism, and is that manufacturers want to save money on production.
+But the only explanations, that I can find for why do we have the same shift for the left hand, is reactionism, and is that manufacturers want to save money on production.
 
 ErgoDox keyboard is very different.
 Except for the extra key clusters for thumb fingers, it's slightly bigger than a typical laptop keyboard, and all buttons are placed strictly vertical.
 On a regular keyboard for example, you don't have to tilt your wrist when you press the button N because of the shift.
 On the other hand, in the literal and figurative sense, the button B is more reachable now on ErgoDox.
-It's much easier to use pinky fingers on the top row on a regular keyboard.
-On my laptop I can reach P and Q without any efforts, but on ErgoDox it's not really comfortable.
-Maybe it's because of "bad habits" or adaptation period, but I just don't see how should I place my hands to enable pinkies 100%, even if I want.
 
-When you buy a keyboard that costs almost 400€ with taxes, you probably ~~insane~~ want to use it 100%.
-Initially I planned to configure peripheral keys only.
+On a regular keyboard it's much easier to use pinky fingers on the top row.
+On my laptop I can reach P and Q without any efforts, but on ErgoDox it's not really comfortable.
+Maybe it's because of "bad habits" or adaptation period, but I just don't see how should I place my hands to fully enable pinkies, even if I want.
+
+When you buy a keyboard that costs almost 400€, you probably ~~insane~~ want to use it 100%.
+Initially I planned to configure peripheral buttons only.
 But since with a non-standard keyboard I had to learn how to type again, I thought why not learn a new layout?
 
 The only [Dvorak](https://en.wikipedia.org/wiki/Dvorak_keyboard_layout) came to mind.
@@ -45,7 +46,7 @@ What I find important:
 
 1. Support for modern English only.
 
-    For that purpose I used technical literature of approximately 10,000,000 characters to do comparisons.
+    For that purpose I used technical literature of approximately 10,000,000 characters in total to do comparisons.
     [Statistics](docs/statistics.md) that I collected slightly differs from that you can get using "Alice's Adventures in Wonderland" or "Moby Dick or The Whale".
     It's fine for me, because, to my shame, I do not plan to write such kind of texts.
 
@@ -53,16 +54,16 @@ What I find important:
 
     Colemak is often criticized for the fact that T and H keys are placed on the different sides of a keyboard. It breaks the rhythm of the typing. This and the fact that the one of the most used vowels, A and O, are intended for pinkies, turned me away from using Colemak.
 
-3. Keys of the most used [digraphs](https://en.wikipedia.org/wiki/Digraph_(orthography)) should be located close to each other.
+3. The keys of the most commonly used [digraphs](https://en.wikipedia.org/wiki/Digraph_(orthography)) should be placed close to each other.
 
-    For example, E and R letters create the most used combination in English. Even Qw**er**ty has it, but many popular layouts (Workman, Norman, Colemak, etc.) ignore it for the reason that I can not explain.
+    For example, E and R letters create the most used combination in English. Even Qw**er**ty has it, but many popular layouts (Workman, Norman, Colemak, etc.) ignore this for a reason that I can not explain.
 
 4. Type less with one finger continuously.
 
     Just positioning keys of digraphs close to each other is not enough.
     It's slower to type, when keys are placed vertically, because a finger need to travel some distance to reach a next position.
-    Much comfortable and faster to press next key with other finger.
-    For that reason it's a big loss (Workman, Dvorak) to put O and E on one row next to each other, this combination is used very rare.
+    Much comfortable and faster to press next key with another finger.
+    For that reason, it's a big loss for Workman and Dvorak to put O and E in the same row next to each other, this combination is used very rarely.
 
 5. Minimize usage of pinkies.
 
@@ -70,12 +71,12 @@ What I find important:
 
 6. The usage of hands should be balanced.
 
-    It's hard to say what balance is the best.
+    It's hard to say which balance is the best.
     It sounds logical that the load on hands should be equal.
-    But from other point of view, the left hand is used more because we use a mouse with right hand and place most of shortcuts on the left side.
+    But from other point of view, the left hand is used more often because we use a mouse with the right hand and place the most of shortcuts on the left side.
     To not overcomplicate, I decide stick to balanced option.
 
-7. Punctuation marks do not have to be placed on the standard position.
+7. Punctuation marks do not have to be in the standard position.
 
     Since they are completely legitimate elements of a text we can benefit from placing them on better positions.
     Dot is used more often than a half of letters.
@@ -90,7 +91,7 @@ What I find important:
 Having all this requirements I started this project.
 I wanted to try F# and scope of this assignment was perfect for it.
 Why do I think that this estimation method is applicable?
-Because the results that it gives, correlates with other methods. `Qwerty` is bad, `MTGAP` is good as expected.
+Because the results that it gives, correlates with other estimations. Qwerty is bad, MTGAP is good as expected.
 
 ErgoDox is such a keyboard for which you first need to learn a functional programming language with [static typing](https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system), and then create a utility to find the most optimal configuration for it.
 Joke.
@@ -99,7 +100,7 @@ A functional language with [dynamic typing](https://en.wikipedia.org/wiki/Lisp) 
 ## Custom layout
 
 In the process of creating the evaluative method, it became clear that none of the existing keyboards would fit it.
-And even the first timid attempt to create a layout that would fit the method gave good results.
+And even the first timid attempt to create a layout gave good results.
 After some number of attempts I came to the following result.
 
 ``` pre
@@ -137,9 +138,9 @@ Everything depends on what you value.
 
 If you need just a good layout I recommend to look at:
 
-1. [Asset](http://millikeys.sourceforge.net/asset/) it has good balance and it should be easy to switch from Qwerty.
-2. [Capewell](http://www.michaelcapewell.com/projects/keyboard/layout_capewell.htm) and [Mtgap](http://mtgap.bilfo.com/completed_keyboard.html) good balanced keyboards that are produced using [genetic algorithm](https://en.wikipedia.org/wiki/Genetic_algorithm).
-3. Colemak not really bad if you switch D and H keys. It's much better alternative than Dvorak.
+1. [Capewell](http://www.michaelcapewell.com/projects/keyboard/layout_capewell.htm) and [Mtgap](http://mtgap.bilfo.com/completed_keyboard.html) are good balanced keyboards that are produced using [genetic algorithm](https://en.wikipedia.org/wiki/Genetic_algorithm).
+2. [Asset](http://millikeys.sourceforge.net/asset/) has good balance and it should be easy to switch from Qwerty.
+3. [Colemak](https://colemak.com/) not really bad if you switch D and H keys. It's much better alternative than Dvorak.
 4. If you are not happy with Colemak you can look at [Norman](https://normanlayout.info/) or [Workman](https://workmanlayout.org/). Very worthy options.
 
 ## Useful links
