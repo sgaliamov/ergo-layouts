@@ -215,11 +215,13 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) outp
 
     let start = DateTime.UtcNow
 
-    Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
-    |> Seq.takeWhile notCancelled
-    |> PSeq.map (yieldLines >> calculateLines keyboard)
-    |> PSeq.fold folder initialState
-    |> printState
-    |> save
+    let result =
+        Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
+        |> Seq.takeWhile notCancelled
+        |> PSeq.map (yieldLines >> calculateLines keyboard)
+        |> PSeq.fold folder initialState
+        |> printState
+    
+    if not (String.IsNullOrWhiteSpace output) then save result
 
     Ok (sprintf "Time spent: %s" ((DateTime.UtcNow - start).ToString("c")))
