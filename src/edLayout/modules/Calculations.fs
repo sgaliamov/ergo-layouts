@@ -205,13 +205,13 @@ let collect (keyboard: Keyboard) line =
 
     let isMainKey key =
         topKeys.Contains key
-        && bottomKeys.Contains key
-        && bottomKeys.Contains key
+        || bottomKeys.Contains key
+        || homeKeys.Contains key
 
     let inwards =
         keysInLine
         |> Seq.pairwise
-        |> Seq.filter isSameHand
+        |> Seq.filter isSameFinger
         |> Seq.filter (fun (a, b) -> isMainKey a && isMainKey b)
         |> Seq.fold (fun count (a, b) ->
             if topKeys.Contains(a) && not (topKeys.Contains(b)) then count + 1
@@ -221,7 +221,7 @@ let collect (keyboard: Keyboard) line =
     let outwards =
         keysInLine
         |> Seq.pairwise
-        |> Seq.filter isSameHand
+        |> Seq.filter isSameFinger
         |> Seq.filter (fun (a, b) -> isMainKey a && isMainKey b)
         |> Seq.fold (fun count (a, b) ->
             if bottomKeys.Contains(a) && not (bottomKeys.Contains(b)) then count + 1

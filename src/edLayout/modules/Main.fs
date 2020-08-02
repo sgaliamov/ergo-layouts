@@ -14,8 +14,9 @@ open Configs
 open KeyboardModelds
 open StateModels
 open Utilities
+open System.Globalization
 
-let calculate showProgress samplesPath search detailed (layoutPath: string) (token: CancellationToken) cancel =
+let calculate showProgress samplesPath search detailed (layoutPath: string) output (token: CancellationToken) cancel =
     // todo: find better way to validate input parameters
     if not (Directory.Exists samplesPath) then
         cancel ()
@@ -63,7 +64,7 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
     let notCancelled _ = not token.IsCancellationRequested
     let percentFromTotal total value = (100. * div value total)
     let percentFromTotalInt total value = percentFromTotal (float total) (float value)
-
+    let percentFromTotalChars state = percentFromTotalInt state.TotalChars
     let combinePairedChars add (items: IDictionary<Character.Char, 'T>) =
         items
         |> Seq.map (fun (x: KeyValuePair<Character.Char, 'T>) -> x.Key, x.Value)
@@ -109,29 +110,31 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
             |> appendRow keyboard.BottomKeys
 
         let heatMap = combinePairedChars (+) state.HeatMap
-        let percentFromTotalInt = percentFromTotalInt state.TotalChars
         let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
         let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
+        let percentFromTotalChars = percentFromTotalChars state
 
         builder
         |> appendKeyboard
         |> appendFormat "Left      : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
-            [| (percentFromTotalInt state.LeftHandTotal)
-               (percentFromTotalInt state.LeftHandContinuous)
-               (percentFromTotalInt leftFingersContinuous) |]
-        |> appendLines state.LeftFingers percentFromTotalInt 0.0
-        |> appendLines state.LeftFingersContinuous percentFromTotalInt 0.0
+            [| (percentFromTotalChars state.LeftHandTotal)
+               (percentFromTotalChars state.LeftHandContinuous)
+               (percentFromTotalChars leftFingersContinuous) |]
+        |> appendLines state.LeftFingers percentFromTotalChars 0.0
+        |> appendLines state.LeftFingersContinuous percentFromTotalChars 0.0
         |> appendFormat "Right     : {0:0,0.##}/{1:0,0.##}/{2:0,0.##} (total/hand continuous/fingers continuous)\n"
-            [| (percentFromTotalInt state.RightHandTotal)
-               (percentFromTotalInt state.RightHandContinuous)
-               (percentFromTotalInt rightFingersContinuous) |]
-        |> appendLines state.RightFingers percentFromTotalInt 0.0
-        |> appendLines state.RightFingersContinuous percentFromTotalInt 0.0
+            [| (percentFromTotalChars state.RightHandTotal)
+               (percentFromTotalChars state.RightHandContinuous)
+               (percentFromTotalChars rightFingersContinuous) |]
+        |> appendLines state.RightFingers percentFromTotalChars 0.0
+        |> appendLines state.RightFingersContinuous percentFromTotalChars 0.0
         |> appendValue "Efforts" state.Efforts
         |> appendValue "Distance" state.Distance
         |> appendLines heatMap (percentFromTotal state.Result) 0.0
-        |> appendValue "Hand switch" (percentFromTotalInt state.HandSwitch)
-        |> appendValue "Same finger" (percentFromTotalInt state.SameFinger)
+        |> appendValue "Outward rolls" (percentFromTotalChars state.OutwardRolls)
+        |> appendValue "Inward rolls" (percentFromTotalChars state.InwardRolls)
+        |> appendValue "Hand switch" (percentFromTotalChars state.HandSwitch)
+        |> appendValue "Same finger" (percentFromTotalChars state.SameFinger)
         |> appendValue "Result" state.Result
     
     let printState state =
@@ -148,16 +151,14 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
             |> appendValue "Letters" state.TotalLetters
             |> appendLines letters (percentFromTotalInt state.TotalLetters) 0.0
             |> appendValue "Shifts" (percentFromTotalInt state.TotalChars state.Shifts)
-            |> appendValue "Outward rolls" (percentFromTotalInt state.TotalChars state.OutwardRolls)
-            |> appendValue "Inward rolls" (percentFromTotalInt state.TotalChars state.InwardRolls)
             |> appendValue "Top keys" (percentFromTotalInt state.TotalChars state.TopKeys)
             |> appendValue "Home keys" (percentFromTotalInt state.TotalChars state.HomeKeys)
             |> appendValue "Bottom keys" (percentFromTotalInt state.TotalChars state.BottomKeys)
-            
             |> ignore
         builder
         |> formatMain state
         |> Console.Write
+        state
 
     let onStateChanged state =
         if showProgress then
@@ -185,12 +186,42 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) (tok
         stateChangedStream.OnNext newState
         newState
 
+    let save state =
+        let percentFromTotalChars = percentFromTotalChars state
+        if not (File.Exists output) then
+            File.AppendAllText(output, "Title,Result,Hand switch,Same finger,Left hand,Right hand,Left hand continuos,Right hand continuos,Left finger continuos,Right finger continuos,Outward rolls,Inward rolls,Efforts,Distance\n")
+        let title = Path.GetFileName layoutPath |> CultureInfo.InvariantCulture.TextInfo.ToTitleCase
+        let leftFingersContinuous = state.LeftFingersContinuous.Values.Sum()
+        let rightFingersContinuous = state.RightFingersContinuous.Values.Sum()
+        let line =
+            sprintf
+                "%s,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f\n"
+                title
+                state.Result
+                (percentFromTotalChars state.HandSwitch)
+                (percentFromTotalChars state.SameFinger)
+                (percentFromTotalChars state.LeftHandTotal)
+                (percentFromTotalChars state.RightHandTotal)
+                (percentFromTotalChars state.LeftHandContinuous)
+                (percentFromTotalChars state.RightHandContinuous)
+                (percentFromTotalChars leftFingersContinuous)
+                (percentFromTotalChars rightFingersContinuous)
+                (percentFromTotalChars state.OutwardRolls)
+                (percentFromTotalChars state.InwardRolls)
+                state.Efforts
+                state.Distance
+
+        File.AppendAllText(output, line)
+
     let start = DateTime.UtcNow
 
-    Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
-    |> Seq.takeWhile notCancelled
-    |> PSeq.map (yieldLines >> calculateLines keyboard)
-    |> PSeq.fold folder initialState
-    |> printState
+    let result =
+        Directory.EnumerateFiles(samplesPath, search, SearchOption.AllDirectories)
+        |> Seq.takeWhile notCancelled
+        |> PSeq.map (yieldLines >> calculateLines keyboard)
+        |> PSeq.fold folder initialState
+        |> printState
+    
+    if not (String.IsNullOrWhiteSpace output) then save result
 
     Ok (sprintf "Time spent: %s" ((DateTime.UtcNow - start).ToString("c")))
