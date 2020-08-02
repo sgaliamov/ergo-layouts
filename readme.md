@@ -35,7 +35,7 @@ In addition to well known Dvorak and Colemak we have:
 - [Carpalx](http://mkweb.bcgsc.ca/carpalx/).
 - [Capewell](http://www.michaelcapewell.com/projects/keyboard/layout_capewell.htm).
 - [Norman](https://normanlayout.info/).
-- and many others. In my research I found and tested around 20 different designs.
+- and many others. In my research I found and tested around 25 different designs.
 
 As it usual happens, great variety slows down and [complicates](https://en.wikipedia.org/wiki/Overchoice) the selection process.
 To help myself make a conscious choice, I start to thought about what is important to me.
@@ -86,7 +86,7 @@ What I find important:
 
     Since we use ErgoDox keyboard we can configure extra layers and have almost any shortcut anywhere.
     The authors of many layouts deliberately left the Z, X, C, V buttons in place to preserve the familiar experience.
-    It makes sense for regular keyboards, and I would care about it if I doesn't have ErgoDox.
+    It makes sense for regular keyboards, and I would care about it if I didn't have ErgoDox.
 
 Having all this requirements I started this project.
 I wanted to try F# and scope of this assignment was perfect for it.
@@ -110,6 +110,8 @@ q v w c ,   ; u b m x
 ```
 
 Here is the full configuration for [ErgoDox](https://configure.ergodox-ez.com/ergodox-ez/layouts/EWljA/latest/0).
+
+[![ErgoDox](docs/layout.png)](https://configure.ergodox-ez.com/ergodox-ez/layouts/EWljA/latest/0).
 
 ## Results
 
