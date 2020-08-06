@@ -30,6 +30,5 @@ let settings =
        columns = appSettings.Columns
        letters = lettersStatistics
        handSwitchPenalty = float appSettings.HandSwitchPenalty
-       doublePressPenalty = float appSettings.DoublePressPenalty
        sameFingerPenalty = float appSettings.SameFingerPenalty
        minDigraphs = float appSettings.MinDigraphs |}
