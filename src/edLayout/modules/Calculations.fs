@@ -141,8 +141,8 @@ let collect (keyboard: Keyboard) line =
             freeKeys.Contains prevN && freeKeys.Contains keyN
 
         if prev = START_TOKEN then 0.
-        else if sameColumn() then settings.sameFingerPenalty
         else if isFree() then 1.0
+        else if sameColumn() then settings.sameFingerPenalty
         else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
         else 1.0
 
