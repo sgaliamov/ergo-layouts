@@ -103,10 +103,10 @@ In the process of creating the evaluative method, it became clear that none of t
 And even the first timid attempt to create a layout gave good results.
 After some number of attempts I came to the following result.
 
-``` pre
-z h i g k   ' y o l j
-d n a t .   f s e r p
-q v w c ,   ; u b m x
+``` text
+z h i g k    ' y o l q
+w n a t .    f s e r p
+x v b c ,    ; d u m j
 ```
 
 Here is the full configuration for [ErgoDox](https://configure.ergodox-ez.com/ergodox-ez/layouts/EWljA/latest/0).
