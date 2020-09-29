@@ -15,11 +15,10 @@ let private handler input pattern layout output showProgress detailed =
 
     let result = calculate showProgress input pattern detailed layout output cts.Token cancel
     match result with
-    | Ok ->
-        0
     | Error error ->
         printf "\n\n%s" error
         -1
+    | _ -> 0
 
 let [<EntryPoint>] main args =
     let root = RootCommand()

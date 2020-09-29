@@ -86,7 +86,7 @@ What I find important:
 
     Since we use ErgoDox keyboard we can configure extra layers and have almost any shortcut anywhere.
     The authors of many layouts deliberately left the Z, X, C, V buttons in place to preserve the familiar experience.
-    It makes sense for regular keyboards, and I would care about it if I didn't have ErgoDox.
+    It makes sense for regular keyboards, and I would care about it if I didn't have ErgoDox. I thought initially. The biggest problem with that, is when you have to switch to another language, all shotcuts are moved to the original places and you have to remember two sets of shotcuts and current language. It's really annoying.
 
 Having all this requirements I started this project.
 I wanted to try F# and scope of this assignment was perfect for it.
@@ -101,17 +101,16 @@ A functional language with [dynamic typing](https://en.wikipedia.org/wiki/Lisp) 
 
 In the process of creating the evaluative method, it became clear that none of the existing keyboards would fit it.
 And even the first timid attempt to create a layout gave good results.
-After some number of attempts I came to the following result.
+After some number of attempts I came to the following result:
 
 ``` text
-z h i g k    ' y o l q
+' h i g ,    ; y o l q
 w n a t .    f s e r p
-x v b c ,    ; d u m j
+z x c v b    k d u m j
 ```
 
-Here is the full configuration for [ErgoDox](https://configure.ergodox-ez.com/ergodox-ez/layouts/EWljA/latest/0).
-
-[![ErgoDox](docs/layout.png)](https://configure.ergodox-ez.com/ergodox-ez/layouts/EWljA/latest/0).
+Here is the full configuration for [ErgoDox](https://configure.ergodox-ez.com/ergodox-ez/layouts/EWljA/55ADn/0).
+I can not say that I 100% happy wiht the result. There are some 
 
 ## Results
 

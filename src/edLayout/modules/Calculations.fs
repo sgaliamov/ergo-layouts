@@ -130,18 +130,19 @@ let collect (keyboard: Keyboard) line =
         |> Seq.map (fun (prev, key) -> key, getDistance keyboard prev key)
         |> Map
 
+    let isFree (a, b) =
+        let prevN = Keys.getNumber a
+        let keyN = Keys.getNumber b
+        freeKeys.Contains prevN && freeKeys.Contains keyN
+
     let getFactor prev key =
         let sameColumn () =
             let (prevX, _) = keyboard.Coordinates.[prev]
             let (keyX, _) = keyboard.Coordinates.[key]
             prevX = keyX
-        let isFree () =
-            let prevN = Keys.getNumber prev
-            let keyN = Keys.getNumber key
-            freeKeys.Contains prevN && freeKeys.Contains keyN
 
         if prev = START_TOKEN then 0.
-        else if isFree() then 1.0
+        else if isFree(key, prev) then 1.0
         else if sameColumn() then settings.sameFingerPenalty
         else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
         else 1.0
@@ -192,6 +193,7 @@ let collect (keyboard: Keyboard) line =
         |> Seq.pairwise
         |> Seq.filter (fun (a, b) -> a <> b)
         |> Seq.filter isSameFinger
+        |> Seq.filter (isFree >> not)
         |> Seq.filter (fun (a, b) -> not (isPunctuation a || isPunctuation b))
         |> Seq.map first
         |> Seq.cache

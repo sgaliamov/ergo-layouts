@@ -4,12 +4,12 @@
  q: 0.88   l: 3.71   a: 3.61   p: 4.3   "': 0.4        x: 2.42   f: 2.76   i: 3.4    d: 4.72  :;: 1.49
  w: 2.82   r: 3.83   e: 4.37   n: 2      b: 3.77       g: 5.07   s: 2.58   o: 2.91   t: 5.13   u: 3.78
  z: 0.78  <,: 2.32  >.: 3.3    h: 4.36   j: 0.49       v: 3.3    c: 2.22   y: 2.78   m: 4.44   k: 2.48
-Left      : 49.58/18.97/01.1 (total/hand continuous/fingers continuous)
+Left      : 49.58/18.97/00.37 (total/hand continuous/fingers continuous)
     Middle: 22.621    Index: 14.333    Ring: 10.766    Pinky: 1.861
-    Middle: 0.673     Index: 0.329     Ring: 0.091     Pinky: 0.003
-Right     : 50.42/22.25/02.36 (total/hand continuous/fingers continuous)
+    Index: 0.278     Ring: 0.091     Pinky: 0.003
+Right     : 50.42/22.25/01.25 (total/hand continuous/fingers continuous)
     Middle: 16.275    Index: 15.202    Ring: 15.104    Pinky: 3.839
-    Middle: 1.257     Index: 0.646     Ring: 0.451     Pinky: 0.008
+    Ring: 0.451     Index: 0.405     Middle: 0.384     Pinky: 0.008
 Efforts    : 30,098,744.8
 Distance   : 13,739,501.7
      t: 5.126      g: 5.071      d: 4.719      m: 4.441      e: 4.367      h: 4.359
@@ -23,7 +23,7 @@ Distance   : 13,739,501.7
 Outward rolls: 01.69
 Inward rolls: 02.04
 Hand switch: 49.26
-Same finger: 03.46
+Same finger: 01.62
 Result     : 13,591,773.53
 ```
 
@@ -33,12 +33,12 @@ Result     : 13,591,773.53
  q: 0.83   l: 3.61  >.: 2      p: 4.23  "': 0.38      :;: 1.07   f: 3.04   u: 2.89   d: 4.54   k: 1.98
  a: 5.28   r: 3.62   e: 4.03   n: 3.48   b: 3.83       g: 4.88   s: 2.82   i: 3.17   t: 4.9    o: 4.71
  z: 0.73   w: 2.6   <,: 2.17   h: 4.14   j: 0.47       v: 3.23   c: 2.48   y: 2.88   m: 4.21   x: 2.74
-Left      : 49.58/18.97/00.6 (total/hand continuous/fingers continuous)
+Left      : 49.58/18.97/00.55 (total/hand continuous/fingers continuous)
     Middle: 16.426    Index: 14.333    Ring: 11.016    Pinky: 7.805
-    Index: 0.329     Ring: 0.228     Pinky: 0.047
-Right     : 50.42/22.25/01.33 (total/hand continuous/fingers continuous)
+    Index: 0.278     Ring: 0.228     Pinky: 0.047
+Right     : 50.42/22.25/00.98 (total/hand continuous/fingers continuous)
     Index: 15.169    Ring: 15.104    Middle: 12.226    Pinky: 7.92
-    Index: 0.573     Ring: 0.451     Middle: 0.199     Pinky: 0.108
+    Ring: 0.451     Index: 0.332     Pinky: 0.108     Middle: 0.089
 Efforts    : 32,715,931.15
 Distance   : 14,441,500.43
      a: 5.282      t: 4.898      g: 4.88       o: 4.713      d: 4.54       p: 4.23
@@ -52,7 +52,7 @@ Distance   : 14,441,500.43
 Outward rolls: 00.98
 Inward rolls: 01.3
 Hand switch: 49.26
-Same finger: 01.94
+Same finger: 01.53
 Result     : 14,247,514.6
 ```
 
@@ -62,12 +62,12 @@ Result     : 14,247,514.6
  q: 0.74   w: 1.65   j: 0.34   f: 3.24   g: 5.73       y: 4.63   p: 3.62   u: 2.73   l: 4.36  :;: 1.66
  a: 4.96   s: 3.89   e: 3.79   t: 2.81   d: 5.28       h: 6.4    n: 2.74   i: 3.21   o: 3.92   r: 5.03
  z: 0.68   x: 0.66   c: 3.51   v: 1.35   b: 3.83       k: 1.91   m: 2.31  <,: 1.93  >.: 3.11  ?/: 0.43
-Left      : 50.89/23.17/02.7 (total/hand continuous/fingers continuous)
+Left      : 50.89/23.17/02.55 (total/hand continuous/fingers continuous)
     Index: 18.186    Middle: 16.615    Ring: 8.251     Pinky: 7.834
-    Middle: 1.471     Index: 1.004     Ring: 0.174     Pinky: 0.047
-Right     : 49.11/17.39/01.82 (total/hand continuous/fingers continuous)
+    Middle: 1.339     Index: 0.989     Ring: 0.174     Pinky: 0.047
+Right     : 49.11/17.39/01.64 (total/hand continuous/fingers continuous)
     Index: 16.987    Ring: 13.926    Middle: 11.562    Pinky: 6.639
-    Index: 1.066     Ring: 0.648     Middle: 0.111
+    Index: 0.993     Ring: 0.648
 Efforts    : 33,977,396.25
 Distance   : 14,563,001.22
      h: 6.396      g: 5.728      d: 5.278      r: 5.03       a: 4.964      y: 4.632
@@ -81,7 +81,7 @@ Distance   : 14,563,001.22
 Outward rolls: 01.76
 Inward rolls: 02.46
 Hand switch: 50.73
-Same finger: 04.52
+Same finger: 04.19
 Result     : 15,103,627.74
 ```
 
@@ -91,12 +91,12 @@ Result     : 15,103,627.74
  q: 0.87   h: 5.58   o: 3.25   u: 3.96   x: 1.03       g: 4.6    c: 5.04   r: 2.23   f: 3.11   z: 0.7
  y: 3.65   i: 5.66   e: 3.68   a: 3.45  >.: 3.56       d: 5.56   s: 2.4    t: 2.53   n: 5.37   b: 3.24
  j: 0.61  ?/: 0.3   <,: 1.97   k: 0.6   "': 0.33       w: 3.42   m: 1.7    l: 3.62   p: 4.33   v: 4.33
-Left      : 47.55/09.34/00.99 (total/hand continuous/fingers continuous)
+Left      : 47.55/09.34/00.64 (total/hand continuous/fingers continuous)
     Middle: 20.409    Index: 14.532    Ring: 10.246    Pinky: 2.366
-    Ring: 0.362     Index: 0.35      Middle: 0.273     Pinky: 0.004
-Right     : 52.45/16.53/02.56 (total/hand continuous/fingers continuous)
+    Ring: 0.362     Index: 0.27      Middle: 0.004     Pinky: 0.004
+Right     : 52.45/16.53/01.64 (total/hand continuous/fingers continuous)
     Middle: 19.684    Index: 19.004    Ring: 11.129    Pinky: 2.631
-    Index: 1.214     Middle: 1.093     Ring: 0.25      Pinky: 0.003
+    Index: 1.059     Middle: 0.33      Ring: 0.25      Pinky: 0.003
 Efforts    : 34,101,613.6
 Distance   : 13,137,324.54
      i: 5.656      h: 5.581      d: 5.561      n: 5.368      c: 5.042      g: 4.6
@@ -110,7 +110,7 @@ Distance   : 13,137,324.54
 Outward rolls: 01.71
 Inward rolls: 01.81
 Hand switch: 64.91
-Same finger: 03.55
+Same finger: 02.28
 Result     : 14,696,789.4
 ```
 
@@ -120,12 +120,12 @@ Result     : 14,696,789.4
  q: 0.75   w: 1.59   d: 3.05   r: 4.25   t: 7.02       j: 0.51   y: 3.38   k: 1.01   l: 4.42   p: 5.63
  a: 5      s: 3.69   e: 3.6    f: 2.25   g: 2.7        h: 3.59   u: 3.24   i: 4.48   o: 4.44  :;: 1.06
  z: 0.69   x: 0.66   c: 3.64   v: 1.39   b: 3.84       n: 6.44   m: 2.25  <,: 2     >.: 3.35  ?/: 0.45
-Left      : 56.44/29.76/05.01 (total/hand continuous/fingers continuous)
+Left      : 56.44/29.76/03.5 (total/hand continuous/fingers continuous)
     Index: 20.745    Middle: 19.607    Ring: 8.251     Pinky: 7.834
-    Middle: 2.918     Index: 1.87      Ring: 0.174     Pinky: 0.047
-Right     : 43.56/13.31/01.75 (total/hand continuous/fingers continuous)
+    Index: 1.866     Middle: 1.417     Ring: 0.174     Pinky: 0.047
+Right     : 43.56/13.31/01.45 (total/hand continuous/fingers continuous)
     Index: 16.764    Ring: 13.926    Middle: 9.427     Pinky: 3.446
-    Index: 1.02      Ring: 0.648     Middle: 0.078
+    Index: 0.799     Ring: 0.648
 Efforts    : 35,038,558.4
 Distance   : 15,817,615.69
      t: 7.024      n: 6.44       p: 5.634      a: 4.995      i: 4.478      o: 4.44
@@ -139,7 +139,7 @@ Distance   : 15,817,615.69
 Outward rolls: 02.84
 Inward rolls: 03.25
 Hand switch: 48.52
-Same finger: 06.76
+Same finger: 04.95
 Result     : 15,042,717.37
 ```
 
@@ -149,12 +149,12 @@ Result     : 15,042,717.37
  q: 0.75   w: 2.1    d: 2.43   r: 4.43   f: 4.71       j: 0.53   y: 2.89   p: 2.14   l: 4.47  :;: 1.75
  a: 5.12   s: 3.35   e: 3.14   t: 3.18   g: 4.62       h: 6.61   u: 3.16   n: 2.87   i: 5.13   o: 5.51
  z: 0.7    x: 0.68   c: 3.87   v: 1.57   b: 3.97       k: 2.15   m: 2.37  <,: 2.07  >.: 3.42  ?/: 0.46
-Left      : 56.44/29.76/05.01 (total/hand continuous/fingers continuous)
+Left      : 56.44/29.76/03.49 (total/hand continuous/fingers continuous)
     Index: 20.745    Middle: 19.607    Ring: 8.251     Pinky: 7.834
-    Middle: 2.918     Index: 1.87      Ring: 0.174     Pinky: 0.047
-Right     : 43.56/13.31/01.43 (total/hand continuous/fingers continuous)
+    Index: 1.855     Middle: 1.417     Ring: 0.174     Pinky: 0.047
+Right     : 43.56/13.31/01.15 (total/hand continuous/fingers continuous)
     Ring: 13.959    Middle: 11.203    Index: 10.792    Pinky: 7.609
-    Ring: 0.947     Index: 0.423     Middle: 0.057
+    Ring: 0.947     Index: 0.201
 Efforts    : 33,385,504.5
 Distance   : 14,567,716.02
      h: 6.608      o: 5.51       i: 5.128      a: 5.115      f: 4.713      g: 4.617
@@ -168,7 +168,7 @@ Distance   : 14,567,716.02
 Outward rolls: 02.78
 Inward rolls: 03.58
 Hand switch: 48.52
-Same finger: 06.44
+Same finger: 04.64
 Result     : 14,734,051.47
 ```
 
@@ -178,12 +178,12 @@ Result     : 14,734,051.47
  q: 0.76   w: 1.59   d: 3.14   r: 4.49   f: 4.46       j: 0.53   y: 2.96   p: 2.1    l: 4.56   k: 2.37
  a: 5.17   s: 3.71   e: 3.34   t: 3.53   g: 2.78       h: 6.69   u: 3.05   i: 3.5    o: 4.59  <,: 2.64
  z: 0.71   x: 0.67   c: 3.74   v: 1.42   b: 3.89       n: 6.73   m: 2.22  :;: 0.81  >.: 3.47  ?/: 0.49
-Left      : 56.44/29.76/05.01 (total/hand continuous/fingers continuous)
+Left      : 56.44/29.76/03.49 (total/hand continuous/fingers continuous)
     Index: 20.745    Middle: 19.607    Ring: 8.251     Pinky: 7.834
-    Middle: 2.918     Index: 1.87      Ring: 0.174     Pinky: 0.047
-Right     : 43.56/13.31/01.84 (total/hand continuous/fingers continuous)
+    Index: 1.855     Middle: 1.417     Ring: 0.174     Pinky: 0.047
+Right     : 43.56/13.31/01.45 (total/hand continuous/fingers continuous)
     Index: 16.764    Ring: 13.926    Middle: 10.818    Pinky: 2.054
-    Index: 1.02      Ring: 0.648     Middle: 0.171
+    Index: 0.799     Ring: 0.648
 Efforts    : 33,356,742
 Distance   : 14,901,321.14
      n: 6.733      h: 6.688      a: 5.166      o: 4.588      l: 4.564      r: 4.487
@@ -197,7 +197,7 @@ Distance   : 14,901,321.14
 Outward rolls: 02.86
 Inward rolls: 03.68
 Hand switch: 48.52
-Same finger: 06.85
+Same finger: 04.94
 Result     : 14,550,344.47
 ```
 
@@ -207,12 +207,12 @@ Result     : 14,550,344.47
 >.: 3.52   m: 2.93   y: 1.43   d: 4.82   g: 6.14      :;: 1.37   w: 2.71   h: 2.21  <,: 2.44  "': 0.5
  a: 5.49   r: 3.88   e: 2.45   s: 3.37   f: 4.07       k: 2.09   t: 3.97   n: 3.07   i: 4.17   o: 5.43
  x: 1.45   c: 4.16   z: 0.42   v: 1.58   j: 0.5        b: 4.31   p: 2.56   l: 3.69   u: 3.7    q: 1.44
-Left      : 51.6/22.69/01.38 (total/hand continuous/fingers continuous)
+Left      : 51.6/22.69/01.2 (total/hand continuous/fingers continuous)
     Index: 14.235    Middle: 14.152    Ring: 12.276    Pinky: 10.935
-    Index: 0.598     Ring: 0.496     Middle: 0.208     Pinky: 0.074
-Right     : 48.4/20.9/00.87 (total/hand continuous/fingers continuous)
+    Index: 0.58      Ring: 0.496     Pinky: 0.074     Middle: 0.053
+Right     : 48.4/20.9/00.55 (total/hand continuous/fingers continuous)
     Index: 15.447    Middle: 14.858    Ring: 10.619    Pinky: 7.477
-    Index: 0.587     Middle: 0.157     Ring: 0.119     Pinky: 0.003
+    Index: 0.327     Ring: 0.119     Middle: 0.105     Pinky: 0.003
 Efforts    : 30,400,145.9
 Distance   : 14,509,629.83
      g: 6.137      a: 5.485      o: 5.428      d: 4.818      b: 4.314      i: 4.172
@@ -226,7 +226,7 @@ Distance   : 14,509,629.83
 Outward rolls: 01.18
 Inward rolls: 01.11
 Hand switch: 46.77
-Same finger: 02.24
+Same finger: 01.76
 Result     : 13,794,160.11
 ```
 
@@ -236,12 +236,12 @@ Result     : 13,794,160.11
 >.: 3.33   y: 2.94   m: 2.65   d: 4.75   f: 4.92       j: 0.53   p: 4.22   l: 3.15   u: 3.37   q: 1.25
  a: 5.32   e: 4.79   r: 3.48   s: 3.18   g: 4.72       b: 3.73   t: 4.2    n: 3.78   i: 4.35   o: 5.12
  x: 1.08   z: 0.2    c: 3.77   v: 1.46  :;: 1.51       k: 2.15   w: 1.91   h: 1.98  <,: 2.31  "': 0.52
-Left      : 51.82/22.52/01.36 (total/hand continuous/fingers continuous)
+Left      : 51.82/22.52/01.18 (total/hand continuous/fingers continuous)
     Index: 14.452    Ring: 13.515    Middle: 12.913    Pinky: 10.935
-    Index: 0.586     Middle: 0.496     Ring: 0.208     Pinky: 0.074
-Right     : 48.18/21.08/00.98 (total/hand continuous/fingers continuous)
+    Index: 0.568     Middle: 0.329     Ring: 0.208     Pinky: 0.074
+Right     : 48.18/21.08/00.71 (total/hand continuous/fingers continuous)
     Index: 15.231    Middle: 14.858    Ring: 10.619    Pinky: 7.477
-    Index: 0.701     Middle: 0.157     Ring: 0.119     Pinky: 0.003
+    Index: 0.519     Ring: 0.119     Middle: 0.068     Pinky: 0.003
 Efforts    : 33,914,654.8
 Distance   : 15,030,934.68
      a: 5.324      o: 5.115      f: 4.924      e: 4.793      d: 4.748      g: 4.723
@@ -255,7 +255,7 @@ Distance   : 15,030,934.68
 Outward rolls: 01.22
 Inward rolls: 01.18
 Hand switch: 46.76
-Same finger: 02.34
+Same finger: 01.89
 Result     : 14,608,887.27
 ```
 
@@ -265,12 +265,12 @@ Result     : 14,608,887.27
  z: 0.74   m: 3.08   a: 3.01   d: 4.94   p: 5.45      :;: 1.48   w: 2.61   h: 2.32  <,: 2.53  "': 0.53
  y: 2.88   r: 4.02   e: 3.16   s: 3.89   f: 4.3        k: 2.13   t: 3.29   o: 4.06   i: 4.43   l: 5.79
  x: 1.62   c: 4.51  >.: 2.36   b: 2.18   v: 2.89       j: 0.93   g: 1.2    n: 3.13   u: 4.18   q: 1.54
-Left      : 53.72/25.41/02.15 (total/hand continuous/fingers continuous)
+Left      : 53.72/25.41/01.39 (total/hand continuous/fingers continuous)
     Middle: 22.763    Index: 16.354    Ring: 12.276    Pinky: 2.325
-    Index: 0.975     Middle: 0.673     Ring: 0.496     Pinky: 0.01
-Right     : 46.28/19.87/02.67 (total/hand continuous/fingers continuous)
+    Index: 0.887     Ring: 0.496     Pinky: 0.01
+Right     : 46.28/19.87/02.2 (total/hand continuous/fingers continuous)
     Middle: 17.582    Index: 13.328    Ring: 10.619    Pinky: 4.753
-    Middle: 2.141     Index: 0.377     Ring: 0.119     Pinky: 0.03
+    Middle: 1.802     Index: 0.247     Ring: 0.119     Pinky: 0.03
 Efforts    : 28,149,187.3
 Distance   : 13,899,914.41
      l: 5.794      p: 5.447      d: 4.939      c: 4.512      i: 4.429      f: 4.298
@@ -284,7 +284,7 @@ Distance   : 13,899,914.41
 Outward rolls: 02.24
 Inward rolls: 02.79
 Hand switch: 45.16
-Same finger: 04.82
+Same finger: 03.59
 Result     : 12,931,177.73
 ```
 
@@ -294,12 +294,12 @@ Result     : 12,931,177.73
 "': 0.41  <,: 1.99  >.: 2.36   p: 3.37   y: 5.33       q: 1.06   f: 3.34   g: 1.52   r: 5.91   k: 1.91
  o: 5.68   a: 4.38   e: 3.74   i: 3.39   u: 4.89       d: 5.4    h: 1.12   t: 3.15   n: 5.73   s: 4.96
 :;: 1.43   z: 0.21   x: 0.65   c: 2.73   v: 2.24       j: 0.65   l: 2.87   m: 3.67   w: 2.92   b: 4.88
-Left      : 50.39/14.17/02.72 (total/hand continuous/fingers continuous)
+Left      : 50.39/14.17/01.97 (total/hand continuous/fingers continuous)
     Index: 18.568    Middle: 15.829    Ring: 8.381     Pinky: 7.61
-    Index: 2.328     Middle: 0.351     Ring: 0.044
-Right     : 49.61/15.63/01.37 (total/hand continuous/fingers continuous)
+    Index: 1.581     Middle: 0.351     Ring: 0.044
+Right     : 49.61/15.63/01.23 (total/hand continuous/fingers continuous)
     Middle: 14.472    Ring: 13.844    Index: 12.778    Pinky: 8.518
-    Index: 0.463     Ring: 0.415     Middle: 0.263     Pinky: 0.231
+    Index: 0.446     Ring: 0.415     Pinky: 0.231     Middle: 0.133
 Efforts    : 36,603,557.5
 Distance   : 13,948,769.59
      r: 5.909      n: 5.732      o: 5.682      d: 5.401      y: 5.334      s: 4.964
@@ -313,7 +313,7 @@ Distance   : 13,948,769.59
 Outward rolls: 01.63
 Inward rolls: 02.47
 Hand switch: 60.92
-Same finger: 04.09
+Same finger: 03.2
 Result     : 15,247,653.97
 ```
 
@@ -323,12 +323,12 @@ Result     : 15,247,653.97
  q: 1.29   w: 2.72   f: 2.44   p: 3.93   g: 6.19       j: 0.49   l: 4.29   u: 2.69   y: 3.07  :;: 1.56
  a: 5.12   r: 5.1    s: 2.86   t: 3.08   h: 1.94       d: 3.49   n: 3.54   e: 3.68   i: 5.11   o: 5.72
  z: 0.71   x: 1.78   c: 4.27   v: 1.42   b: 4.28       k: 2.12   m: 2.63  <,: 1.63  >.: 3.07  ?/: 0.44
-Left      : 47.36/19.5/03.4 (total/hand continuous/fingers continuous)
+Left      : 47.36/19.5/03.27 (total/hand continuous/fingers continuous)
     Index: 19.04     Middle: 12.872    Pinky: 7.834     Ring: 7.61
-    Index: 2.849     Middle: 0.386     Ring: 0.12      Pinky: 0.047
-Right     : 52.64/20.41/01.65 (total/hand continuous/fingers continuous)
+    Index: 2.833     Middle: 0.273     Ring: 0.12      Pinky: 0.047
+Right     : 52.64/20.41/01.29 (total/hand continuous/fingers continuous)
     Index: 16.987    Middle: 16.519    Ring: 11.529    Pinky: 7.609
-    Index: 1.278     Middle: 0.285     Ring: 0.085
+    Index: 1.205     Ring: 0.085
 Efforts    : 32,990,101.9
 Distance   : 15,164,409.52
      g: 6.186      o: 5.719      a: 5.12       i: 5.11       r: 5.098      l: 4.294
@@ -342,7 +342,7 @@ Distance   : 15,164,409.52
 Outward rolls: 00.79
 Inward rolls: 01.71
 Hand switch: 50.74
-Same finger: 05.05
+Same finger: 04.56
 Result     : 14,594,922.82
 ```
 
@@ -352,12 +352,12 @@ Result     : 14,594,922.82
  q: 1.03   p: 3.86   d: 2.04   v: 1.99   k: 1.89       z: 0.38  :;: 0.89   l: 3.27   y: 2.7    j: 1.26
  f: 3.41   h: 5.11   e: 3.5    o: 3.95   w: 2.85       s: 6.6    a: 3.83   t: 2.95   i: 4.44   m: 4.94
  x: 1.61   c: 5.2    u: 3.3    r: 2.38   b: 4.18      "': 0.37   n: 2.34   g: 1.57  <,: 2.44  >.: 4.94
-Left      : 47.62/23.19/05.29 (total/hand continuous/fingers continuous)
+Left      : 47.62/23.19/02.27 (total/hand continuous/fingers continuous)
     Middle: 18.326    Index: 16.743    Ring: 9.888     Pinky: 2.664
-    Index: 2.832     Middle: 1.94      Ring: 0.517     Pinky: 0.005
-Right     : 52.38/22.27/03.87 (total/hand continuous/fingers continuous)
+    Index: 1.312     Ring: 0.517     Middle: 0.438     Pinky: 0.005
+Right     : 52.38/22.27/02.06 (total/hand continuous/fingers continuous)
     Index: 21.066    Middle: 15.87     Ring: 9.514     Pinky: 5.93
-    Index: 3.369     Middle: 0.421     Ring: 0.085     Pinky: 0
+    Index: 1.795     Middle: 0.181     Ring: 0.085     Pinky: 0
 Efforts    : 27,550,674.05
 Distance   : 14,326,631.32
      s: 6.603      c: 5.202      h: 5.111      m: 4.944     .>: 4.942      i: 4.439
@@ -371,7 +371,7 @@ Distance   : 14,326,631.32
 Outward rolls: 04.07
 Inward rolls: 03.85
 Hand switch: 44.46
-Same finger: 09.17
+Same finger: 04.33
 Result     : 12,680,574.48
 ```
 
@@ -381,12 +381,12 @@ Result     : 12,680,574.48
  j: 0.77   u: 3.31   s: 2.77   b: 3.18  "': 0.39      <,: 3.52  >.: 3.5    d: 3.07   f: 3.21   z: 0.42
  c: 5.02   e: 5.37   r: 2.7    o: 3.03  :;: 1.56       y: 4.21   i: 3.39   t: 3.13   a: 4.66   h: 2.82
  v: 3.8    w: 2.95   l: 3.89   p: 2.98   q: 0.81       k: 2.35   n: 3.17   m: 4.11   g: 2.52   x: 3.04
-Left      : 49.7/23.61/02.08 (total/hand continuous/fingers continuous)
+Left      : 49.7/23.61/01.29 (total/hand continuous/fingers continuous)
     Middle: 16.892    Ring: 15.792    Index: 11.757    Pinky: 5.258
-    Index: 0.746     Ring: 0.684     Middle: 0.63      Pinky: 0.019
-Right     : 50.3/21.61/03.44 (total/hand continuous/fingers continuous)
+    Ring: 0.684     Index: 0.303     Middle: 0.283     Pinky: 0.019
+Right     : 50.3/21.61/01.09 (total/hand continuous/fingers continuous)
     Index: 19.571    Middle: 15.906    Ring: 10.777    Pinky: 4.047
-    Index: 2.462     Ring: 0.569     Middle: 0.403     Pinky: 0.003
+    Ring: 0.569     Index: 0.359     Middle: 0.159     Pinky: 0.003
 Efforts    : 28,401,452.55
 Distance   : 13,923,632.24
      e: 5.366      c: 5.017      a: 4.664      y: 4.21       m: 4.11       l: 3.887
@@ -400,7 +400,7 @@ Distance   : 13,923,632.24
 Outward rolls: 02.21
 Inward rolls: 03.83
 Hand switch: 45.15
-Same finger: 05.52
+Same finger: 02.38
 Result     : 13,038,725.05
 ```
 
@@ -410,12 +410,12 @@ Result     : 13,038,725.05
  j: 0.99   l: 4.51   o: 4.19   f: 2.58  "': 0.39       v: 3.72   h: 3.16   i: 3.82   d: 4.46   z: 0.33
  u: 3.81   r: 3.28   e: 5.04   s: 2.94  :;: 1.58       k: 2.01   n: 2.23   a: 3.75   t: 4.58   c: 5.1
  x: 1.67   m: 3.93   y: 2.83   p: 2      b: 4.3       <,: 3.42  >.: 1.74   w: 1.84   g: 2.98   q: 1.6
-Left      : 49.52/24.49/01.55 (total/hand continuous/fingers continuous)
+Left      : 49.52/24.49/01.05 (total/hand continuous/fingers continuous)
     Middle: 20.75     Index: 12.947    Ring: 12.319    Pinky: 3.506
-    Middle: 0.74      Index: 0.468     Ring: 0.318     Pinky: 0.022
-Right     : 50.48/22.98/01.44 (total/hand continuous/fingers continuous)
+    Middle: 0.47      Ring: 0.318     Index: 0.238     Pinky: 0.022
+Right     : 50.48/22.98/01.1 (total/hand continuous/fingers continuous)
     Middle: 16.381    Index: 15.43     Ring: 14.122    Pinky: 4.547
-    Middle: 0.821     Ring: 0.457     Index: 0.159     Pinky: 0.006
+    Middle: 0.479     Ring: 0.457     Index: 0.159     Pinky: 0.006
 Efforts    : 27,603,785.2
 Distance   : 14,588,296.11
      c: 5.096      e: 5.037      t: 4.583      l: 4.514      d: 4.464      b: 4.3
@@ -429,7 +429,7 @@ Distance   : 14,588,296.11
 Outward rolls: 01.89
 Inward rolls: 01.38
 Hand switch: 42.97
-Same finger: 02.99
+Same finger: 02.15
 Result     : 12,651,270.57
 ```
 
@@ -439,12 +439,12 @@ Result     : 12,651,270.57
  z: 0.33   d: 4.53   i: 3.85   h: 3.16   k: 2.48      "': 0.41   f: 2.6    o: 4.32   l: 4.22   j: 0.62
  w: 3.26   t: 4.68   a: 3.74   n: 2.29   g: 2.48       u: 4.87   s: 2.8    e: 5.18   r: 3.54   b: 3.25
  x: 3.13   c: 5.9   <,: 2.22  >.: 1.88   v: 3.4       :;: 0.91   p: 2.03   y: 2.83   m: 4.23   q: 1.05
-Left      : 50.03/23.2/02.47 (total/hand continuous/fingers continuous)
+Left      : 50.03/23.2/02.12 (total/hand continuous/fingers continuous)
     Ring: 16.285    Index: 16.045    Middle: 15.649    Pinky: 2.053
-    Index: 1.112     Ring: 0.998     Middle: 0.341     Pinky: 0.013
-Right     : 49.97/24.36/02.51 (total/hand continuous/fingers continuous)
+    Index: 1.112     Ring: 0.998     Pinky: 0.013
+Right     : 49.97/24.36/02.01 (total/hand continuous/fingers continuous)
     Middle: 21.232    Index: 14.199    Ring: 12.493    Pinky: 2.044
-    Index: 1.321     Middle: 0.74      Ring: 0.339     Pinky: 0.111
+    Index: 1.09      Middle: 0.47      Ring: 0.339     Pinky: 0.111
 Efforts    : 28,261,203
 Distance   : 14,457,081.27
      c: 5.904      e: 5.176      u: 4.871      t: 4.685      d: 4.534      o: 4.324
@@ -458,7 +458,7 @@ Distance   : 14,457,081.27
 Outward rolls: 02.27
 Inward rolls: 01.68
 Hand switch: 42.47
-Same finger: 04.98
+Same finger: 04.13
 Result     : 12,439,337.83
 ```
 
@@ -468,12 +468,12 @@ Result     : 12,439,337.83
  q: 1.52   h: 3.2    i: 4.1    d: 5.49   k: 2.38      "': 0.4    y: 2.76   o: 2.97   l: 4.65   x: 1.58
  g: 2.3    n: 5.18   a: 4.09   t: 2.98  >.: 4.7        f: 3.67   s: 2.99   e: 4.31   r: 3.98   p: 3.49
  z: 0.49   v: 2.65   w: 2.11   c: 2.59  <,: 3.72      :;: 0.96   u: 2.8    b: 2.54   m: 4.39   j: 0.73
-Left      : 49.84/22.98/02.12 (total/hand continuous/fingers continuous)
+Left      : 49.84/22.98/01.1 (total/hand continuous/fingers continuous)
     Index: 21.1      Middle: 15.9      Ring: 10.661    Pinky: 2.18
-    Index: 1.178     Middle: 0.821     Ring: 0.116     Pinky: 0.002
-Right     : 50.16/24.49/02.63 (total/hand continuous/fingers continuous)
+    Index: 0.501     Middle: 0.479     Ring: 0.116     Pinky: 0.002
+Right     : 50.16/24.49/01.68 (total/hand continuous/fingers continuous)
     Middle: 21.039    Index: 13.208    Ring: 12.493    Pinky: 3.419
-    Index: 1.254     Middle: 0.98      Ring: 0.339     Pinky: 0.055
+    Middle: 0.71      Index: 0.579     Ring: 0.339     Pinky: 0.055
 Efforts    : 25,723,361.6
 Distance   : 14,308,347.31
      d: 5.493      n: 5.184     .>: 4.698      l: 4.653      m: 4.39       e: 4.31
@@ -487,7 +487,7 @@ Distance   : 14,308,347.31
 Outward rolls: 03.01
 Inward rolls: 02.22
 Hand switch: 42.56
-Same finger: 04.74
+Same finger: 02.78
 Result     : 11,974,774.99
 ```
 
@@ -497,12 +497,12 @@ Result     : 11,974,774.99
  k: 2.97   h: 3.69   i: 3.98   w: 3.41  "': 0.44       x: 1.43   m: 3.69   u: 2.83   l: 4.52   z: 0.84
  g: 2.12   n: 3.85   a: 3.89   t: 3.07   f: 3.69      >.: 2.93   s: 2.85   e: 3.7    r: 4.73   y: 3.38
  q: 1.64   b: 3.3    v: 1.92   o: 3.97  :;: 2.19      <,: 2.18   c: 2.63   p: 3.19   d: 4.75   j: 1.39
-Left      : 49.32/24.91/03.95 (total/hand continuous/fingers continuous)
+Left      : 49.32/24.91/02.45 (total/hand continuous/fingers continuous)
     Index: 19.805    Middle: 15.664    Ring: 11.259    Pinky: 2.594
-    Index: 2.883     Middle: 0.952     Ring: 0.112     Pinky: 0.008
-Right     : 50.68/21.11/02.29 (total/hand continuous/fingers continuous)
+    Index: 1.717     Middle: 0.611     Ring: 0.112     Pinky: 0.008
+Right     : 50.68/21.11/01.76 (total/hand continuous/fingers continuous)
     Middle: 18.032    Index: 17.456    Ring: 13.087    Pinky: 2.103
-    Middle: 1.228     Ring: 0.539     Index: 0.516     Pinky: 0.007
+    Middle: 0.943     Ring: 0.539     Index: 0.275     Pinky: 0.007
 Efforts    : 26,637,168.05
 Distance   : 14,087,042.07
      d: 4.751      r: 4.726      l: 4.515      i: 3.98       o: 3.974      a: 3.892
@@ -516,7 +516,7 @@ Distance   : 14,087,042.07
 Outward rolls: 02.88
 Inward rolls: 03.53
 Hand switch: 44.26
-Same finger: 06.24
+Same finger: 04.21
 Result     : 12,321,978.51
 ```
 
@@ -526,12 +526,12 @@ Result     : 12,321,978.51
  q: 1.53   h: 3.19   i: 4.18   g: 2.81   k: 2.4       "': 0.41   y: 2.8    o: 2.92   l: 4.68   x: 1.52
  w: 3.66   n: 5.23   a: 4.12   t: 2.97  >.: 4.73       f: 3.69   s: 3.13   e: 4      r: 4.01   p: 3.53
  z: 0.49   v: 2.64   d: 3.44   c: 2.55  <,: 3.74      :;: 0.97   u: 2.82   b: 2.35   m: 4.42   j: 0.74
-Left      : 49.84/22.98/02.7 (total/hand continuous/fingers continuous)
+Left      : 49.84/22.98/01.68 (total/hand continuous/fingers continuous)
     Index: 19.523    Middle: 17.795    Ring: 10.661    Pinky: 1.861
-    Middle: 1.559     Index: 1.024     Ring: 0.116     Pinky: 0.003
-Right     : 50.16/24.49/02.63 (total/hand continuous/fingers continuous)
+    Middle: 1.217     Index: 0.346     Ring: 0.116     Pinky: 0.003
+Right     : 50.16/24.49/01.68 (total/hand continuous/fingers continuous)
     Middle: 21.039    Index: 13.208    Ring: 12.493    Pinky: 3.419
-    Index: 1.254     Middle: 0.98      Ring: 0.339     Pinky: 0.055
+    Middle: 0.71      Index: 0.579     Ring: 0.339     Pinky: 0.055
 Efforts    : 25,102,282.2
 Distance   : 14,376,146.16
      n: 5.228     .>: 4.728      l: 4.682      m: 4.418      i: 4.182      a: 4.121
@@ -545,7 +545,7 @@ Distance   : 14,376,146.16
 Outward rolls: 03.19
 Inward rolls: 02.53
 Hand switch: 42.56
-Same finger: 05.33
+Same finger: 03.37
 Result     : 11,898,823.36
 ```
 
@@ -555,12 +555,12 @@ Result     : 11,898,823.36
  z: 0.34   h: 3.09   i: 3.95   g: 2.72   k: 2.32      "': 0.39   y: 2.7    o: 2.99   l: 4.47   j: 0.75
  w: 3.42   n: 5.02   a: 3.93   t: 2.84   d: 6.37       f: 3.61   s: 3.03   e: 4.25   r: 3.85   p: 3.41
  x: 3.12  <,: 3.15  >.: 3.23   c: 2.39   v: 3.44      :;: 0.9    u: 2.52   b: 2.44   m: 4.28   q: 1.06
-Left      : 50.03/23.2/01.86 (total/hand continuous/fingers continuous)
+Left      : 50.03/23.2/00.84 (total/hand continuous/fingers continuous)
     Index: 19.527    Middle: 17.665    Ring: 10.787    Pinky: 2.053
-    Index: 1.452     Middle: 0.341     Ring: 0.051     Pinky: 0.013
-Right     : 49.97/24.36/02.58 (total/hand continuous/fingers continuous)
+    Index: 0.774     Ring: 0.051     Pinky: 0.013
+Right     : 49.97/24.36/01.63 (total/hand continuous/fingers continuous)
     Middle: 21.039    Index: 13.208    Ring: 12.493    Pinky: 3.226
-    Index: 1.254     Middle: 0.98      Ring: 0.339     Pinky: 0.003
+    Middle: 0.71      Index: 0.579     Ring: 0.339     Pinky: 0.003
 Efforts    : 26,268,081.65
 Distance   : 14,611,808.1
      d: 6.375      n: 5.022      l: 4.466      m: 4.28       e: 4.246      i: 3.95
@@ -574,7 +574,7 @@ Distance   : 14,611,808.1
 Outward rolls: 02.54
 Inward rolls: 01.89
 Hand switch: 42.47
-Same finger: 04.43
+Same finger: 02.47
 Result     : 12,334,731.94
 ```
 
@@ -584,12 +584,12 @@ Result     : 12,334,731.94
  z: 0.34   h: 3.11   i: 3.85   g: 2.8    k: 2.33      "': 0.36   y: 2.88   o: 2.8    l: 4.75   q: 0.95
  w: 3.65   n: 5.07   a: 3.9    t: 3.03  >.: 4.82       f: 3.44   s: 2.88   e: 3.84   r: 3.75   p: 3.31
  x: 3.15   v: 2.62   b: 2.66   c: 2.65  <,: 3.87      :;: 0.89   d: 3.09   u: 3.99   m: 4.14   j: 1.33
-Left      : 48.22/21.4/02.02 (total/hand continuous/fingers continuous)
+Left      : 48.22/21.4/01 (total/hand continuous/fingers continuous)
     Index: 19.523    Middle: 15.979    Ring: 10.661    Pinky: 2.053
-    Index: 1.024     Middle: 0.865     Ring: 0.116     Pinky: 0.013
-Right     : 51.78/25.79/02.29 (total/hand continuous/fingers continuous)
+    Middle: 0.524     Index: 0.346     Ring: 0.116     Pinky: 0.013
+Right     : 51.78/25.79/01.79 (total/hand continuous/fingers continuous)
     Middle: 22.336    Index: 13.728    Ring: 12.493    Pinky: 3.226
-    Middle: 1.134     Index: 0.816     Ring: 0.339     Pinky: 0.003
+    Middle: 0.865     Index: 0.588     Ring: 0.339     Pinky: 0.003
 Efforts    : 25,752,665.7
 Distance   : 14,370,788.5
      n: 5.068     .>: 4.824      l: 4.75       m: 4.138      u: 3.995      a: 3.902
@@ -603,8 +603,37 @@ Distance   : 14,370,788.5
 Outward rolls: 02.31
 Inward rolls: 02.41
 Hand switch: 42.85
-Same finger: 04.31
+Same finger: 02.79
 Result     : 12,335,145.9
+```
+
+## Custom V19
+
+``` ini
+"': 0.5    h: 2.92   i: 3.86   g: 2.73  <,: 4.27      :;: 1.08   y: 2.89   o: 2.88   l: 4.67   q: 0.93
+ w: 3.57   n: 4.97   a: 3.89   t: 3     >.: 4.7        f: 3.39   s: 2.8    e: 3.58   r: 3.68   p: 3.34
+ z: 0.46   x: 2.02   c: 3.89   v: 1.24   b: 4.62       k: 2.02   d: 3.05   u: 3.85   m: 4      j: 1.29
+Left      : 48.25/20.98/02 (total/hand continuous/fingers continuous)
+    Middle: 18.699    Index: 17.326    Ring: 10.332    Pinky: 1.892
+    Middle: 1.719     Index: 0.219     Ring: 0.064     Pinky: 0
+Right     : 51.75/26.37/01.97 (total/hand continuous/fingers continuous)
+    Middle: 22.195    Index: 13.977    Ring: 12.352    Pinky: 3.226
+    Middle: 0.865     Index: 0.765     Ring: 0.339     Pinky: 0.003
+Efforts    : 26,092,006
+Distance   : 14,309,400.94
+     n: 4.97      .>: 4.704      l: 4.665      b: 4.619     ,<: 4.273      m: 4.005
+     c: 3.887      a: 3.885      i: 3.855      u: 3.851      r: 3.679      e: 3.579
+     w: 3.573      f: 3.392      p: 3.343      d: 3.053      t: 2.998      h: 2.923
+     y: 2.885      o: 2.88       s: 2.796      g: 2.731      k: 2.021      x: 2.018
+    )0: 1.742     (9: 1.295      j: 1.289      v: 1.242     :;: 1.083      q: 0.933
+    +=: 0.923     !1: 0.903     -_: 0.633     6^: 0.556     $4: 0.538     2@: 0.528
+    [{: 0.5       "': 0.496      z: 0.463     %5: 0.459     &7: 0.42      #3: 0.36
+    /?: 0.328     ]}: 0.311     *8: 0.287     \|: 0.119     `~: 0.006
+Outward rolls: 02.2
+Inward rolls: 02.91
+Hand switch: 42.75
+Same finger: 03.97
+Result     : 12,580,686.44
 ```
 
 ## Custom V2
@@ -613,12 +642,12 @@ Result     : 12,335,145.9
  k: 2.02   s: 4.73   u: 3.42   b: 2.93   q: 1.24       j: 1.03   p: 4.01   h: 1.71   m: 3.37   x: 1.35
  n: 5.4    i: 4.76   a: 3.59   t: 3.51   y: 3.1        f: 3.78   r: 2.12   e: 3.36   o: 4.13   c: 4.92
  z: 0.28  :;: 1.67   l: 4.25   g: 2.15  "': 0.34       v: 2.82   d: 3.5    w: 2.13  <,: 2.36  >.: 5.54
-Left      : 50.1/25.14/03.76 (total/hand continuous/fingers continuous)
+Left      : 50.1/25.14/03.45 (total/hand continuous/fingers continuous)
     Middle: 14.661    Index: 14.412    Ring: 13.676    Pinky: 7.354
-    Middle: 1.674     Ring: 1.27      Index: 0.781     Pinky: 0.037
-Right     : 49.9/21.67/03.97 (total/hand continuous/fingers continuous)
+    Middle: 1.489     Ring: 1.27      Index: 0.652     Pinky: 0.037
+Right     : 49.9/21.67/02.24 (total/hand continuous/fingers continuous)
     Middle: 17.358    Index: 14.491    Ring: 10.37     Pinky: 7.677
-    Middle: 2.107     Index: 1.164     Ring: 0.64      Pinky: 0.055
+    Index: 0.975     Ring: 0.64      Middle: 0.571     Pinky: 0.055
 Efforts    : 28,245,188.95
 Distance   : 14,492,842.91
     .>: 5.541      n: 5.396      c: 4.921      i: 4.756      s: 4.734      l: 4.251
@@ -632,8 +661,66 @@ Distance   : 14,492,842.91
 Outward rolls: 02.74
 Inward rolls: 04.62
 Hand switch: 44.06
-Same finger: 07.73
+Same finger: 05.69
 Result     : 13,031,450.81
+```
+
+## Custom V20
+
+``` ini
+"': 0.41   m: 3.46   u: 3.09   b: 2.79   k: 2.03      :;: 1.41   g: 3.44   h: 1.93   d: 4.28   q: 1.42
+ a: 5.93   s: 4.1    e: 4.06   r: 3.11  >.: 3.34       y: 4.06   o: 3.37   i: 3.05   t: 5.07   n: 5.03
+ z: 0.82   x: 0.83   c: 4.26   v: 1.15  <,: 2.49       w: 3.33   l: 3.09   p: 3.68   f: 3.44   j: 1.28
+Left      : 49.17/20.4/02.1 (total/hand continuous/fingers continuous)
+    Middle: 19.088    Index: 12.832    Ring: 9.411     Pinky: 7.836
+    Middle: 1.696     Ring: 0.194     Index: 0.165     Pinky: 0.044
+Right     : 50.83/25.18/02.17 (total/hand continuous/fingers continuous)
+    Index: 15.711    Ring: 14.28     Middle: 13.664    Pinky: 7.177
+    Index: 1.297     Ring: 0.637     Middle: 0.204     Pinky: 0.036
+Efforts    : 28,754,638.05
+Distance   : 14,621,577.93
+     a: 5.931      t: 5.067      n: 5.029      d: 4.285      c: 4.262      s: 4.1
+     y: 4.058      e: 4.057      p: 3.679      m: 3.457      f: 3.439      g: 3.436
+     o: 3.374     .>: 3.344      w: 3.335      r: 3.113      l: 3.087      u: 3.087
+     i: 3.048      b: 2.794     ,<: 2.492      k: 2.027     )0: 2.015      h: 1.93
+    (9: 1.576      q: 1.424     :;: 1.411      j: 1.284      v: 1.147     +=: 0.951
+     x: 0.829      z: 0.82      !1: 0.762     -_: 0.611     6^: 0.568     $4: 0.54
+    2@: 0.486     [{: 0.442     &7: 0.44      %5: 0.434     "': 0.415     #3: 0.404
+    /?: 0.313     ]}: 0.305     *8: 0.291     \|: 0.096     `~: 0.006
+Outward rolls: 02.48
+Inward rolls: 03.02
+Hand switch: 44.67
+Same finger: 04.27
+Result     : 12,752,249.52
+```
+
+## Custom V21
+
+``` ini
+"': 0.42   p: 3.36   m: 2.52   b: 3.23   k: 1.99      :;: 1.45   g: 2.91   u: 2.86   l: 4.94   q: 1.38
+ a: 5.95   s: 4.22   e: 3.22   r: 3.28  >.: 3.2        y: 4.05   i: 3.15   t: 4.19   n: 4.47   o: 5.48
+ z: 0.8    x: 0.81   c: 4.62   v: 1.43  <,: 2.42       w: 3.58   h: 2.57   d: 3.02   f: 3.23   j: 1.23
+Left      : 49.05/20.41/01.86 (total/hand continuous/fingers continuous)
+    Middle: 18.872    Index: 12.832    Ring: 9.513     Pinky: 7.836
+    Middle: 1.362     Ring: 0.294     Index: 0.165     Pinky: 0.044
+Right     : 50.95/25.93/01.76 (total/hand continuous/fingers continuous)
+    Middle: 16.122    Index: 15.008    Ring: 12.427    Pinky: 7.389
+    Index: 0.992     Middle: 0.396     Ring: 0.337     Pinky: 0.035
+Efforts    : 29,463,869.55
+Distance   : 14,606,515.91
+     a: 5.954      o: 5.484      l: 4.937      c: 4.622      n: 4.466      s: 4.221
+     t: 4.188      y: 4.05       w: 3.581      p: 3.364      r: 3.276      f: 3.23
+     b: 3.227      e: 3.22      .>: 3.202      i: 3.146      d: 3.018      g: 2.912
+     u: 2.862      h: 2.568      m: 2.517     ,<: 2.42       k: 1.99      )0: 1.978
+    (9: 1.53      :;: 1.45       v: 1.434      q: 1.383      j: 1.229     +=: 0.976
+     x: 0.808      z: 0.8       !1: 0.748     -_: 0.606     6^: 0.553     $4: 0.523
+    2@: 0.472     [{: 0.455     &7: 0.433     "': 0.423     %5: 0.422     #3: 0.352
+    /?: 0.301     ]}: 0.287     *8: 0.285     \|: 0.093     `~: 0.005
+Outward rolls: 03.01
+Inward rolls: 02.77
+Hand switch: 43.89
+Same finger: 03.63
+Result     : 13,030,004.86
 ```
 
 ## Custom V3
@@ -642,12 +729,12 @@ Result     : 13,031,450.81
  p: 5.53   s: 3.81   a: 3.08   d: 3.54   y: 3.84      :;: 1.63   v: 2.68   g: 1.29   b: 3.2    w: 5.13
  c: 4.55   r: 3.23   e: 2.79   t: 3.22   h: 2.71       z: 0.35   n: 2.44   o: 4.52   i: 5.19   f: 3.09
  k: 1.95   l: 3.66   u: 2.9    m: 2.03   x: 1.14      "': 0.44   j: 0.33   q: 0.5   <,: 2.8   >.: 7.36
-Left      : 66.1/44.16/05.28 (total/hand continuous/fingers continuous)
+Left      : 66.1/44.16/04.5 (total/hand continuous/fingers continuous)
     Middle: 22.374    Index: 20.236    Ring: 16.255    Pinky: 7.235
-    Index: 3.332     Middle: 1.144     Ring: 0.63      Pinky: 0.176
-Right     : 33.9/09.82/00.41 (total/hand continuous/fingers continuous)
+    Index: 3.223     Ring: 0.63      Middle: 0.471     Pinky: 0.176
+Right     : 33.9/09.82/00.26 (total/hand continuous/fingers continuous)
     Middle: 9.683     Ring: 9.322     Index: 8.551     Pinky: 6.344
-    Ring: 0.181     Middle: 0.153     Index: 0.065     Pinky: 0.015
+    Ring: 0.181     Index: 0.06      Pinky: 0.015     Middle: 0.004
 Efforts    : 26,055,288.5
 Distance   : 15,149,307.07
     .>: 7.359      p: 5.534      i: 5.189      w: 5.131      c: 4.555      o: 4.52
@@ -661,7 +748,7 @@ Distance   : 15,149,307.07
 Outward rolls: 02.51
 Inward rolls: 01.17
 Hand switch: 37.78
-Same finger: 05.7
+Same finger: 04.76
 Result     : 13,307,224.14
 ```
 
@@ -671,12 +758,12 @@ Result     : 13,307,224.14
  v: 3.22   u: 3.38   r: 2.81   p: 3.37   j: 0.81       z: 0.38   d: 4.7    l: 3.82   c: 4.11  <,: 4.44
  b: 2.59   e: 4.96   a: 3.77   o: 3.98  "': 0.32       w: 4.03   n: 2.99   i: 2.57   t: 5.02  >.: 3.56
  x: 1.23   y: 3.18   m: 2.64   s: 3.22   q: 0.81      :;: 1.3    h: 2.39   f: 3.56   g: 3.04   k: 3
-Left      : 51.75/25.98/04.02 (total/hand continuous/fingers continuous)
+Left      : 51.75/25.98/02.07 (total/hand continuous/fingers continuous)
     Index: 16.557    Middle: 16.199    Ring: 16.064    Pinky: 2.928
-    Middle: 2.135     Index: 1.418     Ring: 0.46      Pinky: 0.006
-Right     : 48.25/18.16/03.51 (total/hand continuous/fingers continuous)
+    Middle: 0.856     Index: 0.75      Ring: 0.46      Pinky: 0.006
+Right     : 48.25/18.16/02.53 (total/hand continuous/fingers continuous)
     Index: 14.895    Ring: 14.884    Middle: 13.616    Pinky: 4.856
-    Middle: 1.509     Index: 1.116     Ring: 0.887
+    Index: 1.065     Ring: 0.887     Middle: 0.575
 Efforts    : 27,665,543.55
 Distance   : 14,177,332.19
      t: 5.018      e: 4.961      d: 4.702     ,<: 4.44       c: 4.113      w: 4.032
@@ -690,7 +777,7 @@ Distance   : 14,177,332.19
 Outward rolls: 03.86
 Inward rolls: 03.63
 Hand switch: 46.4
-Same finger: 07.53
+Same finger: 04.6
 Result     : 12,706,547.59
 ```
 
@@ -700,12 +787,12 @@ Result     : 12,706,547.59
  j: 0.85   c: 4.8    u: 2.82   b: 3.3   :;: 2.32       q: 1.25   g: 2.18   n: 2.14   s: 5.43   z: 0.45
  p: 4.19   r: 3.31   e: 3.87   o: 3.2    f: 3.73       y: 3.57   i: 3.91   t: 3.02   a: 4.2    h: 3.54
  k: 2.62   m: 3.78   w: 2.16   d: 2.16  "': 0.37       x: 2.36   l: 3.22  <,: 1.87  >.: 3.35   v: 4.81
-Left      : 46.09/21.73/03.06 (total/hand continuous/fingers continuous)
+Left      : 46.09/21.73/02.19 (total/hand continuous/fingers continuous)
     Middle: 16.43     Index: 13.909    Ring: 12.276    Pinky: 3.48
-    Index: 1.86      Middle: 0.684     Ring: 0.496     Pinky: 0.018
-Right     : 53.91/25.3/04.18 (total/hand continuous/fingers continuous)
+    Index: 1.28      Ring: 0.496     Middle: 0.399     Pinky: 0.018
+Right     : 53.91/25.3/01.97 (total/hand continuous/fingers continuous)
     Middle: 17.812    Ring: 16.841    Index: 14.736    Pinky: 4.517
-    Index: 1.727     Middle: 1.281     Ring: 1.168     Pinky: 0.006
+    Ring: 1.168     Index: 0.793     Pinky: 0.006
 Efforts    : 25,806,932.75
 Distance   : 13,992,227.18
      s: 5.427      v: 4.809      c: 4.797      a: 4.203      p: 4.192      i: 3.908
@@ -719,7 +806,7 @@ Distance   : 13,992,227.18
 Outward rolls: 03.17
 Inward rolls: 03.84
 Hand switch: 43.17
-Same finger: 07.24
+Same finger: 04.16
 Result     : 12,083,178.95
 ```
 
@@ -729,12 +816,12 @@ Result     : 12,083,178.95
  j: 1.26   h: 5.2    c: 3.51   w: 2.71   k: 2.04      :;: 1.47   p: 4.22   o: 3.17   n: 4.16   z: 0.25
  y: 3.86   s: 3.86   e: 3.74   r: 2.18   v: 2.79       b: 3.57   t: 3.5    a: 3.3    i: 4.5    m: 4.17
 <,: 3.1   >.: 3.1    u: 3.96   d: 3.14   q: 0.73      "': 0.42   l: 2.7    g: 2.21   f: 3.54   x: 3.05
-Left      : 47.01/18.21/02.76 (total/hand continuous/fingers continuous)
+Left      : 47.01/18.21/01.23 (total/hand continuous/fingers continuous)
     Middle: 19.088    Ring: 12.829    Index: 12.094    Pinky: 2.998
-    Middle: 1.981     Index: 0.611     Ring: 0.169     Pinky: 0.001
-Right     : 52.99/27.01/04.73 (total/hand continuous/fingers continuous)
+    Middle: 0.642     Index: 0.422     Ring: 0.169     Pinky: 0.001
+Right     : 52.99/27.01/04.36 (total/hand continuous/fingers continuous)
     Index: 17.899    Middle: 16.668    Ring: 15.183    Pinky: 3.241
-    Ring: 2.778     Index: 1.309     Middle: 0.617     Pinky: 0.03
+    Ring: 2.778     Index: 1.07      Middle: 0.481     Pinky: 0.03
 Efforts    : 27,597,765.1
 Distance   : 13,853,991.19
      h: 5.196      i: 4.497      p: 4.221      m: 4.167      n: 4.162      u: 3.96
@@ -748,7 +835,7 @@ Distance   : 13,853,991.19
 Outward rolls: 04.48
 Inward rolls: 03.27
 Hand switch: 44.88
-Same finger: 07.5
+Same finger: 05.59
 Result     : 12,704,190.95
 ```
 
@@ -758,12 +845,12 @@ Result     : 12,704,190.95
  j: 1.2    l: 4.67   o: 3.55   c: 5.09   q: 0.77       k: 2.74   h: 3.11   i: 3.99   d: 4.34   z: 0.31
  f: 3.1    r: 3.52   e: 4.6    s: 3.25   v: 2.67       b: 3.71   n: 2.06   a: 3.89   t: 4.82   u: 5.28
  x: 1.56   w: 2.47   p: 2.87   m: 2.3   "': 0.36      <,: 3.19  >.: 1.52   y: 3.05   g: 2.83  :;: 2.06
-Left      : 49.91/23.86/02.19 (total/hand continuous/fingers continuous)
+Left      : 49.91/23.86/01.77 (total/hand continuous/fingers continuous)
     Middle: 21.74     Index: 14.408    Ring: 11.158    Pinky: 2.607
-    Middle: 1.454     Index: 0.503     Ring: 0.228     Pinky: 0.004
-Right     : 50.09/21.1/01.24 (total/hand continuous/fingers continuous)
+    Middle: 1.185     Index: 0.348     Ring: 0.228     Pinky: 0.004
+Right     : 50.09/21.1/00.9 (total/hand continuous/fingers continuous)
     Middle: 16.652    Index: 15.887    Ring: 14.122    Pinky: 3.425
-    Middle: 0.622     Ring: 0.457     Index: 0.158     Pinky: 0.008
+    Ring: 0.457     Middle: 0.281     Index: 0.158     Pinky: 0.008
 Efforts    : 28,633,176.95
 Distance   : 13,930,663.58
      u: 5.275      c: 5.094      t: 4.818      l: 4.673      e: 4.603      d: 4.342
@@ -777,7 +864,7 @@ Distance   : 13,930,663.58
 Outward rolls: 02.07
 Inward rolls: 01.63
 Hand switch: 45.51
-Same finger: 03.43
+Same finger: 02.67
 Result     : 12,738,426.31
 ```
 
@@ -787,12 +874,12 @@ Result     : 12,738,426.31
  k: 2.98   p: 3.33   u: 3.07   m: 4.53   x: 1.4        j: 0.82   f: 3.27   i: 3.75   g: 2.41   z: 0.33
  d: 5.25   s: 4.38   e: 4.38   r: 3.76   w: 3.67       v: 2.83   n: 2.22   a: 3.57   t: 4.17   h: 2.44
 <,: 2.91  >.: 2.67   y: 2.85   l: 2.94  :;: 1.74       q: 1.16   c: 2.7    o: 5.46   b: 3.37  "': 0.6
-Left      : 48.29/19.43/01.22 (total/hand continuous/fingers continuous)
+Left      : 48.29/19.43/00.85 (total/hand continuous/fingers continuous)
     Middle: 16.701    Index: 14.508    Ring: 12.126    Pinky: 4.96
-    Index: 0.524     Middle: 0.46      Ring: 0.23      Pinky: 0.008
-Right     : 51.71/27.9/02.28 (total/hand continuous/fingers continuous)
+    Index: 0.433     Ring: 0.23      Middle: 0.174     Pinky: 0.008
+Right     : 51.71/27.9/01.53 (total/hand continuous/fingers continuous)
     Middle: 21.806    Index: 13.709    Ring: 12.305    Pinky: 3.885
-    Middle: 1.349     Index: 0.692     Ring: 0.241     Pinky: 0
+    Middle: 1.008     Index: 0.286     Ring: 0.241     Pinky: 0
 Efforts    : 27,495,275.8
 Distance   : 14,052,799.96
      o: 5.459      d: 5.252      m: 4.53       e: 4.383      s: 4.379      t: 4.17
@@ -806,7 +893,7 @@ Distance   : 14,052,799.96
 Outward rolls: 01.35
 Inward rolls: 02.37
 Hand switch: 42.75
-Same finger: 03.5
+Same finger: 02.38
 Result     : 12,319,618.07
 ```
 
@@ -816,12 +903,12 @@ Result     : 12,319,618.07
  j: 1.19   l: 4.67   o: 4.18   f: 2.52  "': 0.39       v: 3.66   h: 3.28   i: 3.9    d: 4.4    z: 0.32
  u: 3.87   r: 3.19   e: 4.96   s: 2.81  :;: 1.56       b: 3.86   n: 2.24   a: 3.69   t: 4.45   c: 5.02
  k: 2.1    m: 3.92   y: 2.99   p: 2.02   w: 3.33      <,: 3.41  >.: 1.74   x: 0.76   g: 2.94   q: 1.57
-Left      : 49.53/24.02/01.63 (total/hand continuous/fingers continuous)
+Left      : 49.53/24.02/01.13 (total/hand continuous/fingers continuous)
     Middle: 20.75     Index: 12.868    Ring: 12.319    Pinky: 3.594
-    Middle: 0.74      Index: 0.542     Ring: 0.318     Pinky: 0.027
-Right     : 50.47/22.57/01.1 (total/hand continuous/fingers continuous)
+    Middle: 0.47      Ring: 0.318     Index: 0.312     Pinky: 0.027
+Right     : 50.47/22.57/00.76 (total/hand continuous/fingers continuous)
     Index: 16.268    Middle: 15.533    Ring: 14.122    Pinky: 4.547
-    Middle: 0.457     Ring: 0.457     Index: 0.181     Pinky: 0.006
+    Ring: 0.457     Index: 0.181     Middle: 0.115     Pinky: 0.006
 Efforts    : 28,254,364.9
 Distance   : 14,424,136.08
      c: 5.024      e: 4.957      l: 4.67       t: 4.455      d: 4.396      o: 4.183
@@ -835,7 +922,7 @@ Distance   : 14,424,136.08
 Outward rolls: 01.62
 Inward rolls: 01.38
 Hand switch: 43.94
-Same finger: 02.73
+Same finger: 01.89
 Result     : 12,848,851.91
 ```
 
@@ -845,12 +932,12 @@ Result     : 12,848,851.91
 "': 0.38  <,: 1.86  >.: 2.29   p: 2.67   y: 4.79       f: 4.39   g: 2.72   c: 2.92   r: 5.15   l: 6.91
  a: 5.55   o: 4.78   e: 3.98   u: 2.71   i: 7.02       d: 4.89   h: 1.08   t: 3.4    n: 5.08   s: 4.47
 :;: 1.32   q: 0.44   j: 0.55   k: 0.9    x: 0.9        b: 3.49   m: 2.74   w: 1.95   v: 2.42   z: 0.63
-Left      : 46.38/08.85/01.11 (total/hand continuous/fingers continuous)
+Left      : 46.38/08.85/01.1 (total/hand continuous/fingers continuous)
     Middle: 15.58     Index: 14.68     Pinky: 8.129     Ring: 7.995
-    Index: 0.973     Middle: 0.131     Ring: 0.003
-Right     : 53.62/17.95/02.01 (total/hand continuous/fingers continuous)
+    Index: 0.965     Middle: 0.131     Ring: 0.003
+Right     : 53.62/17.95/01.31 (total/hand continuous/fingers continuous)
     Middle: 15.65     Index: 13.773    Ring: 13.467    Pinky: 10.726
-    Middle: 0.872     Index: 0.544     Ring: 0.401     Pinky: 0.192
+    Index: 0.525     Ring: 0.401     Middle: 0.195     Pinky: 0.192
 Efforts    : 41,068,836.2
 Distance   : 13,847,680.57
      i: 7.017      l: 6.909      a: 5.553      r: 5.154      n: 5.084      d: 4.89
@@ -864,7 +951,7 @@ Distance   : 13,847,680.57
 Outward rolls: 01.05
 Inward rolls: 01.88
 Hand switch: 64.06
-Same finger: 03.12
+Same finger: 02.41
 Result     : 16,251,214.48
 ```
 
@@ -874,12 +961,12 @@ Result     : 16,251,214.48
  q: 1.11   w: 2.45   f: 2.24   p: 3.5    g: 4.92       j: 0.46   l: 3.45   u: 2.65   y: 2.73  :;: 1.5
  n: 5.86   r: 5.31   s: 2.53   t: 2.75   d: 5.73       h: 6.15   a: 3.37   e: 3.55   i: 4.7    o: 5.2
  z: 0.72   x: 1.67   c: 3.84   v: 1.21   b: 4.16       k: 1.84   m: 2.04  <,: 1.83  >.: 3.31  ?/: 0.41
-Left      : 46.55/13.61/01.54 (total/hand continuous/fingers continuous)
+Left      : 46.55/13.61/01.41 (total/hand continuous/fingers continuous)
     Index: 18.97     Middle: 12.872    Ring: 7.61      Pinky: 7.102
-    Index: 1.002     Middle: 0.386     Ring: 0.12      Pinky: 0.03
-Right     : 53.45/16.63/02.99 (total/hand continuous/fingers continuous)
+    Index: 0.986     Middle: 0.273     Ring: 0.12      Pinky: 0.03
+Right     : 53.45/16.63/02.01 (total/hand continuous/fingers continuous)
     Index: 17.789    Middle: 16.519    Ring: 11.529    Pinky: 7.609
-    Index: 2.618     Middle: 0.285     Ring: 0.085
+    Index: 1.929     Ring: 0.085
 Efforts    : 36,985,129.45
 Distance   : 14,015,888.88
      h: 6.153      n: 5.862      d: 5.726      r: 5.307      o: 5.196      g: 4.917
@@ -893,7 +980,7 @@ Distance   : 14,015,888.88
 Outward rolls: 01.83
 Inward rolls: 02.21
 Hand switch: 60.68
-Same finger: 04.53
+Same finger: 03.42
 Result     : 15,791,251.84
 ```
 
@@ -903,12 +990,12 @@ Result     : 15,791,251.84
  q: 1.06   w: 2.44   l: 2.67   d: 4.5    g: 4.93       j: 0.45   u: 3.96   o: 2.94   p: 2.94  ?/: 0.4
  n: 5.62   r: 5.41   s: 2.61   t: 2.76   m: 5.25       k: 1.62   a: 3.61   e: 3.72   h: 4.65   i: 6
  z: 0.35   x: 1.71   c: 3.78   v: 1.01   b: 3.88       y: 4.07   f: 1.66  <,: 1.89  >.: 3.45  :;: 1.63
-Left      : 48.67/13.86/01.72 (total/hand continuous/fingers continuous)
+Left      : 48.67/13.86/01.51 (total/hand continuous/fingers continuous)
     Index: 18.868    Middle: 15.095    Ring: 7.61      Pinky: 7.102
-    Index: 0.912     Middle: 0.66      Ring: 0.12      Pinky: 0.03
-Right     : 51.33/13.12/01.24 (total/hand continuous/fingers continuous)
+    Index: 0.896     Middle: 0.468     Ring: 0.12      Pinky: 0.03
+Right     : 51.33/13.12/00.77 (total/hand continuous/fingers continuous)
     Middle: 20.567    Index: 14.089    Ring: 9.028     Pinky: 7.641
-    Index: 0.926     Middle: 0.269     Ring: 0.043
+    Index: 0.729     Ring: 0.043
 Efforts    : 36,305,523.5
 Distance   : 13,755,678.55
      i: 6.004      n: 5.617      r: 5.41       m: 5.255      g: 4.925      h: 4.652
@@ -922,7 +1009,7 @@ Distance   : 13,755,678.55
 Outward rolls: 01.21
 Inward rolls: 01.76
 Hand switch: 64.03
-Same finger: 02.96
+Same finger: 02.29
 Result     : 15,643,433.64
 ```
 
@@ -932,12 +1019,12 @@ Result     : 15,643,433.64
  k: 1.48  <,: 2      u: 2.78   y: 3.11   p: 4.52       w: 3.83   l: 4.97   m: 2.47   f: 3.05   c: 8
  o: 5.23   a: 4.86   e: 4.14   i: 3.45   d: 4.06       r: 6.96   n: 3.47   t: 3.14   h: 1.18   s: 5.24
  q: 0.74  >.: 3.43  "': 0.21  :;: 1.02   z: 0.17       x: 1.82   v: 1.18   g: 2.03   b: 2.98   j: 0.43
-Left      : 49.05/11.96/01.61 (total/hand continuous/fingers continuous)
+Left      : 49.05/11.96/01.33 (total/hand continuous/fingers continuous)
     Middle: 15.28     Index: 14.754    Ring: 11.319    Pinky: 7.699
-    Index: 1.24      Middle: 0.285     Pinky: 0.09
-Right     : 50.95/16.16/01.36 (total/hand continuous/fingers continuous)
+    Index: 1.24      Pinky: 0.09
+Right     : 50.95/16.16/01.2 (total/hand continuous/fingers continuous)
     Index: 19.017    Middle: 14.472    Pinky: 10.759    Ring: 6.7
-    Index: 0.816     Middle: 0.263     Pinky: 0.248     Ring: 0.038
+    Index: 0.757     Pinky: 0.248     Middle: 0.154     Ring: 0.038
 Efforts    : 39,228,210.55
 Distance   : 14,213,325.79
      c: 7.998      r: 6.96       s: 5.241      o: 5.227      l: 4.972      a: 4.856
@@ -951,7 +1038,7 @@ Distance   : 14,213,325.79
 Outward rolls: 01.07
 Inward rolls: 01.23
 Hand switch: 62.57
-Same finger: 02.98
+Same finger: 02.53
 Result     : 16,026,951.97
 ```
 
@@ -961,12 +1048,12 @@ Result     : 16,026,951.97
  y: 5.21   p: 2.54   o: 3.45   u: 3.87   j: 0.44       k: 1.91   d: 5.12   l: 2.59   c: 4.83   w: 4.26
  i: 5.82   n: 1.99   e: 4.25   a: 3.65  <,: 2.38       m: 5.43   h: 1.27   t: 3.2    s: 4.41   r: 6.11
  q: 0.78   z: 0.15  ?/: 0.23  >.: 2.1   :;: 1.63       b: 3.93   f: 1.61   g: 3.65   v: 2.59   x: 2.57
-Left      : 52.03/15.8/00.63 (total/hand continuous/fingers continuous)
+Left      : 52.03/15.8/00.36 (total/hand continuous/fingers continuous)
     Middle: 19.299    Index: 14.778    Ring: 9.162     Pinky: 8.791
-    Middle: 0.269     Index: 0.218     Pinky: 0.082     Ring: 0.057
-Right     : 47.97/13.9/01.28 (total/hand continuous/fingers continuous)
+    Index: 0.218     Pinky: 0.082     Ring: 0.057
+Right     : 47.97/13.9/01.03 (total/hand continuous/fingers continuous)
     Middle: 16.012    Index: 12.694    Ring: 11.554    Pinky: 7.709
-    Middle: 0.421     Index: 0.42      Ring: 0.315     Pinky: 0.12
+    Index: 0.41      Ring: 0.315     Middle: 0.181     Pinky: 0.12
 Efforts    : 37,373,378.8
 Distance   : 13,293,559
      r: 6.106      i: 5.822      m: 5.431      y: 5.207      d: 5.122      c: 4.825
@@ -980,7 +1067,7 @@ Distance   : 13,293,559
 Outward rolls: 01.03
 Inward rolls: 00.94
 Hand switch: 61.01
-Same finger: 01.9
+Same finger: 01.38
 Result     : 15,719,282.59
 ```
 
@@ -990,12 +1077,12 @@ Result     : 15,719,282.59
 <,: 3.99   f: 2.73   h: 2.11   d: 4.72   k: 2.49       j: 1.02   c: 4.49   u: 3.1    l: 3.86  >.: 4.03
  o: 5.5    a: 4.22   n: 3.86   t: 3.09   g: 3.14       m: 4.69   s: 2.8    e: 2.58   r: 3.89   i: 5.68
  q: 1.44   x: 1.84   b: 2.28   p: 2.74   z: 0.54       y: 4.32   w: 1.81  "': 0.24   v: 1.8   :;: 1.49
-Left      : 47.02/20.16/01.23 (total/hand continuous/fingers continuous)
+Left      : 47.02/20.16/00.92 (total/hand continuous/fingers continuous)
     Index: 17.336    Middle: 11.897    Ring: 9.577     Pinky: 8.208
-    Index: 0.845     Ring: 0.275     Middle: 0.112     Pinky: 0.003
-Right     : 52.98/22.4/01.61 (total/hand continuous/fingers continuous)
+    Index: 0.584     Ring: 0.275     Middle: 0.06      Pinky: 0.003
+Right     : 52.98/22.4/01.17 (total/hand continuous/fingers continuous)
     Index: 15.964    Middle: 15.761    Ring: 10.814    Pinky: 10.444
-    Index: 1.072     Middle: 0.285     Ring: 0.249
+    Index: 0.92      Ring: 0.249
 Efforts    : 30,199,806.85
 Distance   : 14,774,035.19
      i: 5.676      o: 5.495      d: 4.717      m: 4.685      c: 4.493      y: 4.322
@@ -1009,7 +1096,7 @@ Distance   : 14,774,035.19
 Outward rolls: 01.13
 Inward rolls: 01.55
 Hand switch: 47.68
-Same finger: 02.84
+Same finger: 02.09
 Result     : 13,989,923.56
 ```
 
@@ -1019,12 +1106,12 @@ Result     : 13,989,923.56
  q: 0.77   w: 2.08   u: 3.01   d: 3.66   p: 5.57       j: 0.52   f: 2.83   y: 1.79   l: 5.21  :;: 1.74
  a: 5.36   s: 3.46   e: 3.65   t: 2.81   g: 4.64       h: 6.55   n: 3      i: 3      r: 5.46   o: 5.06
  z: 0.69   x: 0.7    c: 3.61   v: 1.39   b: 3.8        k: 1.93   m: 2.32  <,: 2     >.: 3.26  ?/: 0.44
-Left      : 54.14/26.7/03.2 (total/hand continuous/fingers continuous)
+Left      : 54.14/26.7/02.9 (total/hand continuous/fingers continuous)
     Middle: 19.088    Index: 18.97     Ring: 8.251     Pinky: 7.834
-    Middle: 1.981     Index: 1.002     Ring: 0.174     Pinky: 0.047
-Right     : 45.86/14.75/00.55 (total/hand continuous/fingers continuous)
+    Middle: 1.696     Index: 0.986     Ring: 0.174     Pinky: 0.047
+Right     : 45.86/14.75/00.4 (total/hand continuous/fingers continuous)
     Index: 14.834    Ring: 12.956    Middle: 10.457    Pinky: 7.609
-    Index: 0.371     Ring: 0.107     Middle: 0.069
+    Index: 0.297     Ring: 0.107
 Efforts    : 33,545,534.1
 Distance   : 14,791,308.3
      h: 6.547      p: 5.566      r: 5.46       a: 5.359      l: 5.215      o: 5.06
@@ -1038,7 +1125,7 @@ Distance   : 14,791,308.3
 Outward rolls: 01.53
 Inward rolls: 02.28
 Hand switch: 49.88
-Same finger: 03.75
+Same finger: 03.31
 Result     : 14,833,349.45
 ```
 
@@ -1048,12 +1135,12 @@ Result     : 14,833,349.45
  k: 2.26   c: 4.52   d: 2.33   g: 2.63   z: 0.62       j: 1.05   u: 4.32   r: 2.62   l: 4.63  :;: 1.88
  f: 3.73   t: 4.71   e: 3.64   a: 3.49   v: 2.63       y: 4.44   n: 1.95   i: 4.12   o: 3.58   h: 6.28
  x: 1.53   b: 3.1    w: 2.46   s: 2.64   q: 0.65       p: 4.88   m: 1.84  <,: 2.13  >.: 3.96  ?/: 0.49
-Left      : 51.22/23.53/04.65 (total/hand continuous/fingers continuous)
+Left      : 51.22/23.53/02.02 (total/hand continuous/fingers continuous)
     Middle: 16.949    Index: 16.69     Ring: 14.611    Pinky: 2.974
-    Middle: 1.94      Index: 1.936     Ring: 0.753     Pinky: 0.022
-Right     : 48.78/17.1/03.02 (total/hand continuous/fingers continuous)
+    Index: 0.801     Ring: 0.753     Middle: 0.439     Pinky: 0.022
+Right     : 48.78/17.1/02.24 (total/hand continuous/fingers continuous)
     Index: 16.06     Middle: 14.641    Ring: 13.926    Pinky: 4.149
-    Index: 1.663     Middle: 0.712     Ring: 0.648
+    Index: 1.59      Ring: 0.648
 Efforts    : 28,785,876.55
 Distance   : 13,849,354.62
      h: 6.285      p: 4.884      t: 4.706      l: 4.626      c: 4.517      y: 4.439
@@ -1067,7 +1154,7 @@ Distance   : 13,849,354.62
 Outward rolls: 02.65
 Inward rolls: 04.47
 Hand switch: 50.72
-Same finger: 07.67
+Same finger: 04.25
 Result     : 13,228,106.61
 ```
 
@@ -1077,12 +1164,12 @@ Result     : 13,228,106.61
  k: 2.15   c: 4.15   d: 2.45   g: 4.2    z: 0.59       j: 0.98  :;: 0.91   r: 2.7    h: 2.63  ?/: 0.43
  f: 3.46   t: 3.96   e: 3.79   a: 3.68   v: 2.49       m: 4.65   o: 3.65   i: 3.91   n: 4.01   p: 3.99
  x: 1.43   b: 3.29   w: 2.41   s: 3.19   q: 0.62       y: 4.37   l: 2.55   u: 3.97  <,: 2.87  >.: 6.22
-Left      : 51.22/23.53/04.65 (total/hand continuous/fingers continuous)
+Left      : 51.22/23.53/02.02 (total/hand continuous/fingers continuous)
     Middle: 16.949    Index: 16.69     Ring: 14.611    Pinky: 2.974
-    Middle: 1.94      Index: 1.936     Ring: 0.753     Pinky: 0.022
-Right     : 48.78/17.1/03.45 (total/hand continuous/fingers continuous)
+    Index: 0.801     Ring: 0.753     Middle: 0.439     Pinky: 0.022
+Right     : 48.78/17.1/02.1 (total/hand continuous/fingers continuous)
     Middle: 16.268    Index: 15.455    Ring: 10.963    Pinky: 6.091
-    Index: 2.01      Middle: 1.347     Ring: 0.092
+    Index: 1.372     Middle: 0.635     Ring: 0.092
 Efforts    : 30,159,829.75
 Distance   : 13,876,996.31
     .>: 6.218      m: 4.648      y: 4.371      g: 4.198      c: 4.146      n: 4.007
@@ -1096,7 +1183,7 @@ Distance   : 13,876,996.31
 Outward rolls: 03.26
 Inward rolls: 03.77
 Hand switch: 50.72
-Same finger: 08.1
+Same finger: 04.11
 Result     : 13,921,119.7
 ```
 
@@ -1106,12 +1193,12 @@ Result     : 13,921,119.7
  q: 0.8    w: 1.71   d: 2.26   f: 3.48   k: 2.14       j: 0.54   u: 4.38   r: 2.64   l: 5.02  :;: 1.81
  a: 5.44   s: 4.11   e: 3.46   t: 2.99   g: 5.01       y: 3.96   n: 2.91   i: 3.14   o: 4.19   h: 5.96
  z: 0.74   x: 0.71   c: 3.87   v: 1.16   b: 4.2        p: 4.58   m: 2.43  <,: 2.03  >.: 3.44  ?/: 0.47
-Left      : 51.22/23.53/03.75 (total/hand continuous/fingers continuous)
+Left      : 51.22/23.53/02.23 (total/hand continuous/fingers continuous)
     Middle: 19.607    Index: 15.531    Ring: 8.251     Pinky: 7.834
-    Middle: 2.918     Index: 0.611     Ring: 0.174     Pinky: 0.047
-Right     : 48.78/17.1/03.02 (total/hand continuous/fingers continuous)
+    Middle: 1.417     Index: 0.596     Ring: 0.174     Pinky: 0.047
+Right     : 48.78/17.1/02.24 (total/hand continuous/fingers continuous)
     Index: 16.06     Middle: 14.641    Ring: 13.926    Pinky: 4.149
-    Index: 1.663     Middle: 0.712     Ring: 0.648
+    Index: 1.59      Ring: 0.648
 Efforts    : 30,729,301.9
 Distance   : 14,223,639.8
      h: 5.964      a: 5.438      l: 5.025      g: 5.008      p: 4.577      u: 4.376
@@ -1125,7 +1212,7 @@ Distance   : 14,223,639.8
 Outward rolls: 02.45
 Inward rolls: 03.93
 Hand switch: 50.72
-Same finger: 06.77
+Same finger: 04.47
 Result     : 13,934,594.84
 ```
 
@@ -1135,12 +1222,12 @@ Result     : 13,934,594.84
  q: 1.13   f: 3.25   m: 1.82   l: 4.77   w: 3.95       y: 4.57   u: 3.62   o: 3.42   b: 2.08   j: 0.38
  d: 4.68   s: 4.65   t: 2.55   n: 3.12   r: 7.13       i: 6.8    a: 3.16   e: 3.76   h: 4.72  :;: 0.95
  z: 0.74   v: 2.74   g: 1.99   c: 2.42   x: 1.88       p: 4.22   k: 0.8   <,: 2.11  >.: 3.04  ?/: 0.43
-Left      : 49.07/14.02/02.03 (total/hand continuous/fingers continuous)
+Left      : 49.07/14.02/01.51 (total/hand continuous/fingers continuous)
     Index: 22.098    Middle: 13.99     Ring: 9.2       Pinky: 3.785
-    Index: 1.623     Middle: 0.263     Ring: 0.134     Pinky: 0.006
-Right     : 50.93/12.69/02.58 (total/hand continuous/fingers continuous)
+    Index: 1.217     Middle: 0.154     Ring: 0.134     Pinky: 0.006
+Right     : 50.93/12.69/02.23 (total/hand continuous/fingers continuous)
     Index: 21.427    Middle: 20.567    Ring: 7.845     Pinky: 1.087
-    Index: 2.292     Middle: 0.269     Ring: 0.015
+    Index: 2.213     Ring: 0.015
 Efforts    : 36,837,608.15
 Distance   : 13,296,643.11
      r: 7.131      i: 6.798      l: 4.773      h: 4.722      d: 4.68       s: 4.647
@@ -1154,7 +1241,7 @@ Distance   : 13,296,643.11
 Outward rolls: 01.96
 Inward rolls: 02.29
 Hand switch: 64.31
-Same finger: 04.6
+Same finger: 03.74
 Result     : 15,372,207.69
 ```
 
@@ -1164,12 +1251,12 @@ Result     : 15,372,207.69
  q: 1.1    g: 2.5    m: 2.18   l: 4.32   w: 3.97       b: 3.24   y: 2.91   u: 2.61   v: 1.56  :;: 1.53
  d: 4.59   s: 4.46   t: 2.4    n: 4.31   r: 7.4        i: 6.67   a: 3.37   e: 3.83   o: 4.9    h: 5.29
  z: 0.73   x: 1.68   c: 3.75   f: 2.24   j: 0.46       k: 1.58   p: 1.98  <,: 2.12  >.: 2.88  ?/: 0.42
-Left      : 48.35/13.74/01.92 (total/hand continuous/fingers continuous)
+Left      : 48.35/13.74/01.68 (total/hand continuous/fingers continuous)
     Index: 19.669    Middle: 16.329    Ring: 8.57      Pinky: 3.785
-    Index: 1.015     Middle: 0.809     Ring: 0.09      Pinky: 0.006
-Right     : 51.65/13.83/02.86 (total/hand continuous/fingers continuous)
+    Index: 0.889     Middle: 0.7       Ring: 0.09      Pinky: 0.006
+Right     : 51.65/13.83/01.97 (total/hand continuous/fingers continuous)
     Index: 20.13     Middle: 16.519    Ring: 10.848    Pinky: 4.149
-    Index: 2.423     Middle: 0.285     Ring: 0.155
+    Index: 1.82      Ring: 0.155
 Efforts    : 38,128,809.15
 Distance   : 13,652,184.68
      r: 7.403      i: 6.669      h: 5.294      o: 4.904      d: 4.594      s: 4.465
@@ -1183,7 +1270,7 @@ Distance   : 13,652,184.68
 Outward rolls: 02.19
 Inward rolls: 02.16
 Hand switch: 63.44
-Same finger: 04.78
+Same finger: 03.66
 Result     : 15,601,272.89
 ```
 
@@ -1193,12 +1280,12 @@ Result     : 15,601,272.89
  q: 1.1    g: 2.51   m: 2.2    l: 4.32   w: 3.91       y: 4.39   f: 2.18   u: 2.56   b: 2.06  :;: 1.52
  d: 4.61   s: 4.46   t: 2.52   n: 4.37   r: 7.52       i: 6.52   a: 3.38   e: 3.81   o: 4.75   h: 5.3
  z: 0.73   x: 1.69   c: 3.78   v: 1.18   j: 0.82       k: 1.57   p: 1.88  <,: 2.11  >.: 2.88  ?/: 0.42
-Left      : 47.5/13.02/01.7 (total/hand continuous/fingers continuous)
+Left      : 47.5/13.02/01.53 (total/hand continuous/fingers continuous)
     Index: 18.814    Middle: 16.329    Ring: 8.57      Pinky: 3.785
-    Middle: 0.809     Index: 0.796     Ring: 0.09      Pinky: 0.006
-Right     : 52.5/14.57/03.16 (total/hand continuous/fingers continuous)
+    Index: 0.737     Middle: 0.7       Ring: 0.09      Pinky: 0.006
+Right     : 52.5/14.57/02.27 (total/hand continuous/fingers continuous)
     Index: 20.529    Middle: 16.519    Ring: 11.305    Pinky: 4.149
-    Index: 2.577     Ring: 0.297     Middle: 0.285
+    Index: 1.973     Ring: 0.297
 Efforts    : 38,204,993.3
 Distance   : 13,662,087.73
      r: 7.519      i: 6.521      h: 5.3        o: 4.753      d: 4.61       s: 4.457
@@ -1212,7 +1299,7 @@ Distance   : 13,662,087.73
 Outward rolls: 02.05
 Inward rolls: 02.44
 Hand switch: 63.31
-Same finger: 04.86
+Same finger: 03.8
 Result     : 15,586,913.06
 ```
 
@@ -1222,12 +1309,12 @@ Result     : 15,586,913.06
  q: 0.73   w: 2.11   e: 3.58   r: 4.28   f: 4.4        j: 0.51   y: 2.79   l: 2.98   k: 1.4   :;: 1.78
  a: 5.02   s: 3.5    d: 2.71   t: 3.96   g: 2.78       h: 6.65   u: 2.87   o: 3.01   i: 5.17   p: 3.5
  z: 0.7    x: 0.88   c: 4.53   v: 1.49   b: 3.88       n: 6.77   m: 2.13  <,: 2.06  >.: 3.43  ?/: 0.46
-Left      : 56.44/29.76/05.01 (total/hand continuous/fingers continuous)
+Left      : 56.44/29.76/03.49 (total/hand continuous/fingers continuous)
     Index: 20.745    Middle: 19.607    Ring: 8.251     Pinky: 7.834
-    Middle: 2.918     Index: 1.87      Ring: 0.174     Pinky: 0.047
-Right     : 43.56/13.31/01.75 (total/hand continuous/fingers continuous)
+    Index: 1.855     Middle: 1.417     Ring: 0.174     Pinky: 0.047
+Right     : 43.56/13.31/00.89 (total/hand continuous/fingers continuous)
     Index: 16.764    Middle: 12.854    Ring: 10.499    Pinky: 3.446
-    Index: 1.02      Middle: 0.638     Ring: 0.088
+    Index: 0.799     Ring: 0.088
 Efforts    : 33,194,111.4
 Distance   : 15,196,849.27
      n: 6.769      h: 6.652      i: 5.169      a: 5.023      c: 4.531      f: 4.397
@@ -1241,7 +1328,7 @@ Distance   : 15,196,849.27
 Outward rolls: 02.9
 Inward rolls: 03.67
 Hand switch: 48.52
-Same finger: 06.76
+Same finger: 04.38
 Result     : 14,639,508.92
 ```
 
@@ -1251,12 +1338,12 @@ Result     : 14,639,508.92
  q: 0.69   w: 1.5    e: 3.69   r: 3.94   t: 6.65       y: 4.11   u: 4.25   i: 4.4    o: 4.77   p: 5.46
  a: 4.82   s: 3.62   d: 2.98   f: 2.24   g: 2.6        h: 3.46   j: 0.5    k: 0.97   l: 3.89  :;: 1.02
  z: 0.67   x: 0.81   c: 3.91   v: 1.42   b: 3.63       n: 6.69   m: 2.41  <,: 1.92  >.: 3.22  ?/: 0.44
-Left      : 56.44/29.76/05.01 (total/hand continuous/fingers continuous)
+Left      : 56.44/29.76/03.5 (total/hand continuous/fingers continuous)
     Index: 20.745    Middle: 19.607    Ring: 8.251     Pinky: 7.834
-    Middle: 2.918     Index: 1.87      Ring: 0.174     Pinky: 0.047
-Right     : 43.56/13.31/01.75 (total/hand continuous/fingers continuous)
+    Index: 1.866     Middle: 1.417     Ring: 0.174     Pinky: 0.047
+Right     : 43.56/13.31/01.67 (total/hand continuous/fingers continuous)
     Index: 16.764    Ring: 13.926    Middle: 9.427     Pinky: 3.446
-    Index: 1.02      Ring: 0.648     Middle: 0.078
+    Index: 1.02      Ring: 0.648
 Efforts    : 35,646,141.9
 Distance   : 16,446,534.05
      n: 6.693      t: 6.65       p: 5.464      a: 4.824      o: 4.77       i: 4.397
@@ -1270,7 +1357,7 @@ Distance   : 16,446,534.05
 Outward rolls: 03.02
 Inward rolls: 03.07
 Hand switch: 48.52
-Same finger: 06.76
+Same finger: 05.17
 Result     : 15,634,017.88
 ```
 
@@ -1280,12 +1367,12 @@ Result     : 15,634,017.88
  q: 1.21   w: 2.57   l: 2.79   d: 4.56   p: 6.19       k: 2.4    m: 3.33   u: 2.81   y: 3.33  :;: 1.61
  a: 5.1    s: 4.31   r: 2.78   t: 3.13   g: 4.87       f: 3.2    n: 3.31   e: 3.09   i: 5.12   o: 5.6
  z: 0.7    x: 1.75   c: 4.11   v: 1.35   j: 0.49       b: 3.57   h: 2.19  <,: 2.01  >.: 2.83  ?/: 0.44
-Left      : 48.33/18.4/01.68 (total/hand continuous/fingers continuous)
+Left      : 48.33/18.4/01.57 (total/hand continuous/fingers continuous)
     Index: 17.794    Middle: 14.454    Ring: 8.251     Pinky: 7.834
-    Index: 0.834     Middle: 0.624     Ring: 0.174     Pinky: 0.047
-Right     : 51.67/18.48/00.9 (total/hand continuous/fingers continuous)
+    Index: 0.818     Middle: 0.534     Ring: 0.174     Pinky: 0.047
+Right     : 51.67/18.48/00.56 (total/hand continuous/fingers continuous)
     Middle: 16.519    Index: 16.011    Ring: 11.529    Pinky: 7.609
-    Index: 0.531     Middle: 0.285     Ring: 0.085
+    Index: 0.48      Ring: 0.085
 Efforts    : 32,829,435.4
 Distance   : 15,129,893.08
      p: 6.185      o: 5.603      i: 5.124      a: 5.103      g: 4.87       d: 4.56
@@ -1299,7 +1386,7 @@ Distance   : 15,129,893.08
 Outward rolls: 01.07
 Inward rolls: 01.55
 Hand switch: 53.97
-Same finger: 02.58
+Same finger: 02.14
 Result     : 14,866,019.96
 ```
 
@@ -1309,12 +1396,12 @@ Result     : 14,866,019.96
  t: 6.35   n: 3.62   w: 1.45   m: 2.93   l: 5.73       c: 7.29   b: 3.08   p: 3.21   r: 5.12   h: 3.7
  s: 3.32   g: 1.3    x: 0.5    j: 0.23   f: 2.42       k: 1.23   q: 0.63   z: 0.12   v: 1.74  :;: 0.7
  e: 8.58   a: 4.43   d: 2.11   i: 3.59   o: 4.89       y: 3.56   u: 3.63  <,: 2.2   >.: 3.49  ?/: 0.37
-Left      : 70.69/47.88/13.71 (total/hand continuous/fingers continuous)
+Left      : 70.69/47.88/13.69 (total/hand continuous/fingers continuous)
     Pinky: 27.484    Index: 22.045    Ring: 15.478    Middle: 5.687
-    Pinky: 5.849     Index: 4.998     Ring: 2.782     Middle: 0.082
-Right     : 29.31/04.24/01.31 (total/hand continuous/fingers continuous)
+    Pinky: 5.849     Index: 4.994     Ring: 2.782     Middle: 0.068
+Right     : 29.31/04.24/01.14 (total/hand continuous/fingers continuous)
     Index: 10.461    Ring: 9.878     Middle: 4.818     Pinky: 4.149
-    Index: 1.186     Ring: 0.126     Middle: 0
+    Index: 1.012     Ring: 0.126
 Efforts    : 38,563,502.65
 Distance   : 18,716,488.07
      e: 8.584      c: 7.292      t: 6.349      l: 5.731      r: 5.119      o: 4.887
@@ -1328,7 +1415,7 @@ Distance   : 18,716,488.07
 Outward rolls: 07.17
 Inward rolls: 07.02
 Hand switch: 40.13
-Same finger: 15.02
+Same finger: 14.83
 Result     : 17,151,559.12
 ```
 
@@ -1338,12 +1425,12 @@ Result     : 17,151,559.12
  q: 1.23   d: 4.82   r: 3.21   w: 3.01   b: 4.72       j: 0.5    f: 2.52   u: 2.69   p: 3.01  :;: 1.6
  a: 5.07   s: 4.92   h: 1.16   t: 3.25   g: 5.06       y: 3.69   n: 3.47   e: 3.16   o: 4.49   i: 6.52
  z: 0.31   x: 1.77   m: 3.39   c: 3.07   v: 3.23       k: 2.09   l: 3.32  <,: 2.08  >.: 2.68  ?/: 0.48
-Left      : 48.67/19.99/01.83 (total/hand continuous/fingers continuous)
+Left      : 48.67/19.99/01.01 (total/hand continuous/fingers continuous)
     Index: 18.47     Middle: 12.22     Ring: 10.147    Pinky: 7.834
-    Index: 1.209     Middle: 0.328     Ring: 0.247     Pinky: 0.047
-Right     : 51.33/18.14/01.64 (total/hand continuous/fingers continuous)
+    Index: 0.531     Ring: 0.247     Middle: 0.186     Pinky: 0.047
+Right     : 51.33/18.14/01.26 (total/hand continuous/fingers continuous)
     Middle: 16.519    Index: 14.681    Ring: 12.488    Pinky: 7.641
-    Index: 0.897     Ring: 0.454     Middle: 0.285
+    Index: 0.809     Ring: 0.454
 Efforts    : 31,997,460.4
 Distance   : 15,023,076.31
      i: 6.52       a: 5.074      g: 5.059      s: 4.923      d: 4.823      b: 4.72
@@ -1357,6 +1444,6 @@ Distance   : 15,023,076.31
 Outward rolls: 01.89
 Inward rolls: 01.55
 Hand switch: 52.78
-Same finger: 03.47
+Same finger: 02.27
 Result     : 14,397,034.63
 ```
