@@ -35,6 +35,16 @@ module Keys =
         | HandStringKey of Hands.Hand * string
         | Key of Hands.Hand * byte
 
+    let getNumber key =
+        match key with
+        | StringKey (string) ->
+            match string with
+            | HeadTail (_, t) ->
+                 Byte.Parse(t)
+            | _ -> failwith "Wrong key."
+        | HandStringKey (_, number) -> Byte.Parse(number)
+        | Key (_, number) -> number
+
     let rec create union =
         match union with
         | StringKey (string) ->

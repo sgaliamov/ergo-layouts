@@ -1,6 +1,5 @@
 ﻿{
   "sameFingerPenalty": 2,
-  "doublePressPenalty": 0.5,
   "handSwitchPenalty": 6,
   "precision": 0.0,
   "columns": 6,

@@ -101,6 +101,8 @@ let private toKeys keyboard line =
         | (false, _) -> failwithf "Can't find key for '%c'" (Character.value char)))
     |> List.ofSeq
 
+let freeKeys = [11uy; 18uy; 19uy; 26uy]
+
 let collect (keyboard: Keyboard) line =
     let (topKeys, homeKeys, bottomKeys, leftKeys, rightKeys, fingersMap) =
         keyboard.TopKeys,
@@ -128,13 +130,19 @@ let collect (keyboard: Keyboard) line =
         |> Seq.map (fun (prev, key) -> key, getDistance keyboard prev key)
         |> Map
 
+    let isFree (a, b) =
+        let prevN = Keys.getNumber a
+        let keyN = Keys.getNumber b
+        freeKeys.Contains prevN && freeKeys.Contains keyN
+
     let getFactor prev key =
         let sameColumn () =
             let (prevX, _) = keyboard.Coordinates.[prev]
             let (keyX, _) = keyboard.Coordinates.[key]
             prevX = keyX
+
         if prev = START_TOKEN then 0.
-        else if key = prev then settings.doublePressPenalty
+        else if isFree(key, prev) then 1.0
         else if sameColumn() then settings.sameFingerPenalty
         else if not (isSameHand keyboard key prev) then settings.handSwitchPenalty
         else 1.0
@@ -185,6 +193,7 @@ let collect (keyboard: Keyboard) line =
         |> Seq.pairwise
         |> Seq.filter (fun (a, b) -> a <> b)
         |> Seq.filter isSameFinger
+        |> Seq.filter (isFree >> not)
         |> Seq.filter (fun (a, b) -> not (isPunctuation a || isPunctuation b))
         |> Seq.map first
         |> Seq.cache
