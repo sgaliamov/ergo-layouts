@@ -74,7 +74,7 @@ What I find important:
     It's hard to say which balance is the best.
     It sounds logical that the load on hands should be equal.
     But from other point of view, the left hand is used more often because we use a mouse with the right hand and place the most of shortcuts on the left side.
-    To not overcomplicate, I decide stick to balanced option.
+    To not over-complicate, I decide stick to balanced option.
 
 7. Punctuation marks do not have to be in the standard position.
 
@@ -86,7 +86,10 @@ What I find important:
 
     Since we use ErgoDox keyboard we can configure extra layers and have almost any shortcut anywhere.
     The authors of many layouts deliberately left the Z, X, C, V buttons in place to preserve the familiar experience.
-    It makes sense for regular keyboards, and I would care about it if I didn't have ErgoDox. I thought initially. The biggest problem with that, is when you have to switch to another language, all shotcuts are moved to the original places and you have to remember two sets of shotcuts and current language. It's really annoying.
+    It makes sense for regular keyboards, and I would care about it if I didn't have ErgoDox.
+    I thought initially.
+    The biggest problem with that is when you have to switch to another language, all shortcuts are moved to the original places and you have to remember two sets of shortcuts and the current language.
+    It's really annoying.
 
 Having all this requirements I started this project.
 I wanted to try F# and scope of this assignment was perfect for it.
@@ -110,7 +113,7 @@ z x c v b    k d u m j
 ```
 
 Here is the full configuration for [ErgoDox](https://configure.ergodox-ez.com/ergodox-ez/layouts/EWljA/55ADn/0).
-I can not say that I 100% happy wiht the result. There are some 
+I can not say that I 100% happy with the result. There are some ideas that i'd like to try to improve it.
 
 ## Results
 
