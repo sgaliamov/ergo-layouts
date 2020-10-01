@@ -1,6 +1,5 @@
 .ionide/
 .vs/
-.vscode/
 *.user
 ~*
 bin/
@@ -8,3 +7,4 @@ obj/
 publish/
 samples/
 launchSettings.json
+target/
