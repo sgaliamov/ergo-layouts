@@ -1,0 +1,6 @@
+{
+  // A traditional message.
+  message: "hello world",
+  // A number for some reason.
+  n: 42,
+}
