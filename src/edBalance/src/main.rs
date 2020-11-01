@@ -1,7 +1,8 @@
 mod cli;
 
 use cli::Cli;
-use serde_json::json;
+use serde_json::{json, Map, Value};
+use std::collections::HashMap;
 use structopt::StructOpt;
 
 #[derive(Debug)]
@@ -10,10 +11,25 @@ struct Group {
     score: i32,
 }
 
+fn create_digraphs_map(json: &Map<String, Value>) -> HashMap<char, HashMap<char, f64>> {
+    let mut dig_map: HashMap<char, HashMap<char, f64>> = HashMap::new();
+
+    for (digraph, value) in json {
+        let first = digraph.chars().nth(0).unwrap();
+        let second = digraph.chars().nth(1).unwrap();
+        let inner_map = dig_map.entry(first).or_insert(HashMap::new());
+        inner_map.insert(second, value.as_f64().unwrap());
+    }
+
+    return dig_map;
+}
+
 fn main() {
     let args = Cli::from_args();
     let content = std::fs::read_to_string(&args.digraphs).expect("could not read file");
-    let digraphs = json!(content);
+    let json = json!(content);
+    let digraphs = json.as_object().unwrap();
+    let digraphs_map = create_digraphs_map(digraphs);
 
     // build left group
     let mut left_group = Group {
@@ -39,4 +55,5 @@ fn main() {
 
     println!("{:#?}", left_group);
     println!("{:#?}", right_group);
+    println!("{:#?}", digraphs_map);
 }
