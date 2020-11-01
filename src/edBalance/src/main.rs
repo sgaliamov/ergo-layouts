@@ -1,7 +1,7 @@
 mod cli;
 
 use cli::Cli;
-use serde_json::{json, Map, Value};
+use serde_json::{Map, Value};
 use std::collections::HashMap;
 use structopt::StructOpt;
 
@@ -27,8 +27,8 @@ fn create_digraphs_map(json: &Map<String, Value>) -> HashMap<char, HashMap<char,
 fn main() {
     let args = Cli::from_args();
     let content = std::fs::read_to_string(&args.digraphs).expect("could not read file");
-    let json = json!(content);
-    let digraphs = json.as_object().unwrap();
+    let json: serde_json::Value = serde_json::from_str(&content).expect("wrong json");
+    let digraphs = json.as_object().expect("wrong json");
     let digraphs_map = create_digraphs_map(digraphs);
 
     // build left group
