@@ -1,8 +1,9 @@
 mod cli;
+mod lib;
 
-use cli::Cli;
-use serde_json::{Map, Value};
-use std::collections::HashMap;
+use crate::cli::Cli;
+use crate::lib::custom::create_digraphs_map;
+use std::error::Error;
 use structopt::StructOpt;
 
 #[derive(Debug)]
@@ -11,34 +12,29 @@ struct Group {
     score: i32,
 }
 
-fn create_digraphs_map(json: &Map<String, Value>) -> HashMap<char, HashMap<char, f64>> {
-    let mut dig_map: HashMap<char, HashMap<char, f64>> = HashMap::new();
-
-    for (digraph, value) in json {
-        let first = digraph.chars().nth(0).unwrap();
-        let second = digraph.chars().nth(1).unwrap();
-        let inner_map = dig_map.entry(first).or_insert(HashMap::new());
-        inner_map.insert(second, value.as_f64().unwrap());
+#[cfg(test)]
+pub mod tests {
+    #[test]
+    pub fn my_test_main() {
+        assert_eq!(2 + 2, 43);
     }
-
-    return dig_map;
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let args = Cli::from_args();
-    let content = std::fs::read_to_string(&args.digraphs).expect("could not read file");
-    let json: serde_json::Value = serde_json::from_str(&content).expect("wrong json");
-    let digraphs = json.as_object().expect("wrong json");
+    let content = std::fs::read_to_string(&args.digraphs)?;
+    let json: serde_json::Value = serde_json::from_str(&content)?;
+    let digraphs = json.as_object().unwrap();
     let digraphs_map = create_digraphs_map(digraphs);
 
     // build left group
-    let mut left_group = Group {
+    let left_group = Group {
         score: 0,
         letters: ('a'..'z').collect(),
     };
 
     // right group is empty
-    let mut right_group = Group {
+    let right_group = Group {
         score: 0,
         letters: Vec::new(),
     };
@@ -56,4 +52,6 @@ fn main() {
     println!("{:#?}", left_group);
     println!("{:#?}", right_group);
     println!("{:#?}", digraphs_map);
+
+    Ok(())
 }
