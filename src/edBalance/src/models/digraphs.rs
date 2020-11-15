@@ -1,7 +1,7 @@
 use serde_json::{Map, Value};
 use std::collections::HashMap;
 
-type DigraphsMap = HashMap<char, HashMap<char, f64>>;
+pub type DigraphsMap = HashMap<char, HashMap<char, f64>>;
 
 #[derive(Debug)]
 pub struct Digraphs {
@@ -81,7 +81,7 @@ pub mod tests {
         let letters = vec!['b', 'c', 'd', 'f', 'g', 'a'];
         let actual = target.calculate_score(&letters);
 
-        assert_eq!(actual, 1. + 2. + 4. + 5., "'ef' and 'g' are not counted");
+        assert_eq!(actual, 1. + 2. + 4. + 5., "'ef', 'xz' and 'g' are not counted");
     }
 
     #[test]
@@ -95,5 +95,18 @@ pub mod tests {
         let actual = target.calculate_score(&letters);
 
         assert_eq!(actual, 0.);
+    }
+
+    #[test]
+    pub fn test_child_iterator() {
+        let a = vec![1, 2, 3];
+        let mut iter = a.iter();
+        iter.next();
+
+        let mut child_iter = iter.clone().into_iter();
+
+        assert_eq!(*child_iter.next().unwrap(), 2);
+        assert_eq!(*child_iter.next().unwrap(), 3);
+        assert_eq!(*iter.next().unwrap(), 2);
     }
 }
