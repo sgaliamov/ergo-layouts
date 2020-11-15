@@ -1,25 +1,17 @@
 pub mod models;
 
-use models::{Cli, Digraphs, Group};
+use models::{Cli, Digraphs};
 use std::collections::LinkedList;
 use std::error::Error;
 
 pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
     let digraphs = load_digraph(args)?;
 
-    // build left group
-    let left_letters: Vec<char> = ('a'..'z').collect();
-    let left_group = Group {
-        score: digraphs.calculate_score(&left_letters),
-        letters: &left_letters,
-    };
+    let mut left_letters: LinkedList<char> =
+        ('a'..'z').filter(|x| *x != 't' && *x != 'h').collect();
 
-    // right group is empty
-    let right_letters: Vec<char> = Vec::new();
-    let right_group = Group {
-        score: digraphs.calculate_score(&right_letters),
-        letters: &right_letters,
-    };
+    let mut right_letters: LinkedList<char> = LinkedList::new();
+    right_letters.extend(['t', 'h'].iter());
 
     // 1) get biggest/smallest pair and place it to the right group
     // 2) find a pair to move to the right group that will give biggest result
@@ -30,10 +22,19 @@ pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
     // select maximum combination
     // print maximized groups
     // continue till left group has 11 letters (because rest 4 can be used for punctuation keys)
+    loop {
+        let letter = get_letter_to_move(&digraphs, &mut left_letters, &mut right_letters);
+        left_letters.pop_back();
+        right_letters.push_back(letter);
 
-    println!("{:#?}", left_group);
-    println!("{:#?}", right_group);
-    println!("{:#?}", digraphs);
+        if left_letters.len() <= 15 {
+            println!("{:#?}", left_letters);
+            println!("{:#?}", right_letters);
+        }
+        if left_letters.len() <= 11 {
+            break;
+        }
+    }
 
     Ok(())
 }
@@ -46,21 +47,39 @@ fn load_digraph(args: &Cli) -> Result<Digraphs, Box<dyn Error>> {
     Ok(Digraphs::new(digraphs))
 }
 
-fn get_biggest_pair(
+fn get_letter_to_move(
     digraphs: &Digraphs,
-    left: &mut LinkedList<char>,
-    right: &mut LinkedList<char>,
-) {
-    let x = '_';
-    let y = '_';
+    left_letters: &mut LinkedList<char>,
+    right_letters: &mut LinkedList<char>,
+) -> char {
+    let mut max_left = 0.;
+    let mut max_right = 0.;
+    let mut result = None;
+    let mut i = 0;
 
-    loop {
-        let a = left.pop_front().unwrap();
-        let left_vec = left.iter().map(|x| *x).collect();
-        let left_score = digraphs.calculate_score(&left_vec);
+    while i < left_letters.len() {
+        if let Some(letter) = left_letters.pop_front() {
+            let left_vec = left_letters.iter().map(|x| *x).collect();
+            let left_score = digraphs.calculate_score(&left_vec);
 
-        right.push_back(a);
-        let right_vec = right.iter().map(|x| *x).collect();
-        let rigth_score = digraphs.calculate_score(&right_vec);
+            right_letters.push_back(letter);
+            let right_vec = right_letters.iter().map(|x| *x).collect();
+            let right_score = digraphs.calculate_score(&right_vec);
+
+            let total_score = left_score + right_score;
+            if total_score > max_left + max_right {
+                max_left = left_score;
+                max_right = right_score;
+                result = Some(letter);
+            }
+
+            left_letters.push_back(letter);
+            right_letters.pop_back();
+        } else {
+            break;
+        }
+        i += 1;
     }
+
+    result.unwrap()
 }

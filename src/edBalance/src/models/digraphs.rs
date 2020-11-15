@@ -30,6 +30,7 @@ impl Digraphs {
         Digraphs { map }
     }
 
+    // todo: optimize using iterators
     pub fn calculate_score(&self, letters: &Vec<char>) -> f64 {
         if letters.len() == 0 {
             return 0.;
@@ -81,7 +82,11 @@ pub mod tests {
         let letters = vec!['b', 'c', 'd', 'f', 'g', 'a'];
         let actual = target.calculate_score(&letters);
 
-        assert_eq!(actual, 1. + 2. + 4. + 5., "'ef', 'xz' and 'g' are not counted");
+        assert_eq!(
+            actual,
+            1. + 2. + 4. + 5.,
+            "'ef', 'xz' and 'g' are not counted"
+        );
     }
 
     #[test]
