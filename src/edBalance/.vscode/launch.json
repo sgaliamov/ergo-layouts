@@ -8,7 +8,9 @@
       "program": "${workspaceRoot}/target/debug/ed_balance.exe",
       "args": [
         "-d",
-        "C:/Users/sgaliamov/projects/personal/ergo-layouts/src/edBalance/data/digraphs.json"
+        "C:/Users/sgaliamov/projects/personal/ergo-layouts/src/edBalance/data/digraphs.json",
+        "-f",
+        "zxcvaser"
       ]
     }
   ]
