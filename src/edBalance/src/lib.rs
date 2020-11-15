@@ -6,11 +6,11 @@ use std::error::Error;
 pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
     let digraphs = load_digraph(args)?;
 
-    let mut left_letters: LinkedList<char> =
-        ('a'..'z').filter(|x| *x != 't' && *x != 'h').collect();
-
     let mut right_letters: LinkedList<char> = LinkedList::new();
-    right_letters.extend(['t', 'h'].iter());
+    right_letters.extend("zxcvase".chars());
+
+    let mut left_letters: LinkedList<char> =
+        ('a'..'z').filter(|x| !right_letters.contains(x)).collect();
 
     // 1) get biggest/smallest pair and place it to the right group
     // 2) find a pair to move to the right group that will give biggest result
@@ -35,7 +35,7 @@ pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
             println!(
                 "{}: {:.2} - {:.2}: {:?}, {:.2}: {:?}",
                 left_letters.len(),
-                left_score + right_score,
+                left_score / right_score,
                 left_score,
                 left,
                 right_score,
@@ -63,11 +63,12 @@ fn get_letter_to_move(
     left_letters: &mut LinkedList<char>,
     right_letters: &mut LinkedList<char>,
 ) -> (char, usize, f64, f64) {
-    let mut max_left = 0.;
-    let mut max_right = 0.;
+    let mut left_result = 0.;
+    let mut right_result = 0.;
     let mut result = None;
     let mut i = 0;
     let mut index = 0;
+    let mut min_total = 100000.;
 
     while i < left_letters.len() {
         if let Some(letter) = left_letters.pop_front() {
@@ -78,12 +79,13 @@ fn get_letter_to_move(
             let right_vec = right_letters.iter().map(|x| *x).collect();
             let right_score = digraphs.calculate_score(&right_vec);
 
-            let total_score = left_score + right_score;
-            if total_score > max_left + max_right {
-                max_left = left_score;
-                max_right = right_score;
+            let total_score = (1. - left_score / right_score).abs();
+            if total_score < min_total {
+                left_result = left_score;
+                right_result = right_score;
                 result = Some(letter);
                 index = i;
+                min_total = total_score;
             }
 
             left_letters.push_back(letter);
@@ -94,5 +96,10 @@ fn get_letter_to_move(
         i += 1;
     }
 
-    (result.unwrap(), index, max_left, max_right)
+    (
+        result.expect("failed to find a letter to move"),
+        index,
+        left_result,
+        right_result,
+    )
 }
