@@ -31,20 +31,21 @@ impl Digraphs {
     }
 
     pub fn calculate_score(&self, letters: &Vec<char>) -> f64 {
+        if letters.len() == 0 {
+            return 0.;
+        }
+
         let mut score = 0.0;
         let mut j = 0;
 
-        while j < letters.len() {
-            let mut i = 0;
+        while j < letters.len() - 1 {
+            let mut i = j + 1;
             let first = letters[j];
 
             while i < letters.len() {
-                if i != j {
-                    let second = letters[i];
-                    score += self.get_value(&first, &second);
-                    println!("{}, {}: {}", &first, &second, &score);
-                    // score += self.get_value(&second, &first);
-                }
+                let second = letters[i];
+                score += self.get_value(&first, &second);
+                score += self.get_value(&second, &first);
                 i += 1;
             }
             j += 1;
@@ -77,10 +78,22 @@ pub mod tests {
             "xz": 6.0, // not used
         });
         let target = Digraphs::new(&json.as_object().unwrap());
-        println!("{:#?}", &target);
-        let letters = vec!['a', 'b', 'c', 'd', 'f', 'g'];
+        let letters = vec!['b', 'c', 'd', 'f', 'g', 'a'];
         let actual = target.calculate_score(&letters);
 
         assert_eq!(actual, 1. + 2. + 4. + 5., "'ef' and 'g' are not counted");
+    }
+
+    #[test]
+    pub fn calculate_score_on_empty_vector() {
+        let json = json!({
+            "ab": 1.0,
+            "bc": 2.0,
+        });
+        let target = Digraphs::new(&json.as_object().unwrap());
+        let letters = vec![];
+        let actual = target.calculate_score(&letters);
+
+        assert_eq!(actual, 0.);
     }
 }
