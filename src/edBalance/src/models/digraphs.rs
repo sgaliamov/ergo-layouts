@@ -25,10 +25,6 @@ impl Digraphs {
                     .or_insert(HashMap::new())
                     .insert(second, value);
                 result
-                    .entry(second)
-                    .or_insert(HashMap::new())
-                    .insert(first, value);
-                result
             });
 
         Digraphs { map }
@@ -38,14 +34,17 @@ impl Digraphs {
         let mut score = 0.0;
         let mut j = 0;
 
-        while j < letters.len() - 1 {
-            let mut i = j + 1;
+        while j < letters.len() {
+            let mut i = 0;
             let first = letters[j];
 
             while i < letters.len() {
-                let second = letters[i];
-                score += self.get_value(&first, &second);
-                score += self.get_value(&second, &first);
+                if i != j {
+                    let second = letters[i];
+                    score += self.get_value(&first, &second);
+                    println!("{}, {}: {}", &first, &second, &score);
+                    // score += self.get_value(&second, &first);
+                }
                 i += 1;
             }
             j += 1;
@@ -78,9 +77,10 @@ pub mod tests {
             "xz": 6.0, // not used
         });
         let target = Digraphs::new(&json.as_object().unwrap());
+        println!("{:#?}", &target);
         let letters = vec!['a', 'b', 'c', 'd', 'f', 'g'];
         let actual = target.calculate_score(&letters);
 
-        assert_eq!(actual, 1. + 2. + 3. + 4. + 5.);
+        assert_eq!(actual, 1. + 2. + 4. + 5., "'ef' and 'g' are not counted");
     }
 }
