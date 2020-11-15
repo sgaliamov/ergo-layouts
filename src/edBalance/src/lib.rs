@@ -1,5 +1,4 @@
 pub mod models;
-
 use models::{Cli, Digraphs};
 use std::collections::LinkedList;
 use std::error::Error;
@@ -23,13 +22,25 @@ pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
     // print maximized groups
     // continue till left group has 11 letters (because rest 4 can be used for punctuation keys)
     loop {
-        let letter = get_letter_to_move(&digraphs, &mut left_letters, &mut right_letters);
-        left_letters.pop_back();
+        let (letter, index, left_score, right_score) =
+            get_letter_to_move(&digraphs, &mut left_letters, &mut right_letters);
+        let mut split = left_letters.split_off(index);
+        split.pop_front();
+        left_letters.append(&mut split);
         right_letters.push_back(letter);
 
         if left_letters.len() <= 15 {
-            println!("{:#?}", left_letters);
-            println!("{:#?}", right_letters);
+            let left: String = left_letters.iter().map(|x| x).collect();
+            let right: String = right_letters.iter().map(|x| x).collect();
+            println!(
+                "{}: {:.2} - {:.2}: {:?}, {:.2}: {:?}",
+                left_letters.len(),
+                left_score + right_score,
+                left_score,
+                left,
+                right_score,
+                right
+            );
         }
         if left_letters.len() <= 11 {
             break;
@@ -51,11 +62,12 @@ fn get_letter_to_move(
     digraphs: &Digraphs,
     left_letters: &mut LinkedList<char>,
     right_letters: &mut LinkedList<char>,
-) -> char {
+) -> (char, usize, f64, f64) {
     let mut max_left = 0.;
     let mut max_right = 0.;
     let mut result = None;
     let mut i = 0;
+    let mut index = 0;
 
     while i < left_letters.len() {
         if let Some(letter) = left_letters.pop_front() {
@@ -71,6 +83,7 @@ fn get_letter_to_move(
                 max_left = left_score;
                 max_right = right_score;
                 result = Some(letter);
+                index = i;
             }
 
             left_letters.push_back(letter);
@@ -81,5 +94,5 @@ fn get_letter_to_move(
         i += 1;
     }
 
-    result.unwrap()
+    (result.unwrap(), index, max_left, max_right)
 }
