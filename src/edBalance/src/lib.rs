@@ -1,7 +1,6 @@
 pub mod models;
 
 use models::{Cli, Digraphs, Group};
-use std::collections::HashMap;
 use std::error::Error;
 
 pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
@@ -14,14 +13,14 @@ pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
     // build left group
     let left_letters: Vec<char> = ('a'..'z').collect();
     let left_group = Group {
-        score: digraphs_map.get_score(&left_letters),
+        score: digraphs_map.calculate_score(&left_letters),
         letters: &left_letters,
     };
 
     // right group is empty
     let right_letters: Vec<char> = Vec::new();
     let right_group = Group {
-        score: digraphs_map.get_score(&right_letters),
+        score: digraphs_map.calculate_score(&right_letters),
         letters: &right_letters,
     };
 
@@ -43,17 +42,6 @@ pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn get_biggest_pair(digraphs_map: &HashMap<char, HashMap<char, f64>>) -> (char, char, f64) {
-    todo!()
-}
-
-// #[cfg(test)]
-// pub mod tests {
-//     use super::*;
-//     #[test]
-//     pub fn my_test_main() {
-//         let c = Qwe { value: 5 };
-
-//         assert_eq!(c.foo().clone(), 5, "message");
-//     }
+// fn get_biggest_pair(digraphs_map: &HashMap<char, HashMap<char, f64>>) -> (char, char, f64) {
+//     todo!()
 // }
