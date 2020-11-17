@@ -79,7 +79,7 @@ pub mod tests {
             "xz": 6.0, // not used
         });
         let target = Digraphs::new(&json.as_object().unwrap());
-        let letters = vec!['b', 'c', 'd', 'f', 'g', 'a'];
+        let letters: VecDeque<char> = VecDeque::from(vec!['b', 'c', 'd', 'f', 'g', 'a']);
         let actual = target.calculate_score(&letters);
 
         assert_eq!(
@@ -96,7 +96,7 @@ pub mod tests {
             "bc": 2.0,
         });
         let target = Digraphs::new(&json.as_object().unwrap());
-        let letters = vec![];
+        let letters = VecDeque::with_capacity(0);
         let actual = target.calculate_score(&letters);
 
         assert_eq!(actual, 0.);
