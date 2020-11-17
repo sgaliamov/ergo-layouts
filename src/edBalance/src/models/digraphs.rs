@@ -1,5 +1,5 @@
 use serde_json::{Map, Value};
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 
 pub type DigraphsMap = HashMap<char, HashMap<char, f64>>;
 
@@ -31,7 +31,7 @@ impl Digraphs {
     }
 
     // todo: optimize using iterators
-    pub fn calculate_score(&self, letters: &Vec<char>) -> f64 {
+    pub fn calculate_score(&self, letters: &VecDeque<char>) -> f64 {
         if letters.len() == 0 {
             return 0.;
         }

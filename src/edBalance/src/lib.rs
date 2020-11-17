@@ -1,6 +1,6 @@
 pub mod models;
 use models::{Cli, Digraphs};
-use std::collections::LinkedList;
+use std::collections::VecDeque;
 use std::error::Error;
 
 pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
@@ -13,10 +13,10 @@ pub fn run(args: &Cli) -> Result<(), Box<dyn Error>> {
 }
 
 fn start_with(letter: &char, digraphs: &Digraphs, frozen: &str) {
-    let mut right_letters: LinkedList<char> = LinkedList::new();
+    let mut right_letters: VecDeque<char> = VecDeque::with_capacity(15);
     right_letters.push_back(*letter);
 
-    let mut left_letters: LinkedList<char> =
+    let mut left_letters: VecDeque<char> =
         ('a'..='z').filter(|x| !right_letters.contains(x)).collect();
 
     loop {
@@ -31,14 +31,16 @@ fn start_with(letter: &char, digraphs: &Digraphs, frozen: &str) {
         if left_letters.len() <= 15 {
             let left = to_sorted_string(&left_letters);
             let right = to_sorted_string(&right_letters);
+            let total = get_score(left_score, right_score);
             println!(
-                "{}; {:.3}; {:.3}; {}; {:.3}; {}",
+                "{}; {:.3}; {}; {:.3}; {}; {:.3}; {:.3};",
                 left_letters.len(),
-                left_score / right_score,
                 left_score,
                 left,
                 right_score,
-                right
+                right,
+                total,
+                total * (left_score + right_score)
             );
         }
         if left_letters.len() <= 11 {
@@ -47,7 +49,7 @@ fn start_with(letter: &char, digraphs: &Digraphs, frozen: &str) {
     }
 }
 
-fn to_sorted_string(list: &LinkedList<char>) -> String {
+fn to_sorted_string(list: &VecDeque<char>) -> String {
     let mut vec = to_vec(list);
     vec.sort();
     vec.iter().collect()
@@ -61,14 +63,14 @@ fn load_digraph(args: &Cli) -> Result<Digraphs, Box<dyn Error>> {
     Ok(Digraphs::new(digraphs))
 }
 
-fn to_vec(list: &LinkedList<char>) -> Vec<char> {
+fn to_vec(list: &VecDeque<char>) -> Vec<char> {
     list.iter().map(|x| *x).collect()
 }
 
 fn get_letter_to_move(
     digraphs: &Digraphs,
-    left_letters: &mut LinkedList<char>,
-    right_letters: &mut LinkedList<char>,
+    left_letters: &mut VecDeque<char>,
+    right_letters: &mut VecDeque<char>,
     frozen: &str,
 ) -> (char, usize, f64, f64) {
     let mut left_result = 0.;
@@ -81,14 +83,12 @@ fn get_letter_to_move(
     while i < left_letters.len() {
         if let Some(letter) = left_letters.pop_front() {
             if !frozen.contains(letter) {
-                let left_vec = to_vec(left_letters);
-                let left_score = digraphs.calculate_score(&left_vec);
+                let left_score = digraphs.calculate_score(&left_letters);
 
                 right_letters.push_back(letter);
-                let right_vec = to_vec(right_letters);
-                let right_score = digraphs.calculate_score(&right_vec);
+                let right_score = digraphs.calculate_score(&right_letters);
 
-                let total_score = (1. - left_score / right_score).abs();
+                let total_score = get_score(left_score, right_score);
                 if total_score < min_total {
                     left_result = left_score;
                     right_result = right_score;
@@ -113,6 +113,10 @@ fn get_letter_to_move(
         left_result,
         right_result,
     )
+}
+
+fn get_score(left_score: f64, right_score: f64) -> f64 {
+    (1. - left_score / right_score).abs()
 }
 
 // 1) get biggest/smallest pair and place it to the right group
