@@ -2,7 +2,7 @@
 .vs/
 *.user
 ~*
-bin/
+**/edLayout/bin/
 obj/
 publish/
 samples/
