@@ -1,5 +1,7 @@
+mod calculation;
+
+use calculation::run;
 use ed_balance::models::Cli;
-use ed_balance::run;
 use std::process;
 use structopt::StructOpt;
 

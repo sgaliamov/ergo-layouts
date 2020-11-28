@@ -1,5 +1,7 @@
 use serde_json::{Map, Value};
 use std::collections::{HashMap, VecDeque};
+use std::error::Error;
+use std::path::PathBuf;
 
 pub type DigraphsMap = HashMap<char, HashMap<char, f64>>;
 
@@ -30,7 +32,6 @@ impl Digraphs {
         Digraphs { map }
     }
 
-    // todo: optimize using iterators
     pub fn calculate_score(&self, letters: &VecDeque<char>) -> f64 {
         if letters.len() == 0 {
             return 0.;
@@ -53,6 +54,14 @@ impl Digraphs {
         }
 
         score
+    }
+
+    pub fn load(path: &PathBuf) -> Result<Digraphs, Box<dyn Error>> {
+        let content = std::fs::read_to_string(path)?;
+        let json: serde_json::Value = serde_json::from_str(&content)?;
+        let digraphs = json.as_object().unwrap();
+
+        Ok(Digraphs::new(digraphs))
     }
 
     fn get_value(&self, first: &char, second: &char) -> f64 {
