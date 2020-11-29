@@ -14,14 +14,14 @@ pub struct Letters {
     pub right: VecDeque<char>,
     pub left_score: f64,
     pub right_score: f64,
-    pub version: String, // todo: box?
-    pub parent_version: String,
+    pub version: Box<String>, // todo: box?
+    pub parent_version: Box<String>,
     pub mutations: Vec<Mutation>,
 }
 
 impl Letters {
     pub fn new(digraphs: &Digraphs) -> Box<Self> {
-        let mut all: Vec<char> = ('a'..='z').collect();
+        let mut all: Vec<_> = ('a'..='z').collect();
         all.shuffle(&mut rand::thread_rng());
 
         let left = all.iter().take(LEFT_COUNT).map(|x| *x).collect();
@@ -73,7 +73,7 @@ impl Letters {
         let mut rng = thread_rng();
         let mut left = self.left.clone();
         let mut right = self.right.clone();
-        let mut mutations: Vec<Mutation> = Vec::with_capacity(mutations_count);
+        let mut mutations: Vec<_> = Vec::with_capacity(mutations_count);
 
         for _ in 0..mutations_count {
             // todo: exclude duplicates?
@@ -105,11 +105,13 @@ impl Letters {
 }
 
 const LEFT_COUNT: usize = 15;
-const RIGHT_COUNT: usize = 26 - LEFT_COUNT;
+// const RIGHT_COUNT: usize = 26 - LEFT_COUNT;
 
-fn get_version() -> String {
-    rand::thread_rng()
-        .sample_iter(&Alphanumeric)
-        .take(10)
-        .collect::<String>()
+fn get_version() -> Box<String> {
+    Box::new(
+        rand::thread_rng()
+            .sample_iter(&Alphanumeric)
+            .take(10)
+            .collect::<String>(),
+    )
 }

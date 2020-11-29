@@ -26,7 +26,7 @@ fn main() {
 pub fn run(settings: &Settings) -> Result<(), DynError> {
     let digraphs = Digraphs::load(&settings.digraphs)?;
 
-    let mut population: HashMap<String, Box<Letters>> = (0..settings.population_size)
+    let mut population: HashMap<_, _> = (0..settings.population_size)
         .into_iter()
         .map(|_| {
             let letters = Letters::new(&digraphs);
@@ -53,10 +53,10 @@ fn score_cmp(a: &Box<Letters>, b: &Box<Letters>) -> Ordering {
 }
 
 fn process(
-    population: &HashMap<String, Box<Letters>>,
+    population: &HashMap<Box<String>, Box<Letters>>,
     digraphs: &Digraphs,
     settings: &Settings,
-) -> HashMap<String, Box<Letters>> {
+) -> HashMap<Box<String>, Box<Letters>> {
     let mutants: Vec<_> = population
         .iter()
         .flat_map(|(_, parent)| {
@@ -101,5 +101,5 @@ fn process(
         .into_iter()
         .take(settings.population_size)
         .map(|x| (x.version.clone(), x))
-        .collect::<HashMap<String, Box<Letters>>>()
+        .collect::<HashMap<_, _>>()
 }

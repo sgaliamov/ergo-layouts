@@ -19,7 +19,7 @@ pub struct Settings {
     #[structopt(short = "c", long = "children-count", default_value = "100")]
     pub children_count: u16,
 
-    #[structopt(short = "m", long = "generations-count", default_value = "1000")]
+    #[structopt(short = "g", long = "generations-count", default_value = "1000")]
     pub generations_count: usize,
 }
 
