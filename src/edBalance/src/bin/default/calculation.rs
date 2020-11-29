@@ -1,4 +1,4 @@
-use ed_balance::models::{Digraphs, DynError, Settings};
+use ed_balance::models::{get_score, print_letters, Digraphs, DynError, Settings};
 use std::collections::VecDeque;
 
 // find a pair to move to the right group that will give biggest result
@@ -36,34 +36,12 @@ fn start_with(letter: &char, digraphs: &Digraphs, frozen: &str) {
         right_letters.push_back(letter);
 
         if left_letters.len() <= 15 {
-            let left = to_sorted_string(&left_letters);
-            let right = to_sorted_string(&right_letters);
-            let total = get_score(left_score, right_score);
-            println!(
-                "{}; {:.3}; {}; {:.3}; {}; {:.3}; {:.3};",
-                left_letters.len(),
-                left_score,
-                left,
-                right_score,
-                right,
-                total,
-                total * (left_score + right_score)
-            );
+            print_letters(&left_letters, &right_letters, left_score, right_score);
         }
         if left_letters.len() <= 11 {
             break;
         }
     }
-}
-
-fn to_sorted_string(list: &VecDeque<char>) -> String {
-    let mut vec = to_vec(list);
-    vec.sort();
-    vec.iter().collect()
-}
-
-fn to_vec(list: &VecDeque<char>) -> Vec<char> {
-    list.iter().map(|x| *x).collect()
 }
 
 fn get_letter_to_move(
@@ -112,8 +90,4 @@ fn get_letter_to_move(
         left_result,
         right_result,
     )
-}
-
-fn get_score(left_score: f64, right_score: f64) -> f64 {
-    (1. - left_score / right_score).abs()
 }

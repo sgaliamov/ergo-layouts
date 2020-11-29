@@ -1,11 +1,9 @@
 mod letters;
 
-use ed_balance::models::{Digraphs, DynError, Settings};
+use ed_balance::models::{get_score, print_letters, Digraphs, DynError, Settings};
 use itertools::Itertools;
 use letters::Letters;
-use std::cmp::Ordering;
-use std::collections::HashMap;
-use std::process;
+use std::{cmp::Ordering, collections::HashMap, process};
 use structopt::StructOpt;
 
 fn main() {
@@ -39,16 +37,16 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
         population = process(&population, &digraphs, &settings);
     }
 
-    let result: Vec<_> = population.iter().take(10).collect();
-
-    println!("{:#?}", result);
+    for item in population.iter().take(10).map(|(_, item)| item) {
+        print_letters(&item.left, &item.right, item.left_score, item.right_score);
+    }
 
     Ok(())
 }
 
-fn score_cmp(a: &Box<Letters>, b: &Box<Letters>) -> Ordering {
-    (a.left_score + a.right_score)
-        .partial_cmp(&(b.left_score + b.right_score))
+fn score_desc_cmp(b: &Box<Letters>, a: &Box<Letters>) -> Ordering {
+    get_score(a.left_score, a.right_score)
+        .partial_cmp(&get_score(b.left_score, b.right_score))
         .unwrap()
 }
 
@@ -73,7 +71,7 @@ fn process(
         .chain(mutants.iter())
         .collect();
 
-    all.sort_by(|a, b| score_cmp(a, b));
+    all.sort_by(|a, b| score_desc_cmp(a, b));
 
     let mut children: Vec<_> = all
         .iter()
@@ -95,7 +93,7 @@ fn process(
         })
         .collect();
 
-    children.sort_by(score_cmp);
+    children.sort_by(score_desc_cmp);
 
     children
         .into_iter()
