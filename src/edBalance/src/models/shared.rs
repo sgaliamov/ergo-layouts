@@ -12,19 +12,19 @@ pub struct Settings {
     #[structopt(short = "m", long = "mutations-count", default_value = "2")]
     pub mutations_count: usize,
 
-    #[structopt(short = "s", long = "population-size", default_value = "100")]
+    #[structopt(short = "s", long = "population-size", default_value = "10")]
     pub population_size: usize,
 
-    #[structopt(short = "c", long = "children-count", default_value = "100")]
+    #[structopt(short = "c", long = "children-count", default_value = "10")]
     pub children_count: u16,
 
-    #[structopt(short = "g", long = "generations-count", default_value = "1000")]
+    #[structopt(short = "g", long = "generations-count", default_value = "100")]
     pub generations_count: usize,
 }
 
 pub type DynError = Box<dyn Error>;
 
-pub fn get_score(left_score: f64, right_score: f64) -> f64 {
+pub fn get_imbalance(left_score: f64, right_score: f64) -> f64 {
     (1. - left_score / right_score).abs()
 }
 
@@ -36,7 +36,7 @@ pub fn print_letters(
 ) {
     let left = to_sorted_string(&left_letters);
     let right = to_sorted_string(&right_letters);
-    let total = get_score(left_score, right_score);
+    let total = get_imbalance(left_score, right_score);
 
     println!(
         "{}; {:.3}; {}; {:.3}; {}; {:.3}; {:.3};",

@@ -1,6 +1,6 @@
 mod letters;
 
-use ed_balance::models::{get_score, print_letters, Digraphs, DynError, Settings};
+use ed_balance::models::{get_imbalance, print_letters, Digraphs, DynError, Settings};
 use itertools::Itertools;
 use letters::Letters;
 use std::{cmp::Ordering, collections::HashMap, process};
@@ -35,18 +35,26 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
 
     for _ in 0..settings.generations_count {
         population = process(&population, &digraphs, &settings);
+        if population.len() == 0 {
+            panic!("All died!");
+        }
     }
 
-    for item in population.iter().take(10).map(|(_, item)| item) {
+    for item in population.iter().map(|(_, item)| item).take(10) {
         print_letters(&item.left, &item.right, item.left_score, item.right_score);
     }
 
     Ok(())
 }
 
-fn score_desc_cmp(b: &Box<Letters>, a: &Box<Letters>) -> Ordering {
-    get_score(a.left_score, a.right_score)
-        .partial_cmp(&get_score(b.left_score, b.right_score))
+fn score_cmp(a: &Box<Letters>, b: &Box<Letters>) -> Ordering {
+    let a_imbalance = get_imbalance(a.left_score, a.right_score) / 10.;
+    let b_imbalance = get_imbalance(b.left_score, b.right_score) / 10.;
+    let a_total = a.left_score + a.right_score;
+    let b_total = b.left_score + b.right_score;
+
+    (b_total / b_imbalance)
+        .partial_cmp(&(a_total / a_imbalance))
         .unwrap()
 }
 
@@ -71,7 +79,7 @@ fn process(
         .chain(mutants.iter())
         .collect();
 
-    all.sort_by(|a, b| score_desc_cmp(a, b));
+    all.sort_by(|a, b| score_cmp(a, b));
 
     let mut children: Vec<_> = all
         .iter()
@@ -80,20 +88,33 @@ fn process(
         .into_iter()
         .flat_map(|(parent_version, group)| {
             group.tuple_windows().map(move |(a, b)| {
-                let parent = population.get(&parent_version.clone()).unwrap();
-                let mutations: Vec<_> = a
-                    .mutations
-                    .iter()
-                    .chain(b.mutations.iter())
-                    .unique()
-                    .collect();
+                let parent = population.get(&parent_version.clone());
+                match parent {
+                    Some(parent) => {
+                        let mutations: Vec<_> = a
+                            .mutations
+                            .iter()
+                            .chain(b.mutations.iter())
+                            .unique()
+                            .collect();
 
-                parent.apply(&mutations, &digraphs)
+                        Some(parent.apply(&mutations, &digraphs))
+                    }
+                    None => {
+                        eprintln!("Parent not found {}!", parent_version);
+                        None
+                    }
+                }
             })
         })
+        .filter(|x| match x {
+            Some(_) => true,
+            None => false,
+        })
+        .map(|x| x.unwrap())
         .collect();
 
-    children.sort_by(score_desc_cmp);
+    children.sort_by(score_cmp);
 
     children
         .into_iter()
