@@ -2,9 +2,8 @@ use std::error::Error;
 use std::path::PathBuf;
 use structopt::StructOpt;
 
-
 #[derive(StructOpt)]
-pub struct Cli {
+pub struct Settings {
     #[structopt(short = "d", long = "digraphs")]
     pub digraphs: PathBuf,
 

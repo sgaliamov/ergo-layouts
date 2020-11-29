@@ -1,87 +1,79 @@
-use ed_balance::models::Cli;
-use ed_balance::run;
-use std::iter;
+use ed_balance::models::{DynError, Settings};
+use rand::{prelude::SliceRandom, thread_rng, RngCore};
 use std::process;
 use structopt::StructOpt;
 
-trait Tr {
-    type Inner;
-
-    fn next(val: &Self::Inner);
-}
-trait Base {
-    fn next(&self) -> i32;
-    fn foo(&self) -> i32 {
-        *&self.next()
-    }
-}
-
-trait Child: Base {
-    fn next(&self) -> i32 {
-        1
-    }
-}
-
-trait Tr2<T = i32> {
-    fn next(&mut self) -> T;
-}
-
-struct S1 {}
-
-impl S1 {
-    fn new() -> S1 {
-        S1 {}
-    }
-}
-
-// impl Tr for S1 {
-//     type Inner = i32;
-
-//     fn next(val: &Self::Inner) {}
-// }
-
-impl Tr2 for S1 {
-    fn next(&mut self) -> i32 {
-        1
-    }
-}
-
-impl Tr2<String> for S1 {
-    fn next(&mut self) -> String {
-        "val.clone()".to_string()
-    }
-}
-
-// impl Tr for S1 {
-//     type Inner = String;
-
-//     fn next(val: &Self::Inner) {}
-// }
-
-fn foo(a: &i32, b: &i32) -> i32 {
-    a + b
-}
-
 fn main() {
-    let v = vec![1, 2, 3, 10];
-
-    let woo = foo.clone();
-
-    let r: i32 = v.iter().map(|x| move |y| woo(y, x)).map(|f| f(&1)).sum();
-
-    // let args = Cli::from_args();
-    // if let Err(e) = run(&args) {
-    //     eprintln!("Calculations failed: {:#?}", e);
-    //     process::exit(1);
-    // }t
-
-    print!("{}", r);
-
-    // test(args);
-
-    // test(args);
+    let args = Settings::from_args();
+    if let Err(e) = run(&args) {
+        eprintln!("Calculations failed: {:#?}", e);
+        process::exit(1);
+    }
 }
 
-fn test(cli: Cli) -> String {
-    cli.frozen
+// get a list of instances.
+// do mutations. keep mutations as objects.
+// calculate scores.
+// get the bests mutations.
+// cross best mutations.
+// apply child mutations.
+
+pub fn run(settings: &Settings) -> Result<(), DynError> {
+    todo!()
+}
+
+struct Mutation {
+    left: char,
+    right: char,
+}
+
+struct Letters {
+    left: Vec<char>,
+    right: Vec<char>,
+    mutations: Vec<Mutation>,
+}
+
+const LEFT_COUNT: usize = 15;
+const RIGHT_COUNT: usize = 26 - LEFT_COUNT;
+
+impl Letters {
+    pub fn new(mutations_count: Option<usize>) -> Self {
+        let mut rng = thread_rng();
+        let mut all: Vec<char> = ('a'..='z').collect();
+        let mutations_count = match mutations_count {
+            Some(value) => value,
+            _ => 4,
+        };
+
+        all.shuffle(&mut rng);
+
+        Letters {
+            left: all.iter().take(LEFT_COUNT).map(|x| *x).collect(),
+            right: all.iter().skip(LEFT_COUNT).map(|x| *x).collect(),
+            mutations: Vec::with_capacity(mutations_count),
+        }
+    }
+
+    pub fn mutate(&self, mutations_count: usize) -> Letters {
+        let mut rng = thread_rng();
+        let mut mutant = Letters {
+            left: self.left.clone(),
+            right: self.right.clone(),
+            mutations: Vec::with_capacity(mutations_count),
+        };
+
+        for _ in 0..mutations_count {
+            // todo: exclude duplicates
+            let left_index = (rng.next_u32() % (LEFT_COUNT as u32)) as usize;
+            let right_index = (rng.next_u32() % (RIGHT_COUNT as u32)) as usize;
+            let left = mutant.left[left_index];
+            let right = mutant.left[right_index];
+            mutant.left[left_index] = right;
+            mutant.left[right_index] = left;
+
+            mutant.mutations.push(Mutation { left, right });
+        }
+
+        mutant
+    }
 }
