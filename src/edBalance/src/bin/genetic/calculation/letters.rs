@@ -1,8 +1,9 @@
 use ed_balance::models::Digraphs;
 use itertools::Itertools;
 use rand::{distributions::Alphanumeric, prelude::SliceRandom, thread_rng, Rng};
+use std::rc::Rc;
 
-#[derive(Debug, Eq, PartialEq, Hash, Clone, Copy)]
+#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy)]
 pub struct Mutation {
     pub left: char,
     pub right: char,
@@ -22,17 +23,17 @@ pub struct Letters {
 }
 
 impl Letters {
-    pub fn new(digraphs: &Digraphs) -> Box<Self> {
+    pub fn new(digraphs: &Digraphs) -> Rc<Self> {
         let mut all: Vec<_> = ('a'..='z').collect();
         all.shuffle(&mut rand::thread_rng());
 
-        let left = all.iter().take(LEFT_COUNT).map(|x| *x).collect();
-        let right = all.iter().skip(LEFT_COUNT).map(|x| *x).collect();
+        let left = all.iter().take(LEFT_COUNT).map(|&x| x).collect();
+        let right = all.iter().skip(LEFT_COUNT).map(|&x| x).collect();
         let left_score = digraphs.calculate_score(&left);
         let right_score = digraphs.calculate_score(&right);
         let version = get_version();
 
-        Box::new(Letters {
+        Rc::new(Letters {
             left: left.clone(),
             right: right.clone(),
             left_score,
@@ -45,7 +46,7 @@ impl Letters {
         })
     }
 
-    pub fn cross(&self, partner_mutations: &Vec<Mutation>, digraphs: &Digraphs) -> Box<Letters> {
+    pub fn cross(&self, partner_mutations: &Vec<Mutation>, digraphs: &Digraphs) -> LettersSP {
         let mut left = self.parent_left.clone();
         let mut right = self.parent_right.clone();
         let mutations: Vec<_> = self
@@ -53,12 +54,12 @@ impl Letters {
             .iter()
             .chain(partner_mutations.iter())
             .unique()
-            .map(|x| *x)
+            .map(|&x| x)
             .collect();
 
         for mutation in mutations.iter() {
-            let left_index = left.iter().position(|x| x == &mutation.left);
-            let right_index = right.iter().position(|x| x == &mutation.right);
+            let left_index = left.iter().position(|&x| x == mutation.left);
+            let right_index = right.iter().position(|&x| x == mutation.right);
 
             match (left_index, right_index) {
                 (Some(left_index), Some(right_index)) => {
@@ -69,7 +70,7 @@ impl Letters {
             }
         }
 
-        Box::new(Letters {
+        Rc::new(Letters {
             version: get_version(),
             left_score: digraphs.calculate_score(&left),
             right_score: digraphs.calculate_score(&right),
@@ -82,7 +83,7 @@ impl Letters {
         })
     }
 
-    pub fn mutate(&self, mutations_count: usize, digraphs: &Digraphs) -> Box<Letters> {
+    pub fn mutate(&self, mutations_count: usize, digraphs: &Digraphs) -> LettersSP {
         let mut rng = thread_rng();
         let mut left = self.left.clone();
         let mut right = self.right.clone();
@@ -103,7 +104,7 @@ impl Letters {
             });
         }
 
-        Box::new(Letters {
+        Rc::new(Letters {
             left_score: digraphs.calculate_score(&left),
             right_score: digraphs.calculate_score(&right),
             left,
@@ -167,3 +168,7 @@ pub mod tests {
         assert_ne!(target.right, actual.right);
     }
 }
+
+pub type LettersSP = Rc<Letters>;
+
+pub type LettersCollection = Vec<LettersSP>;
