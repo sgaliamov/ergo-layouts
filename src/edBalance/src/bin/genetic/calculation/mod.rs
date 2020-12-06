@@ -1,10 +1,10 @@
 mod letters;
 
-use std::rc::Rc;
 use ed_balance::models::{get_imbalance, print_letters, Digraphs, DynError, Settings};
 use itertools::Itertools;
 use letters::{Letters, LettersCollection, LettersSP};
 use std::cmp::Ordering;
+use std::rc::Rc;
 
 // get a list of instances.
 // do mutations. keep mutations as objects.
@@ -60,7 +60,7 @@ fn process(
         })
         .collect();
 
-    let mut all: Vec<_> = population.iter().chain(mutants.iter()).collect();
+    let mut all: Vec<_> = population.into_iter().chain(mutants.iter()).collect();
     all.sort_by(|a, b| score_cmp(a, b));
 
     let mut children: Vec<_> = all
@@ -68,10 +68,10 @@ fn process(
         .group_by(|&x| x.parent_version.clone())
         .into_iter()
         .flat_map(|(_, group)| {
-            let copy: Vec<_> = group.map(|&x| Rc::new(*x)).collect();
-            if copy.len() == 1 {
-                return copy;
-            }
+            let copy: Vec<_> = group.collect();
+            // if copy.len() == 1 {
+            //     return copy;
+            // }
 
             let b = copy
                 .iter()
