@@ -1,5 +1,5 @@
 use serde_json::{Map, Value};
-use std::collections::{HashMap, VecDeque};
+use std::collections::HashMap;
 use std::error::Error;
 use std::path::PathBuf;
 
@@ -32,7 +32,7 @@ impl Digraphs {
         Digraphs { map }
     }
 
-    pub fn calculate_score(&self, letters: &VecDeque<char>) -> f64 {
+    pub fn calculate_score(&self, letters: &Vec<char>) -> f64 {
         if letters.len() == 0 {
             return 0.;
         }
@@ -88,7 +88,7 @@ pub mod tests {
             "xz": 6.0, // not used
         });
         let target = Digraphs::new(&json.as_object().unwrap());
-        let letters: VecDeque<char> = VecDeque::from(vec!['b', 'c', 'd', 'f', 'g', 'a']);
+        let letters = vec!['b', 'c', 'd', 'f', 'g', 'a'];
         let actual = target.calculate_score(&letters);
 
         assert_eq!(
@@ -105,7 +105,7 @@ pub mod tests {
             "bc": 2.0,
         });
         let target = Digraphs::new(&json.as_object().unwrap());
-        let letters = VecDeque::with_capacity(0);
+        let letters = Vec::with_capacity(0);
         let actual = target.calculate_score(&letters);
 
         assert_eq!(actual, 0.);

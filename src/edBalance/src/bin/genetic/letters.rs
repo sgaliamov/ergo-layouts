@@ -1,6 +1,5 @@
 use ed_balance::models::Digraphs;
 use rand::{distributions::Alphanumeric, prelude::SliceRandom, thread_rng, Rng, RngCore};
-use std::collections::VecDeque;
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone)]
 pub struct Mutation {
@@ -10,11 +9,11 @@ pub struct Mutation {
 
 #[derive(Debug)]
 pub struct Letters {
-    pub left: VecDeque<char>,
-    pub right: VecDeque<char>,
+    pub left: Vec<char>,
+    pub right: Vec<char>,
     pub left_score: f64,
     pub right_score: f64,
-    pub version: Box<String>, // todo: box?
+    pub version: Box<String>,
     pub parent_version: Box<String>,
     pub mutations: Vec<Mutation>,
 }
@@ -24,8 +23,8 @@ impl Letters {
         let mut all: Vec<_> = ('a'..='z').collect();
         all.shuffle(&mut rand::thread_rng());
 
-        let left = all.iter().take(LEFT_COUNT).map(|x| *x).collect();
-        let right = all.iter().skip(LEFT_COUNT).map(|x| *x).collect();
+        let left: Vec<_> = all.iter().take(LEFT_COUNT).map(|x| *x).collect();
+        let right: Vec<_> = all.iter().skip(LEFT_COUNT).map(|x| *x).collect();
         let left_score = digraphs.calculate_score(&left);
         let right_score = digraphs.calculate_score(&right);
         let version = get_version();
@@ -74,6 +73,7 @@ impl Letters {
         let mut left = self.left.clone();
         let mut right = self.right.clone();
         let mut mutations: Vec<_> = Vec::with_capacity(mutations_count);
+        left.shuffle(&mut rand::thread_rng());
 
         for _ in 0..mutations_count {
             // todo: exclude duplicates?
@@ -105,7 +105,6 @@ impl Letters {
 }
 
 const LEFT_COUNT: usize = 15;
-// const RIGHT_COUNT: usize = 26 - LEFT_COUNT;
 
 fn get_version() -> Box<String> {
     Box::new(

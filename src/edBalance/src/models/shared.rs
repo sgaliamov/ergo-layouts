@@ -29,8 +29,8 @@ pub fn get_imbalance(left_score: f64, right_score: f64) -> f64 {
 }
 
 pub fn print_letters(
-    left_letters: &VecDeque<char>,
-    right_letters: &VecDeque<char>,
+    left_letters: &Vec<char>,
+    right_letters: &Vec<char>,
     left_score: f64,
     right_score: f64,
 ) {
@@ -50,12 +50,12 @@ pub fn print_letters(
     );
 }
 
-fn to_sorted_string(list: &VecDeque<char>) -> String {
-    let mut vec = to_vec(list);
+fn to_sorted_string(list: &Vec<char>) -> String {
+    let mut vec = list.clone();
     vec.sort();
     vec.iter().collect()
 }
 
-fn to_vec(list: &VecDeque<char>) -> Vec<char> {
+pub fn to_vec(list: &VecDeque<char>) -> Vec<char> {
     list.iter().map(|x| *x).collect()
 }
