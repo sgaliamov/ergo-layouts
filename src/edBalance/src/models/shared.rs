@@ -50,7 +50,7 @@ pub fn print_letters(
     );
 }
 
-fn to_sorted_string(list: &Vec<char>) -> String {
+pub fn to_sorted_string(list: &Vec<char>) -> String {
     let mut vec = list.clone();
     vec.sort();
     vec.iter().collect()

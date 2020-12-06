@@ -111,3 +111,44 @@ fn get_version() -> Box<String> {
             .collect::<String>(),
     )
 }
+
+#[cfg(test)]
+pub mod tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    pub fn should_assign_parent_version() {
+        let json = json!({});
+        let digraphs = Digraphs::new(&json.as_object().unwrap());
+
+        let target = Letters::new(&digraphs);
+        let actual = target.mutate(1, &digraphs);
+
+        assert_eq!(actual.parent_version, target.version);
+    }
+
+    #[test]
+    pub fn should_not_mutate_source_object() {
+        let json = json!({});
+        let digraphs = Digraphs::new(&json.as_object().unwrap());
+        let target = Letters::new(&digraphs);
+        let copy = target.left.clone();
+
+        target.mutate(10, &digraphs);
+
+        assert_eq!(copy, target.left);
+    }
+
+    #[test]
+    pub fn should_mutate() {
+        let json = json!({});
+        let digraphs = Digraphs::new(&json.as_object().unwrap());
+        let target = Letters::new(&digraphs);
+
+        let actual = target.mutate(10, &digraphs);
+
+        assert_ne!(target.left, actual.left);
+        assert_ne!(target.right, actual.right);
+    }
+}
