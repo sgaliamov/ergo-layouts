@@ -1,5 +1,5 @@
 use ed_balance::models::Digraphs;
-use rand::{distributions::Alphanumeric, prelude::SliceRandom, thread_rng, Rng, RngCore};
+use rand::{distributions::Alphanumeric, prelude::SliceRandom, thread_rng, Rng};
 
 #[derive(Debug, Eq, PartialEq, Hash, Clone)]
 pub struct Mutation {
@@ -73,18 +73,15 @@ impl Letters {
         let mut left = self.left.clone();
         let mut right = self.right.clone();
         let mut mutations: Vec<_> = Vec::with_capacity(mutations_count);
-        left.shuffle(&mut rand::thread_rng());
+        left.shuffle(&mut rng);
+        right.shuffle(&mut rng);
 
-        for _ in 0..mutations_count {
-            // todo: exclude duplicates?
-            let left_index = (rng.next_u32() % (left.len() as u32)) as usize;
-            let right_index = (rng.next_u32() % (right.len() as u32)) as usize;
+        for index in 0..mutations_count {
+            let left_char = left[index];
+            let right_char = right[index];
 
-            let left_char = left[left_index];
-            let right_char = right[right_index];
-
-            left[left_index] = right_char;
-            right[right_index] = left_char;
+            left[index] = right_char;
+            right[index] = left_char;
 
             mutations.push(Mutation {
                 left: left_char,
