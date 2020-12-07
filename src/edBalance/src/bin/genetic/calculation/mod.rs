@@ -21,6 +21,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
         .collect();
 
     for _ in 0..settings.generations_count {
+        // todo: print progress
         population = process(&mut population, &digraphs, &settings);
         if population.len() == 0 {
             panic!("All died!");
@@ -46,6 +47,7 @@ fn score_cmp(a: &LettersSP, b: &LettersSP) -> Ordering {
         .unwrap()
 }
 
+// todo: run in parallel
 fn process(
     population: &mut LettersCollection,
     digraphs: &Digraphs,
@@ -76,7 +78,7 @@ fn process(
             copy.iter()
                 .tuple_windows()
                 .map(|(a, b)| a.cross(&b.mutations, &digraphs))
-                .collect::<Vec<_>>()
+                .collect()
         })
         .into_iter()
         .unique() // todo: exclude duplicates
