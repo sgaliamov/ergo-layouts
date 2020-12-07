@@ -1,9 +1,10 @@
 use ed_balance::models::Digraphs;
 use itertools::Itertools;
 use rand::{distributions::Alphanumeric, prelude::SliceRandom, thread_rng, Rng};
+use std::hash::Hash;
 use std::rc::Rc;
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone, Copy)]
+#[derive(Debug, Hash, Eq, PartialEq, PartialOrd, Clone, Copy)]
 pub struct Mutation {
     pub left: char,
     pub right: char,
@@ -20,6 +21,24 @@ pub struct Letters {
     pub parent_version: String,
     pub parent_left: Vec<char>,
     pub parent_right: Vec<char>,
+}
+
+impl Eq for Letters {}
+
+impl PartialEq for Letters {
+    fn eq(&self, other: &Letters) -> bool {
+        self.left.eq(&other.left) && self.right.eq(&other.right)
+    }
+}
+
+impl Hash for Letters {
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: std::hash::Hasher,
+    {
+        self.left.hash(state);
+        self.right.hash(state);
+    }
 }
 
 impl Letters {

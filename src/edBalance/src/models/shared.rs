@@ -24,8 +24,10 @@ pub struct Settings {
 
 pub type DynError = Box<dyn Error>;
 
+pub const IMBALANCE_FACTOR: f64 = 100.;
+
 pub fn get_imbalance(left_score: f64, right_score: f64) -> f64 {
-    (1. - left_score / right_score).abs()
+    (1. - left_score / right_score).abs() / IMBALANCE_FACTOR
 }
 
 pub fn print_letters(
@@ -36,17 +38,18 @@ pub fn print_letters(
 ) {
     let left = to_sorted_string(&left_letters);
     let right = to_sorted_string(&right_letters);
-    let total = get_imbalance(left_score, right_score);
+    let imbalance = get_imbalance(left_score, right_score);
 
     println!(
-        "{}; {:.3}; {}; {:.3}; {}; {:.3}; {:.3};",
+        "{}; {}; {:.3}; {}; {}; {:.3}; {:.3}; {:.3};",
         left_letters.len(),
-        left_score,
         left,
-        right_score,
+        left_score,
+        right_letters.len(),
         right,
-        total,
-        total * (left_score + right_score)
+        right_score,
+        imbalance * IMBALANCE_FACTOR,
+        (left_score + right_score) / imbalance
     );
 }
 

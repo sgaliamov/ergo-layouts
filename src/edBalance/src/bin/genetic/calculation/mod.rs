@@ -4,7 +4,6 @@ use ed_balance::models::{get_imbalance, print_letters, Digraphs, DynError, Setti
 use itertools::Itertools;
 use letters::{Letters, LettersCollection, LettersSP};
 use std::cmp::Ordering;
-use std::rc::Rc;
 
 // get a list of instances.
 // do mutations. keep mutations as objects.
@@ -22,7 +21,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
         .collect();
 
     for _ in 0..settings.generations_count {
-        population = process(&population, &digraphs, &settings);
+        population = process(&mut population, &digraphs, &settings);
         if population.len() == 0 {
             panic!("All died!");
         }
@@ -35,9 +34,10 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
     Ok(())
 }
 
+// todo: better scoring
 fn score_cmp(a: &LettersSP, b: &LettersSP) -> Ordering {
-    let a_imbalance = get_imbalance(a.left_score, a.right_score) / 10.;
-    let b_imbalance = get_imbalance(b.left_score, b.right_score) / 10.;
+    let a_imbalance = get_imbalance(a.left_score, a.right_score);
+    let b_imbalance = get_imbalance(b.left_score, b.right_score);
     let a_total = a.left_score + a.right_score;
     let b_total = b.left_score + b.right_score;
 
@@ -47,11 +47,11 @@ fn score_cmp(a: &LettersSP, b: &LettersSP) -> Ordering {
 }
 
 fn process(
-    population: &LettersCollection,
+    population: &mut LettersCollection,
     digraphs: &Digraphs,
     settings: &Settings,
 ) -> LettersCollection {
-    let mutants: Vec<_> = population
+    let mut mutants: Vec<_> = population
         .iter()
         .flat_map(|parent| {
             (0..settings.children_count)
@@ -60,27 +60,26 @@ fn process(
         })
         .collect();
 
-    let mut all: Vec<_> = population.into_iter().chain(mutants.iter()).collect();
-    all.sort_by(|a, b| score_cmp(a, b));
+    mutants.append(population);
+    mutants.sort_by(|a, b| score_cmp(a, b));
 
-    let mut children: Vec<_> = all
+    let mut children: Vec<_> = mutants
         .into_iter()
-        .group_by(|&x| x.parent_version.clone())
+        .group_by(|x| x.parent_version.clone())
         .into_iter()
         .flat_map(|(_, group)| {
             let copy: Vec<_> = group.collect();
-            // if copy.len() == 1 {
-            //     return copy;
-            // }
+            if copy.len() == 1 {
+                return copy;
+            }
 
-            let b = copy
-                .iter()
+            copy.iter()
                 .tuple_windows()
-                .map(|(&a, &b)| a.cross(&b.mutations, &digraphs))
-                .collect::<Vec<_>>();
-
-            b
+                .map(|(a, b)| a.cross(&b.mutations, &digraphs))
+                .collect::<Vec<_>>()
         })
+        .into_iter()
+        .unique() // todo: exclude duplicates
         .collect();
 
     children.sort_by(score_cmp);
