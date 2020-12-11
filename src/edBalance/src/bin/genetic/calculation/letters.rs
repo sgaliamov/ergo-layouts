@@ -2,7 +2,6 @@ use ed_balance::models::Digraphs;
 use itertools::Itertools;
 use rand::{distributions::Alphanumeric, prelude::SliceRandom, thread_rng, Rng};
 use std::hash::Hash;
-use std::rc::Rc;
 
 #[derive(Debug, Hash, Eq, PartialEq, PartialOrd, Clone, Copy)]
 pub struct Mutation {
@@ -10,7 +9,7 @@ pub struct Mutation {
     pub right: char,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Letters {
     pub version: String,
     pub left: Vec<char>,
@@ -42,7 +41,7 @@ impl Hash for Letters {
 }
 
 impl Letters {
-    pub fn new(digraphs: &Digraphs) -> Rc<Self> {
+    pub fn new(digraphs: &Digraphs) -> LettersPointer {
         let mut all: Vec<_> = ('a'..='z').collect();
         all.shuffle(&mut rand::thread_rng());
 
@@ -52,7 +51,7 @@ impl Letters {
         let right_score = digraphs.calculate_score(&right);
         let version = get_version();
 
-        Rc::new(Letters {
+        box_letters(Letters {
             left: left.clone(),
             right: right.clone(),
             left_score,
@@ -65,7 +64,7 @@ impl Letters {
         })
     }
 
-    pub fn cross(&self, partner_mutations: &Vec<Mutation>, digraphs: &Digraphs) -> LettersSP {
+    pub fn cross(&self, partner_mutations: &Vec<Mutation>, digraphs: &Digraphs) -> LettersPointer {
         let mut left = self.parent_left.clone();
         let mut right = self.parent_right.clone();
         let mutations: Vec<_> = self
@@ -89,7 +88,7 @@ impl Letters {
             }
         }
 
-        Rc::new(Letters {
+        box_letters(Letters {
             version: get_version(),
             left_score: digraphs.calculate_score(&left),
             right_score: digraphs.calculate_score(&right),
@@ -102,7 +101,7 @@ impl Letters {
         })
     }
 
-    pub fn mutate(&self, mutations_count: usize, digraphs: &Digraphs) -> LettersSP {
+    pub fn mutate(&self, mutations_count: usize, digraphs: &Digraphs) -> LettersPointer {
         let mut rng = thread_rng();
         let mut left = self.left.clone();
         let mut right = self.right.clone();
@@ -123,7 +122,7 @@ impl Letters {
             });
         }
 
-        Rc::new(Letters {
+        box_letters(Letters {
             left_score: digraphs.calculate_score(&left),
             right_score: digraphs.calculate_score(&right),
             left,
@@ -144,6 +143,10 @@ fn get_version() -> String {
         .sample_iter(&Alphanumeric)
         .take(10)
         .collect::<String>()
+}
+
+fn box_letters(letters: Letters) -> LettersPointer {
+    Box::new(letters)
 }
 
 #[cfg(test)]
@@ -188,6 +191,6 @@ pub mod tests {
     }
 }
 
-pub type LettersSP = Rc<Letters>;
+pub type LettersPointer = Box<Letters>;
 
-pub type LettersCollection = Vec<LettersSP>;
+pub type LettersCollection = Vec<LettersPointer>;

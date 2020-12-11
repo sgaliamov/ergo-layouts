@@ -1,8 +1,10 @@
 mod letters;
 
-use ed_balance::models::{get_imbalance, print_letters, Digraphs, DynError, Settings};
+use ed_balance::models::get_imbalance;
+use ed_balance::models::{print_letters, Digraphs, DynError, Settings};
 use itertools::Itertools;
-use letters::{Letters, LettersCollection, LettersSP};
+use letters::{Letters, LettersCollection, LettersPointer};
+use rayon::prelude::*;
 use std::cmp::Ordering;
 
 // get a list of instances.
@@ -36,7 +38,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
 }
 
 // todo: better scoring
-fn score_cmp(a: &LettersSP, b: &LettersSP) -> Ordering {
+fn score_cmp(a: &LettersPointer, b: &LettersPointer) -> Ordering {
     let a_imbalance = get_imbalance(a.left_score, a.right_score);
     let b_imbalance = get_imbalance(b.left_score, b.right_score);
     let a_total = a.left_score + a.right_score;
@@ -54,7 +56,7 @@ fn process(
     settings: &Settings,
 ) -> LettersCollection {
     let mut mutants: Vec<_> = population
-        .iter()
+        .par_iter()
         .flat_map(|parent| {
             (0..settings.children_count)
                 .map(|_| parent.mutate(settings.mutations_count, &digraphs))
