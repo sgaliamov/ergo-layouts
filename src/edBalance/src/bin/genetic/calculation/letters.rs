@@ -155,7 +155,21 @@ pub mod tests {
     use serde_json::json;
 
     #[test]
-    pub fn should_assign_parent_version() {
+    fn unique_should_work() {
+        let json = json!({});
+        let digraphs = Digraphs::new(&json.as_object().unwrap());
+        let a = Letters::new(&digraphs);
+        let b = Letters::new(&digraphs);
+        let clone = a.clone();
+        let vec = vec![a, b, clone];
+
+        let actual: Vec<_> = vec.into_iter().unique().collect();
+
+        assert_eq!(actual.len(), 2);
+    }
+
+    #[test]
+    fn should_assign_parent_version() {
         let json = json!({});
         let digraphs = Digraphs::new(&json.as_object().unwrap());
 
@@ -166,7 +180,7 @@ pub mod tests {
     }
 
     #[test]
-    pub fn should_not_mutate_source_object() {
+    fn should_not_mutate_source_object() {
         let json = json!({});
         let digraphs = Digraphs::new(&json.as_object().unwrap());
         let target = Letters::new(&digraphs);
@@ -179,7 +193,7 @@ pub mod tests {
     }
 
     #[test]
-    pub fn should_mutate() {
+    fn should_mutate() {
         let json = json!({});
         let digraphs = Digraphs::new(&json.as_object().unwrap());
         let target = Letters::new(&digraphs);

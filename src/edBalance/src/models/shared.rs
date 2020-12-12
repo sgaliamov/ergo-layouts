@@ -12,7 +12,7 @@ pub struct Settings {
     #[structopt(short = "m", long = "mutations-count", default_value = "2")]
     pub mutations_count: usize,
 
-    #[structopt(short = "s", long = "population-size", default_value = "10")]
+    #[structopt(short = "p", long = "population-size", default_value = "10")]
     pub population_size: usize,
 
     #[structopt(short = "c", long = "children-count", default_value = "10")]

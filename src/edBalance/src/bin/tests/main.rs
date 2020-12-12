@@ -1,20 +1,14 @@
-use itertools::Itertools;
-
 fn main() {
-    // let a = vec![(1..=5), (6..=7)];
+    //     let mut a: Vec<i32> = (1..5).collect();
 
-    // let b: Vec<_> = a
-    //     .into_iter()
-    //     .group_by(|x| true)
-    //     .into_iter()
-    //     .flat_map(|(_, x)| x.into_iter())
-    //     .collect();
+    //     let b = foo(&a);
 
-    // println!("{:?}", b);
+    //     a.push(1);
 
-    let a = vec![1];
+    //     println!("{:?}", b);
+    // }
 
-    let b: Vec<_> = a.into_iter().tuple_windows().map(|(a, b)| a + b).collect();
-
-    println!("{:?}", b);
+    // fn foo(mut v: &Vec<i32>) -> Vec<i32> {
+    //     v.push(1);
+    //     v.clone()
 }
