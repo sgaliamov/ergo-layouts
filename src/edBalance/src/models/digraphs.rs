@@ -3,12 +3,12 @@ use std::collections::HashMap;
 use std::error::Error;
 use std::path::PathBuf;
 
-pub type DigraphsMap = HashMap<char, HashMap<char, f64>>;
-
 #[derive(Debug)]
 pub struct Digraphs {
     map: DigraphsMap,
 }
+
+pub type DigraphsMap = HashMap<char, HashMap<char, f64>>;
 
 impl Digraphs {
     pub fn new(json: &Map<String, Value>) -> Digraphs {

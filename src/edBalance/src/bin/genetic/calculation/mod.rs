@@ -6,7 +6,7 @@ use itertools::Itertools;
 use letters::{Letters, LettersCollection, LettersPointer};
 use rayon::prelude::*;
 use scoped_threadpool::Pool;
-use std::{cmp::Ordering, sync::mpsc::channel};
+use std::{cmp::Ordering, collections::HashSet, sync::mpsc::channel};
 
 // get a list of instances.
 // do mutations. keep mutations as objects.
@@ -26,7 +26,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
 
     // todo: print progress
 
-    (0..settings.generations_count).for_each( |_| {
+    (0..settings.generations_count).for_each(|_| {
         population = process(&mut pool, &mut population, &digraphs, &settings);
         if population.len() == 0 {
             panic!("All died!");
@@ -100,16 +100,13 @@ fn process(
             });
     });
 
-    // todo: exclude duplicates
+    let mut set = HashSet::new();
+    while let Ok(item) = receiver.try_recv() {
+        set.extend(item);
+    }
 
-    let mut children: LettersCollection = receiver
-        .iter()
-        .flat_map(|x: LettersCollection| x)
-        .unique()
-        .collect();
-
+    let mut children: LettersCollection = set.into_iter().collect();
     children.sort_by(score_cmp);
-
     children
         .into_iter()
         .take(settings.population_size)
