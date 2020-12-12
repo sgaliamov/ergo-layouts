@@ -41,27 +41,55 @@ impl Hash for Letters {
 }
 
 impl Letters {
+    fn ctor(
+        version: String,
+        left: &Vec<char>,
+        right: &Vec<char>,
+        mutations: Vec<Mutation>,
+        parent_version: String,
+        parent_left: Vec<char>,
+        parent_right: Vec<char>,
+        digraphs: &Digraphs,
+    ) -> LettersPointer {
+        let mut sorted_left = left.clone();
+        let mut sorted_right = right.clone();
+        sorted_left.sort();
+        sorted_right.sort();
+
+        let left_score = digraphs.calculate_score(&sorted_left);
+        let right_score = digraphs.calculate_score(&sorted_right);
+
+        box_letters(Letters {
+            left: sorted_left,
+            right: sorted_right,
+            left_score,
+            right_score,
+            version,
+            mutations,
+            parent_version,
+            parent_left,
+            parent_right,
+        })
+    }
+
     pub fn new(digraphs: &Digraphs) -> LettersPointer {
         let mut all: Vec<_> = ('a'..='z').collect();
         all.shuffle(&mut rand::thread_rng());
 
         let left = all.iter().take(LEFT_COUNT).map(|&x| x).collect();
         let right = all.iter().skip(LEFT_COUNT).map(|&x| x).collect();
-        let left_score = digraphs.calculate_score(&left);
-        let right_score = digraphs.calculate_score(&right);
         let version = get_version();
 
-        box_letters(Letters {
-            left: left.clone(),
-            right: right.clone(),
-            left_score,
-            right_score,
-            version: version.clone(),
-            mutations: Vec::new(),
-            parent_version: version, // versions match to be able cross children with parents
-            parent_left: left,
-            parent_right: right,
-        })
+        Self::ctor(
+            version.clone(),
+            &left,
+            &right,
+            Vec::new(),
+            version, // versions match to be able cross children with parents
+            left.clone(),
+            right.clone(),
+            digraphs,
+        )
     }
 
     pub fn cross(&self, partner_mutations: &Vec<Mutation>, digraphs: &Digraphs) -> LettersPointer {
@@ -88,17 +116,16 @@ impl Letters {
             }
         }
 
-        box_letters(Letters {
-            version: get_version(),
-            left_score: digraphs.calculate_score(&left),
-            right_score: digraphs.calculate_score(&right),
-            left,
-            right,
-            mutations: mutations.clone(), // this mutations is not just a sum of 2 mutations, it's an intersection.
-            parent_version: self.parent_version.clone(), // so, to be able to get the current state,
-            parent_left: self.parent_left.clone(), // we have apply this mutations on the initial parent letters.
-            parent_right: self.parent_right.clone(), // current - mutations = parent.
-        })
+        Self::ctor(
+            get_version(),
+            &left,
+            &right,
+            mutations, // this mutations is not just a sum of 2 mutations, it's an intersection.
+            self.parent_version.clone(), // so, to be able to get the current state,
+            self.parent_left.clone(), // we have apply this mutations on the initial parent letters.
+            self.parent_right.clone(), // current - mutations = parent.
+            digraphs,
+        )
     }
 
     pub fn mutate(&self, mutations_count: usize, digraphs: &Digraphs) -> LettersPointer {
@@ -122,17 +149,16 @@ impl Letters {
             });
         }
 
-        box_letters(Letters {
-            left_score: digraphs.calculate_score(&left),
-            right_score: digraphs.calculate_score(&right),
-            left,
-            right,
+        Self::ctor(
+            get_version(),
+            &left,
+            &right,
             mutations,
-            version: get_version(),
-            parent_version: self.version.clone(),
-            parent_left: self.left.clone(),
-            parent_right: self.right.clone(),
-        })
+            self.version.clone(),
+            self.left.clone(),
+            self.right.clone(),
+            &digraphs,
+        )
     }
 }
 
@@ -152,6 +178,7 @@ fn box_letters(letters: Letters) -> LettersPointer {
 #[cfg(test)]
 pub mod tests {
     use super::*;
+    use ed_balance::models::to_sorted_string;
     use serde_json::json;
 
     #[test]
@@ -161,9 +188,9 @@ pub mod tests {
         let a = Letters::new(&digraphs);
         let b = Letters::new(&digraphs);
         let clone = a.clone();
-        let vec = vec![a, b, clone];
+        let vec: LettersCollection = vec![a, b, clone];
 
-        let actual: Vec<_> = vec.into_iter().unique().collect();
+        let actual: LettersCollection = vec.into_iter().unique().collect();
 
         assert_eq!(actual.len(), 2);
     }
@@ -202,6 +229,23 @@ pub mod tests {
 
         assert_ne!(target.left, actual.left);
         assert_ne!(target.right, actual.right);
+    }
+
+    #[test]
+    fn should_sort_chars() {
+        let json = json!({});
+        let digraphs = Digraphs::new(&json.as_object().unwrap());
+        let letters = Letters::new(&digraphs);
+
+        let target = to_sorted_string(&letters.left);
+        let actual: String = letters.left.iter().collect();
+
+        assert_eq!(target, actual);
+
+        let target = to_sorted_string(&letters.right);
+        let actual: String = letters.right.iter().collect();
+
+        assert_eq!(target, actual);
     }
 }
 
