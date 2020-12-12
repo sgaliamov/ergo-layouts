@@ -25,11 +25,13 @@ pub struct Settings {
 pub type DynError = Box<dyn Error>;
 
 fn get_factor(left_score: f64, right_score: f64) -> f64 {
-    if left_score.partial_cmp(&right_score).unwrap() == Ordering::Less {
-        right_score / left_score
-    } else {
+    let factor = if left_score.partial_cmp(&right_score).unwrap() == Ordering::Less {
         left_score / right_score
-    }
+    } else {
+        right_score / left_score
+    };
+
+    1.1 - 0.1 / factor
 }
 
 pub fn get_score(left: f64, right: f64) -> f64 {
