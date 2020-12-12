@@ -20,7 +20,7 @@ impl Digraphs {
                 let third = value.as_f64()?;
                 Some((first, second, third))
             })
-            .map(|some| some.unwrap()) // todo: return Option
+            .map(|some| some.unwrap())
             .fold(DigraphsMap::new(), |mut result, (first, second, value)| {
                 result
                     .entry(first)
