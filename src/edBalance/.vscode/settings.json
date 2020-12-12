@@ -1,3 +1,10 @@
 {
-  "cSpell.words": ["deque", "itertools", "structopt", "threadpool", "zxcv"]
+  "cSpell.words": [
+    "deque",
+    "indicatif",
+    "itertools",
+    "structopt",
+    "threadpool",
+    "zxcv"
+  ]
 }

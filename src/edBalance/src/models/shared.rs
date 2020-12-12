@@ -1,4 +1,4 @@
-use std::{collections::VecDeque, error::Error, path::PathBuf};
+use std::{cmp::Ordering, error::Error, path::PathBuf};
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
@@ -24,10 +24,19 @@ pub struct Settings {
 
 pub type DynError = Box<dyn Error>;
 
-pub const IMBALANCE_FACTOR: f64 = 100.;
+fn get_factor(left_score: f64, right_score: f64) -> f64 {
+    if left_score.partial_cmp(&right_score).unwrap() == Ordering::Less {
+        right_score / left_score
+    } else {
+        left_score / right_score
+    }
+}
 
-pub fn get_imbalance(left_score: f64, right_score: f64) -> f64 {
-    (1. - left_score / right_score).abs() / IMBALANCE_FACTOR
+pub fn get_score(left: f64, right: f64) -> f64 {
+    let factor = get_factor(left, right);
+    let total = left + right;
+
+    total * factor
 }
 
 pub fn print_letters(
@@ -36,29 +45,18 @@ pub fn print_letters(
     left_score: f64,
     right_score: f64,
 ) {
-    let left = to_sorted_string(&left_letters);
-    let right = to_sorted_string(&right_letters);
-    let imbalance = get_imbalance(left_score, right_score);
+    let left_string: String = left_letters.iter().collect();
+    let right_string: String = right_letters.iter().collect();
 
     println!(
         "{}; {}; {:.3}; {}; {}; {:.3}; {:.3}; {:.3};",
         left_letters.len(),
-        left,
+        left_string,
         left_score,
         right_letters.len(),
-        right,
+        right_string,
         right_score,
-        imbalance * IMBALANCE_FACTOR,
-        (left_score + right_score) / imbalance
+        get_factor(left_score, right_score),
+        get_score(left_score, right_score)
     );
-}
-
-pub fn to_sorted_string(list: &Vec<char>) -> String {
-    let mut vec = list.clone();
-    vec.sort();
-    vec.iter().collect()
-}
-
-pub fn to_vec(list: &VecDeque<char>) -> Vec<char> {
-    list.iter().map(|x| *x).collect()
 }

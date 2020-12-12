@@ -178,7 +178,6 @@ fn box_letters(letters: Letters) -> LettersPointer {
 #[cfg(test)]
 pub mod tests {
     use super::*;
-    use ed_balance::models::to_sorted_string;
     use serde_json::json;
 
     #[test]
@@ -246,6 +245,12 @@ pub mod tests {
         let actual: String = letters.right.iter().collect();
 
         assert_eq!(target, actual);
+    }
+
+    fn to_sorted_string(list: &Vec<char>) -> String {
+        let mut vec = list.clone();
+        vec.sort();
+        vec.iter().collect()
     }
 }
 

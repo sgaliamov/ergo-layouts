@@ -1,5 +1,5 @@
 use super::letters::{LettersCollection, LettersPointer};
-use ed_balance::models::{get_imbalance, Digraphs, Settings};
+use ed_balance::models::{get_score, Digraphs, Settings};
 use itertools::Itertools;
 use rayon::prelude::*;
 use scoped_threadpool::Pool;
@@ -54,16 +54,11 @@ pub fn run(
         .collect()
 }
 
-// todo: better scoring
 fn score_cmp(a: &LettersPointer, b: &LettersPointer) -> Ordering {
-    let a_imbalance = get_imbalance(a.left_score, a.right_score);
-    let b_imbalance = get_imbalance(b.left_score, b.right_score);
-    let a_total = a.left_score + a.right_score;
-    let b_total = b.left_score + b.right_score;
+    let a_total = get_score(a.left_score, a.right_score);
+    let b_total = get_score(b.left_score, b.right_score);
 
-    (b_total / b_imbalance)
-        .partial_cmp(&(a_total / a_imbalance))
-        .unwrap()
+    b_total.partial_cmp(&a_total).unwrap()
 }
 
 fn cross(collection: LettersCollection, digraphs: &Digraphs) -> LettersCollection {
