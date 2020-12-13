@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "matklad.rust-analyzer",
+    "rust-lang.rust",
+    "vadimcn.vscode-lldb",
+    "be5invis.toml",
+    "serayuzgur.crates",
+    "mrmlnc.vscode-json5"
+  ]
+}

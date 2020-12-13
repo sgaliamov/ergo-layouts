@@ -1,10 +1,10 @@
 .ionide/
 .vs/
-.vscode/
 *.user
 ~*
-bin/
+**/edLayout/bin/
 obj/
 publish/
 samples/
 launchSettings.json
+target/

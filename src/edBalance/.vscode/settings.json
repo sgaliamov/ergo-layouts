@@ -1,0 +1,12 @@
+{
+  "cSpell.words": [
+    "chrono",
+    "deque",
+    "indicatif",
+    "itertools",
+    "structopt",
+    "threadpool",
+    "zxcv"
+  ],
+  "rust-analyzer.diagnostics.disabled": ["macro-error"]
+}

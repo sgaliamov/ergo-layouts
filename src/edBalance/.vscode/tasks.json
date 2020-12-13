@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "cargo",
+      "args": [
+        "+nightly",
+        "build",
+        "--release",
+        "--out-dir=./target/publish",
+        "-Z",
+        "unstable-options"
+      ],
+      "problemMatcher": ["$rustc"],
+      "group": "build",
+      "label": "Publish"
+    },
+    {
+      "type": "cargo",
+      "subcommand": "build",
+      "problemMatcher": ["$rustc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "label": "Default build"
+    },
+    {
+      "type": "cargo",
+      "subcommand": "test",
+      "problemMatcher": ["$rustc"],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "label": "Default tests"
+    }
+  ]
+}
