@@ -40,7 +40,7 @@ pub fn run(settings: CliSettings) -> Result<(), DynError> {
 
         let mut prev: DateTime<Utc> = Utc::now();
         let mut prev_result = LettersCollection::new();
-        let mut same_counter = 0;
+        let mut repeats_counter = 0;
         for index in 0..context.generations_count {
             population = process::run(&mut population, &context).expect("All died!");
 
@@ -51,10 +51,10 @@ pub fn run(settings: CliSettings) -> Result<(), DynError> {
             }
 
             if let Some(repeats) =
-                need_to_continue(same_counter, &prev_result, &population, &pb_main, &context)
+                need_to_continue(repeats_counter, &prev_result, &population, &pb_main, &context)
             {
                 prev_result = population.clone();
-                same_counter = repeats;
+                repeats_counter = repeats;
             } else {
                 break;
             }
@@ -83,7 +83,7 @@ fn need_to_continue(
         same_counter = 0;
     }
 
-    if same_counter == context.repeat_count {
+    if same_counter == context.repeats_count {
         return None;
     }
 

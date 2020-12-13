@@ -1,2 +1,0 @@
-15; defghknqrsuvxyz; 24.987; 11; abcijlmoptw; 24.987; 0.000; 15004192518547546112.000;
-15; cdfghijkmoprswz; 21.974; 11; abelnqtuvxy; 21.974; 0.000; 3958483928473571840.000;
