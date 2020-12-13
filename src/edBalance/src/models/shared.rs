@@ -3,7 +3,7 @@ use structopt::StructOpt;
 
 use super::Digraphs;
 
-#[derive(StructOpt, Clone)]
+#[derive(StructOpt)]
 pub struct CliSettings {
     #[structopt(short = "d", long = "digraphs")]
     pub digraphs: PathBuf,
@@ -31,6 +31,9 @@ pub struct CliSettings {
 
     #[structopt(short = "l", long = "left-count", default_value = "15")]
     pub left_count: u8,
+
+    #[structopt(long = "repeat-count", default_value = "100")]
+    pub repeat_count: u8,
 }
 
 pub struct Context {
@@ -40,9 +43,10 @@ pub struct Context {
     pub mutations_count: usize,
     pub population_size: usize,
     pub children_count: u16,
-    pub generations_count: usize,
+    pub generations_count: u16,
     pub results_count: u8,
     pub left_count: usize,
+    pub repeat_count: u8,
 }
 
 impl Context {
@@ -62,9 +66,10 @@ impl Context {
             mutations_count: settings.mutations_count as usize,
             population_size: settings.population_size as usize,
             children_count: settings.children_count,
-            generations_count: settings.generations_count as usize,
+            generations_count: settings.generations_count,
             results_count: settings.results_count,
             left_count: settings.left_count as usize,
+            repeat_count: settings.repeat_count,
         }
     }
 
@@ -79,6 +84,7 @@ impl Context {
             generations_count: 10,
             results_count: 10,
             left_count: 15,
+            repeat_count: 10,
         }
     }
 }
