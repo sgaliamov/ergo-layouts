@@ -12,7 +12,7 @@ pub fn run(
     settings: &Settings,
 ) -> Result<LettersCollection, ()> {
     let mut mutants: LettersCollection = population
-        .par_iter()
+        .iter()
         .flat_map(|parent| {
             (0..settings.children_count)
                 .map(|_| parent.mutate(settings.mutations_count, &digraphs))
@@ -21,34 +21,52 @@ pub fn run(
         .collect();
 
     mutants.append(population);
-    mutants.sort_by(|a, b| score_cmp(a, b));
 
-    let (sender, receiver) = channel();
+    // let (sender, receiver) = channel();
 
-    pool.scoped(|scoped| {
-        mutants
-            .into_iter()
-            .unique()
-            .group_by(|x| x.parent_version.clone())
-            .into_iter()
-            .for_each(|(_, group)| {
-                let copy: LettersCollection = group.collect();
-                let sender = sender.clone();
+    // pool.scoped(|scoped| {
+    //     mutants
+    //         .into_iter()
+    //         .unique()
+    //         .sorted_by(score_cmp)
+    //         .group_by(|x| x.parent_version.clone())
+    //         .into_iter()
+    //         .for_each(|(_, group)| {
+    //             let copy: LettersCollection = group.collect();
+    //             let sender = sender.clone();
 
-                scoped.execute(move || {
-                    let result = cross(copy, digraphs);
-                    sender.send(result).unwrap();
-                });
-            });
-    });
+    //             scoped.execute(move || {
+    //                 let result = cross(copy, digraphs);
+    //                 sender.send(result).unwrap();
+    //             });
+    //         });
+    // });
 
-    let mut set = HashSet::new();
-    while let Ok(item) = receiver.try_recv() {
-        set.extend(item);
-    }
+    // let mut set = HashSet::new();
+    // while let Ok(item) = receiver.try_recv() {
+    //     set.extend(item);
+    // }
 
-    let children: LettersCollection = set
+    // let children: LettersCollection = set
+    //     .into_iter()
+    //     .sorted_by(score_cmp)
+    //     .into_iter()
+    //     .take(settings.population_size)
+    //     .collect();
+
+    let children: LettersCollection = mutants
         .into_iter()
+        .unique()
+        .sorted_by(score_cmp)
+        .group_by(|x| x.parent_version.clone())
+        .into_iter()
+        .map(|(_, group)| group.collect())
+        .collect::<Vec<LettersCollection>>()
+        .into_iter()
+        .flat_map(|group| cross(group, digraphs))
+        .collect::<LettersCollection>()
+        .into_iter()
+        .unique()
         .sorted_by(score_cmp)
         .into_iter()
         .take(settings.population_size)

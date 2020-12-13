@@ -15,12 +15,18 @@ use std::thread;
 // apply child mutations.
 
 // todo: frozen left and right letters
+// todo: apply half of mutations
 
 pub fn run(settings: &Settings) -> Result<(), DynError> {
     let progress = MultiProgress::new();
-    let pb_main = progress.add(ProgressBar::new(settings.generations_count as u64));
+    let pb_main = ProgressBar::new(settings.generations_count as u64);
+    pb_main.set_style(
+        ProgressStyle::default_bar()
+            .template("[{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta})"),
+    );
+    let pb_main = progress.add(pb_main);
     let spinner_style = ProgressStyle::default_spinner()
-        .tick_chars("|/-\\| ")
+        .tick_chars("|/-\\ ")
         .template("{spinner} {wide_msg}");
     let pb_letters: Vec<_> = (0..settings.results_count)
         .map(|_| {
