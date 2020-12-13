@@ -6,6 +6,7 @@ clear
     --frozen-left zxcv \
     -c 20 \
     -g 10000 \
-    -m 6 \
+    -m 8 \
     -l 15 \
+    -r 30 \
     --repeats-count 1000

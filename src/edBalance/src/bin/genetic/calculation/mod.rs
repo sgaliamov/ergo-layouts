@@ -18,9 +18,7 @@ pub fn run(settings: CliSettings) -> Result<(), DynError> {
     );
     let pb_main = progress.add(pb_main);
 
-    let spinner_style = ProgressStyle::default_spinner()
-        .tick_chars("|/-\\ ")
-        .template("{spinner} {wide_msg}");
+    let spinner_style = ProgressStyle::default_spinner().template("{wide_msg}");
     let pb_letters: Vec<ProgressBar> = (0..settings.results_count)
         .map(|_| {
             let pb = ProgressBar::new_spinner();
@@ -105,7 +103,7 @@ fn render_progress(
 ) -> Option<DateTime<Utc>> {
     let passed = Utc::now() - prev;
 
-    if passed.num_seconds() >= 2 || index == 0 || index == context.generations_count - 1 {
+    if passed.num_seconds() >= 5 || index == 0 || index == context.generations_count - 1 {
         for (i, item) in population.iter().take(pb_letters.len()).enumerate() {
             let text = format_result(&item.left, &item.right, item.left_score, item.right_score);
             pb_letters[i].set_message(&text);
