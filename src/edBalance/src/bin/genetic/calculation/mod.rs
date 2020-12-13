@@ -14,13 +14,15 @@ use std::thread;
 // cross best mutations.
 // apply child mutations.
 
+// todo: frozen left and right letters
+
 pub fn run(settings: &Settings) -> Result<(), DynError> {
     let progress = MultiProgress::new();
     let pb_main = progress.add(ProgressBar::new(settings.generations_count as u64));
     let spinner_style = ProgressStyle::default_spinner()
         .tick_chars("|/-\\| ")
         .template("{spinner} {wide_msg}");
-    let pb_letters: Vec<_> = (0..settings.population_size / 10)
+    let pb_letters: Vec<_> = (0..settings.results_count)
         .map(|_| {
             let pb = ProgressBar::new_spinner();
             pb.set_style(spinner_style.clone());
@@ -37,7 +39,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
 
         let mut population: Vec<_> = (0..settings.population_size)
             .into_iter()
-            .map(|_| Letters::new(&digraphs))
+            .map(|_| Letters::new(&digraphs, settings.left_count))
             .collect();
 
         for _ in 0..settings.generations_count {

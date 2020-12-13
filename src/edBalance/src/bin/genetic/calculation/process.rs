@@ -28,6 +28,7 @@ pub fn run(
     pool.scoped(|scoped| {
         mutants
             .into_iter()
+            .unique()
             .group_by(|x| x.parent_version.clone())
             .into_iter()
             .for_each(|(_, group)| {

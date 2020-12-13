@@ -20,6 +20,12 @@ pub struct Settings {
 
     #[structopt(short = "g", long = "generations-count", default_value = "100")]
     pub generations_count: usize,
+
+    #[structopt(short = "r", long = "results-count", default_value = "20")]
+    pub results_count: u8,
+
+    #[structopt(short = "l", long = "left-count", default_value = "15")]
+    pub left_count: usize,
 }
 
 pub type DynError = Box<dyn Error>;
