@@ -5,5 +5,5 @@ clear
     --frozen-left zxcvaserth \
     -p 1000 \
     -c 20 \
-    -g 100 \
+    -g 200 \
     -m 6

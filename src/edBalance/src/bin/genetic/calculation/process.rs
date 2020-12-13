@@ -13,41 +13,12 @@ pub fn run(
         .into_par_iter()
         .flat_map(|parent| {
             (0..settings.children_count)
-                .map(|_| parent.mutate(settings.mutations_count, &digraphs))
+                .map(|_| parent.mutate(settings.mutations_count, digraphs))
                 .collect::<LettersCollection>()
         })
         .collect();
 
     mutants.append(population);
-
-    // an implementation with a thread pool
-    // let (sender, receiver) = channel();
-    // pool.scoped(|scoped| {
-    //     mutants
-    //         .into_iter()
-    //         .unique()
-    //         .sorted_by(score_cmp)
-    //         .group_by(|x| x.parent_version.clone())
-    //         .into_iter()
-    //         .for_each(|(_, group)| {
-    //             let copy: LettersCollection = group.collect();
-    //             let sender = sender.clone();
-    //             scoped.execute(move || {
-    //                 let result = cross(copy, digraphs);
-    //                 sender.send(result).unwrap();
-    //             });
-    //         });
-    // });
-    // let mut set = HashSet::new();
-    // while let Ok(item) = receiver.try_recv() {
-    //     set.extend(item);
-    // }
-    // let children: LettersCollection = set
-    //     .into_iter()
-    //     .sorted_by(score_cmp)
-    //     .into_iter()
-    //     .take(settings.population_size)
-    //     .collect();
 
     let children: LettersCollection = mutants
         .into_iter()
@@ -92,3 +63,32 @@ fn cross(collection: LettersCollection, digraphs: &Digraphs) -> LettersCollectio
         .map(|(a, b)| a.cross(&b.mutations, digraphs))
         .collect()
 }
+
+// an implementation with a thread pool
+// let (sender, receiver) = channel();
+// pool.scoped(|scoped| {
+//     mutants
+//         .into_iter()
+//         .unique()
+//         .sorted_by(score_cmp)
+//         .group_by(|x| x.parent_version.clone())
+//         .into_iter()
+//         .for_each(|(_, group)| {
+//             let copy: LettersCollection = group.collect();
+//             let sender = sender.clone();
+//             scoped.execute(move || {
+//                 let result = cross(copy, digraphs);
+//                 sender.send(result).unwrap();
+//             });
+//         });
+// });
+// let mut set = HashSet::new();
+// while let Ok(item) = receiver.try_recv() {
+//     set.extend(item);
+// }
+// let children: LettersCollection = set
+//     .into_iter()
+//     .sorted_by(score_cmp)
+//     .into_iter()
+//     .take(settings.population_size)
+//     .collect();

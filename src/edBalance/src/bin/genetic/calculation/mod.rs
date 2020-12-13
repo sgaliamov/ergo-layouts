@@ -1,6 +1,7 @@
 mod letters;
 mod process;
 
+use chrono::prelude::*;
 use ed_balance::models::{format_result, Digraphs, DynError, Settings};
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use letters::Letters;
@@ -45,14 +46,20 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
             .map(|_| Letters::new(&digraphs, settings.left_count))
             .collect();
 
-        for _ in 0..settings.generations_count {
+        let mut prev: DateTime<Utc> = Utc::now();
+        for i in 0..settings.generations_count {
             population = process::run(&mut population, &digraphs, &settings).expect("All died!");
 
-            pb_main.inc(1);
-            for (i, item) in population.iter().take(pb_letters.len()).enumerate() {
-                let text =
-                    format_result(&item.left, &item.right, item.left_score, item.right_score);
-                pb_letters[i].set_message(&text);
+            let passed = Utc::now() - prev;
+            if passed.num_seconds() >= 2 || i == 0 || i == settings.generations_count - 1 {
+                for (i, item) in population.iter().take(pb_letters.len()).enumerate() {
+                    let text =
+                        format_result(&item.left, &item.right, item.left_score, item.right_score);
+                    pb_letters[i].set_message(&text);
+                }
+                
+                pb_main.set_position(i as u64);
+                prev = Utc::now();
             }
         }
 
