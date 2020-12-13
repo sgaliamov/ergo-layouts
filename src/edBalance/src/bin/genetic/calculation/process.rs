@@ -29,7 +29,7 @@ pub fn run(
         .map(|(_, group)| group.collect())
         .collect::<Vec<LettersCollection>>()
         .into_par_iter()
-        .flat_map(|group| cross(group, digraphs))
+        .flat_map(|group| cross(group, settings.mutations_count, digraphs))
         .collect::<LettersCollection>()
         .into_iter()
         .unique()
@@ -52,7 +52,11 @@ fn score_cmp(a: &LettersPointer, b: &LettersPointer) -> Ordering {
     b_total.partial_cmp(&a_total).unwrap()
 }
 
-fn cross(collection: LettersCollection, digraphs: &Digraphs) -> LettersCollection {
+fn cross(
+    collection: LettersCollection,
+    mutations_count: usize,
+    digraphs: &Digraphs,
+) -> LettersCollection {
     if collection.len() == 1 {
         return collection;
     }
@@ -60,7 +64,7 @@ fn cross(collection: LettersCollection, digraphs: &Digraphs) -> LettersCollectio
     collection
         .iter()
         .tuple_windows()
-        .map(|(a, b)| a.cross(&b.mutations, digraphs))
+        .map(|(a, b)| a.cross(&b.mutations, mutations_count, digraphs))
         .collect()
 }
 

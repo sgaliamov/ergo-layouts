@@ -15,7 +15,6 @@ use std::thread;
 // apply child mutations.
 
 // todo: frozen left and right letters
-// todo: apply half of mutations
 
 pub fn run(settings: &Settings) -> Result<(), DynError> {
     let progress = MultiProgress::new();
@@ -57,7 +56,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
                         format_result(&item.left, &item.right, item.left_score, item.right_score);
                     pb_letters[i].set_message(&text);
                 }
-                
+
                 pb_main.set_position(i as u64);
                 prev = Utc::now();
             }

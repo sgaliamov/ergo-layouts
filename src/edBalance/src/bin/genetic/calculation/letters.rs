@@ -92,10 +92,15 @@ impl Letters {
         )
     }
 
-    pub fn cross(&self, partner_mutations: &Vec<Mutation>, digraphs: &Digraphs) -> LettersPointer {
+    pub fn cross(
+        &self,
+        partner_mutations: &Vec<Mutation>,
+        mutations_count: usize,
+        digraphs: &Digraphs,
+    ) -> LettersPointer {
         let mut left = self.parent_left.clone();
         let mut right = self.parent_right.clone();
-        let mutations: Vec<_> = self
+        let mut mutations: Vec<_> = self
             .mutations
             .iter()
             .chain(partner_mutations.iter())
@@ -103,7 +108,9 @@ impl Letters {
             .map(|&x| x)
             .collect();
 
-        for mutation in mutations.iter() {
+        mutations.shuffle(&mut rand::thread_rng());
+
+        for mutation in mutations.iter().take(mutations_count) {
             let left_index = left.iter().position(|&x| x == mutation.left);
             let right_index = right.iter().position(|&x| x == mutation.right);
 
