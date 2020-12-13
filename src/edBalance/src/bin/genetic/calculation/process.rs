@@ -53,11 +53,15 @@ fn cross(collection: LettersCollection, context: &Context) -> LettersCollection 
         return collection;
     }
 
-    collection
+    let mut crossed = collection
         .iter()
         .tuple_windows()
         .map(|(a, b)| a.cross(&b.mutations, context))
-        .collect()
+        .collect_vec();
+
+    crossed.extend(collection);
+
+    crossed
 }
 
 // an implementation with a thread pool

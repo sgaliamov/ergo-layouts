@@ -53,8 +53,9 @@ pub fn run(settings: CliSettings) -> Result<(), DynError> {
             {
                 prev_result = top_results;
                 repeats_counter = repeats;
-                pb_main.set_message(&format!("[repeats: {}]", repeats));
+                pb_main.set_message(&format!("[repeats: {}]", repeats_counter));
             } else {
+                pb_main.set_message(&format!("[repeats: {}]", repeats_counter + 1));
                 break;
             }
         }
