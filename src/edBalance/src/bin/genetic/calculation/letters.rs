@@ -1,5 +1,5 @@
 use ed_balance::models::{Context, Digraphs};
-use itertools::{Itertools, min};
+use itertools::{min, Itertools};
 use rand::{distributions::Alphanumeric, prelude::SliceRandom, thread_rng, Rng};
 use std::hash::Hash;
 
@@ -69,6 +69,20 @@ impl Letters {
             parent_version,
             parent_left,
             parent_right,
+        })
+    }
+
+    pub fn copy(&self) -> LettersPointer {
+        box_letters(Letters {
+            left: self.left.clone(),
+            right: self.right.clone(),
+            left_score: self.left_score,
+            right_score: self.right_score,
+            version: self.version.clone(),
+            mutations: self.mutations.clone(),
+            parent_version: self.parent_version.clone(),
+            parent_left: self.parent_left.clone(),
+            parent_right: self.parent_right.clone(),
         })
     }
 

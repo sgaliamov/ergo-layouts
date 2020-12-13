@@ -33,7 +33,7 @@ pub struct CliSettings {
     pub left_count: u8,
 
     #[structopt(long = "repeats-count", default_value = "100")]
-    pub repeats_count: u8,
+    pub repeats_count: u16,
 }
 
 pub struct Context {
@@ -44,9 +44,9 @@ pub struct Context {
     pub population_size: usize,
     pub children_count: u16,
     pub generations_count: u16,
-    pub results_count: u8,
+    pub results_count: usize,
     pub left_count: usize,
-    pub repeats_count: u8,
+    pub repeats_count: u16,
 }
 
 impl Context {
@@ -67,7 +67,7 @@ impl Context {
             population_size: settings.population_size as usize,
             children_count: settings.children_count,
             generations_count: settings.generations_count,
-            results_count: settings.results_count,
+            results_count: settings.results_count as usize,
             left_count: settings.left_count as usize,
             repeats_count: settings.repeats_count,
         }

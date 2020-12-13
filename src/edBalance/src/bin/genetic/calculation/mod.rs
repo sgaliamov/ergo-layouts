@@ -14,7 +14,7 @@ pub fn run(settings: CliSettings) -> Result<(), DynError> {
     let pb_main = ProgressBar::new(settings.generations_count as u64);
     pb_main.set_style(
         ProgressStyle::default_bar()
-            .template("[{elapsed_precise}] [{bar:40.cyan/blue}] {pos}/{len} ({eta}) {msg}"),
+            .template("[{elapsed_precise}] {bar} {pos}/{len} ({eta}) {msg}"),
     );
     let pb_main = progress.add(pb_main);
 
@@ -50,11 +50,12 @@ pub fn run(settings: CliSettings) -> Result<(), DynError> {
                 prev = date
             }
 
-            if let Some(repeats) =
-                need_to_continue(repeats_counter, &prev_result, &population, &pb_main, &context)
+            if let Some((repeats, top_results)) =
+                need_to_continue(repeats_counter, prev_result, &population, &context)
             {
-                prev_result = population.clone();
+                prev_result = top_results;
                 repeats_counter = repeats;
+                pb_main.set_message(&format!("[repeats: {}]", repeats));
             } else {
                 break;
             }
@@ -70,24 +71,28 @@ pub fn run(settings: CliSettings) -> Result<(), DynError> {
 }
 
 fn need_to_continue(
-    mut same_counter: u8,
-    prev_result: &LettersCollection,
+    mut repeats: u16,
+    prev_result: LettersCollection,
     population: &LettersCollection,
-    pb_main: &ProgressBar,
     context: &Context,
-) -> Option<u8> {
-    if prev_result.eq(population) {
-        same_counter += 1;
-        pb_main.set_message(&format!("{} repeats", same_counter));
+) -> Option<(u16, LettersCollection)> {
+    let top_results: Vec<_> = population
+        .iter()
+        .take(context.results_count)
+        .map(|x| x.copy())
+        .collect();
+
+    if prev_result.eq(&top_results) {
+        repeats += 1;
     } else {
-        same_counter = 0;
+        repeats = 0;
     }
 
-    if same_counter == context.repeats_count {
+    if repeats == context.repeats_count {
         return None;
     }
 
-    Some(same_counter)
+    Some((repeats, top_results))
 }
 
 fn render_progress(
