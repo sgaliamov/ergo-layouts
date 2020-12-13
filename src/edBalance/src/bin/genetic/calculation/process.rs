@@ -10,7 +10,7 @@ pub fn run(
     population: &mut LettersCollection,
     digraphs: &Digraphs,
     settings: &Settings,
-) -> LettersCollection {
+) -> Result<LettersCollection, ()> {
     let mut mutants: LettersCollection = population
         .par_iter()
         .flat_map(|parent| {
@@ -46,12 +46,18 @@ pub fn run(
         set.extend(item);
     }
 
-    let mut children: LettersCollection = set.into_iter().collect();
-    children.sort_by(score_cmp);
-    children
+    let children: LettersCollection = set
+        .into_iter()
+        .sorted_by(score_cmp)
         .into_iter()
         .take(settings.population_size)
-        .collect()
+        .collect();
+
+    if children.len() == 0 {
+        return Err(());
+    }
+
+    Ok(children)
 }
 
 fn score_cmp(a: &LettersPointer, b: &LettersPointer) -> Ordering {

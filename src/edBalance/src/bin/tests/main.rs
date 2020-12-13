@@ -1,14 +1,34 @@
+use std::thread;
+use std::time::Duration;
+use indicatif::{MultiProgress, ProgressBar};
+
 fn main() {
-    //     let mut a: Vec<i32> = (1..5).collect();
+    let m = MultiProgress::new();
+    // let sty = ProgressStyle::default_bar()
+    //     .template("[{elapsed_precise}] {bar:40.cyan/blue} {pos:>7}/{len:7} {msg}");
 
-    //     let b = foo(&a);
+    let pb = m.add(ProgressBar::new(128));
+    // pb.set_style(sty.clone());
 
-    //     a.push(1);
+    let pb2 = m.add(ProgressBar::new_spinner());
+    // let spinner_style = ProgressStyle::default_spinner()
+    //     .tick_chars("⠁⠂⠄⡀⢀⠠⠐⠈ ")
+    //     .template("{spinner} {wide_msg}");
+    // pb2.set_style(spinner_style);
 
-    //     println!("{:?}", b);
-    // }
+    let t = thread::spawn(move || {
+        for i in 0..128 {
+            pb2.set_message(&format!("item #{}", i + 1));
+            pb.set_message(&format!("item #{}", i + 1));
+            pb.inc(1);
 
-    // fn foo(mut v: &Vec<i32>) -> Vec<i32> {
-    //     v.push(1);
-    //     v.clone()
+            thread::sleep(Duration::from_millis(8));
+        }
+
+        pb2.finish();
+        pb.finish();
+    });
+
+    m.join().unwrap();
+    t.join().unwrap();
 }

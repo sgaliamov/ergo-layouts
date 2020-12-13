@@ -1,10 +1,11 @@
 mod letters;
 mod process;
 
-use ed_balance::models::{print_letters, Digraphs, DynError, Settings};
-use indicatif::{ProgressBar, ProgressStyle};
+use ed_balance::models::{format_result, Digraphs, DynError, Settings};
+use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use letters::Letters;
 use scoped_threadpool::Pool;
+use std::thread;
 
 // get a list of instances.
 // do mutations. keep mutations as objects.
@@ -14,31 +15,48 @@ use scoped_threadpool::Pool;
 // apply child mutations.
 
 pub fn run(settings: &Settings) -> Result<(), DynError> {
-    // todo: print progress
-    let pb = ProgressBar::new(settings.generations_count as u64);
-    pb.set_style(
-        ProgressStyle::default_bar()
-            .template("[{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({eta})"),
-    );
-
-    let digraphs = Digraphs::load(&settings.digraphs)?;
-    let mut pool = Pool::new(num_cpus::get() as u32);
-    let mut population: Vec<_> = (0..settings.population_size)
-        .into_iter()
-        .map(|_| Letters::new(&digraphs))
+    let progress = MultiProgress::new();
+    let pb_main = progress.add(ProgressBar::new(settings.generations_count as u64));
+    let spinner_style = ProgressStyle::default_spinner()
+        .tick_chars("|/-\\| ")
+        .template("{spinner} {wide_msg}");
+    let pb_letters: Vec<_> = (0..settings.population_size / 10)
+        .map(|_| {
+            let pb = ProgressBar::new_spinner();
+            pb.set_style(spinner_style.clone());
+            progress.add(pb)
+        })
         .collect();
 
-    for _ in 0..settings.generations_count {
-        population = process::run(&mut pool, &mut population, &digraphs, &settings);
-        if population.len() == 0 {
-            panic!("All died!");
-        }
-        pb.inc(1);
-    }
+    let settings = settings.clone();
 
-    for item in population.iter().take(10) {
-        print_letters(&item.left, &item.right, item.left_score, item.right_score);
-    }
+    let _ = thread::spawn(move || {
+        let mut pool = Pool::new(num_cpus::get() as u32);
+
+        let digraphs = Digraphs::load(&settings.digraphs).unwrap();
+
+        let mut population: Vec<_> = (0..settings.population_size)
+            .into_iter()
+            .map(|_| Letters::new(&digraphs))
+            .collect();
+
+        for _ in 0..settings.generations_count {
+            population =
+                process::run(&mut pool, &mut population, &digraphs, &settings).expect("All died!");
+
+            pb_main.inc(1);
+            for (i, item) in population.iter().take(pb_letters.len()).enumerate() {
+                let text =
+                    format_result(&item.left, &item.right, item.left_score, item.right_score);
+                pb_letters[i].set_message(&text);
+            }
+        }
+
+        pb_main.finish();
+        pb_letters.iter().for_each(|x| x.finish());
+    });
+
+    progress.join().unwrap();
 
     Ok(())
 }
