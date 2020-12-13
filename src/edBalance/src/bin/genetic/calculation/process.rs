@@ -2,17 +2,15 @@ use super::letters::{LettersCollection, LettersPointer};
 use ed_balance::models::{get_score, Digraphs, Settings};
 use itertools::Itertools;
 use rayon::prelude::*;
-use scoped_threadpool::Pool;
-use std::{cmp::Ordering, collections::HashSet, sync::mpsc::channel};
+use std::cmp::Ordering;
 
 pub fn run(
-    pool: &mut Pool,
     population: &mut LettersCollection,
     digraphs: &Digraphs,
     settings: &Settings,
 ) -> Result<LettersCollection, ()> {
     let mut mutants: LettersCollection = population
-        .iter()
+        .into_par_iter()
         .flat_map(|parent| {
             (0..settings.children_count)
                 .map(|_| parent.mutate(settings.mutations_count, &digraphs))
@@ -22,8 +20,8 @@ pub fn run(
 
     mutants.append(population);
 
+    // an implementation with a thread pool
     // let (sender, receiver) = channel();
-
     // pool.scoped(|scoped| {
     //     mutants
     //         .into_iter()
@@ -34,19 +32,16 @@ pub fn run(
     //         .for_each(|(_, group)| {
     //             let copy: LettersCollection = group.collect();
     //             let sender = sender.clone();
-
     //             scoped.execute(move || {
     //                 let result = cross(copy, digraphs);
     //                 sender.send(result).unwrap();
     //             });
     //         });
     // });
-
     // let mut set = HashSet::new();
     // while let Ok(item) = receiver.try_recv() {
     //     set.extend(item);
     // }
-
     // let children: LettersCollection = set
     //     .into_iter()
     //     .sorted_by(score_cmp)
@@ -62,7 +57,7 @@ pub fn run(
         .into_iter()
         .map(|(_, group)| group.collect())
         .collect::<Vec<LettersCollection>>()
-        .into_iter()
+        .into_par_iter()
         .flat_map(|group| cross(group, digraphs))
         .collect::<LettersCollection>()
         .into_iter()

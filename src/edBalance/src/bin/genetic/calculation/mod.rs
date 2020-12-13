@@ -4,7 +4,6 @@ mod process;
 use ed_balance::models::{format_result, Digraphs, DynError, Settings};
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use letters::Letters;
-use scoped_threadpool::Pool;
 use std::thread;
 
 // get a list of instances.
@@ -39,8 +38,6 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
     let settings = settings.clone();
 
     let _ = thread::spawn(move || {
-        let mut pool = Pool::new(num_cpus::get() as u32);
-
         let digraphs = Digraphs::load(&settings.digraphs).unwrap();
 
         let mut population: Vec<_> = (0..settings.population_size)
@@ -49,8 +46,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
             .collect();
 
         for _ in 0..settings.generations_count {
-            population =
-                process::run(&mut pool, &mut population, &digraphs, &settings).expect("All died!");
+            population = process::run(&mut population, &digraphs, &settings).expect("All died!");
 
             pb_main.inc(1);
             for (i, item) in population.iter().take(pb_letters.len()).enumerate() {
