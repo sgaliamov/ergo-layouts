@@ -2,7 +2,8 @@ mod letters;
 mod process;
 
 use chrono::prelude::*;
-use ed_balance::models::{format_result, Digraphs, DynError, CliSettings};
+use ed_balance::models::Context;
+use ed_balance::models::{format_result, CliSettings, DynError};
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use letters::Letters;
 use std::thread;
@@ -38,16 +39,16 @@ pub fn run(settings: &CliSettings) -> Result<(), DynError> {
     let settings = settings.clone();
 
     let _ = thread::spawn(move || {
-        let digraphs = Digraphs::load(&settings.digraphs).unwrap();
+        let context = Context::new(&settings);
 
         let mut population: Vec<_> = (0..settings.population_size)
             .into_iter()
-            .map(|_| Letters::new(&digraphs, &settings))
+            .map(|_| Letters::new(&context))
             .collect();
 
         let mut prev: DateTime<Utc> = Utc::now();
         for i in 0..settings.generations_count {
-            population = process::run(&mut population, &digraphs, &settings).expect("All died!");
+            population = process::run(&mut population, &context).expect("All died!");
 
             let passed = Utc::now() - prev;
             if passed.num_seconds() >= 2 || i == 0 || i == settings.generations_count - 1 {

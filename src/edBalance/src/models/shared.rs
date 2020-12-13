@@ -3,7 +3,7 @@ use structopt::StructOpt;
 
 use super::Digraphs;
 
-#[derive(StructOpt)]
+#[derive(StructOpt, Clone)]
 pub struct CliSettings {
     #[structopt(short = "d", long = "digraphs")]
     pub digraphs: PathBuf,
@@ -46,11 +46,33 @@ pub struct Context {
 }
 
 impl Context {
-    pub fn default() -> Self {
+    pub fn new(settings: &CliSettings) -> Self {
+        let digraphs = Digraphs::load(&settings.digraphs).unwrap();
+
+        let mut frozen_left = HashSet::with_capacity(settings.frozen_left.len());
+        frozen_left.extend(settings.frozen_left.chars());
+
+        let mut frozen_right = HashSet::with_capacity(settings.frozen_right.len());
+        frozen_right.extend(settings.frozen_right.chars());
+
         Context {
-            digraphs: PathBuf::new(),
-            frozen_left: ".".to_string(),
-            frozen_right: ".".to_string(),
+            digraphs,
+            frozen_left,
+            frozen_right,
+            mutations_count: settings.mutations_count as usize,
+            population_size: settings.population_size as usize,
+            children_count: settings.children_count,
+            generations_count: settings.generations_count as usize,
+            results_count: settings.results_count,
+            left_count: settings.left_count as usize,
+        }
+    }
+
+    pub fn default(digraphs: Digraphs) -> Self {
+        Context {
+            digraphs,
+            frozen_left: HashSet::new(),
+            frozen_right: HashSet::new(),
             mutations_count: 4,
             population_size: 10,
             children_count: 10,

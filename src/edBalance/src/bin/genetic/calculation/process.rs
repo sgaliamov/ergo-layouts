@@ -1,19 +1,15 @@
 use super::letters::{LettersCollection, LettersPointer};
-use ed_balance::models::{get_score, Digraphs, CliSettings};
+use ed_balance::models::{get_score, Context};
 use itertools::Itertools;
 use rayon::prelude::*;
 use std::cmp::Ordering;
 
-pub fn run(
-    population: &mut LettersCollection,
-    digraphs: &Digraphs,
-    settings: &CliSettings,
-) -> Result<LettersCollection, ()> {
+pub fn run(population: &mut LettersCollection, context: &Context) -> Result<LettersCollection, ()> {
     let mut mutants: LettersCollection = population
         .into_par_iter()
         .flat_map(|parent| {
-            (0..settings.children_count)
-                .map(|_| parent.mutate(digraphs, settings))
+            (0..context.children_count)
+                .map(|_| parent.mutate(context))
                 .collect::<LettersCollection>()
         })
         .collect();
@@ -29,13 +25,13 @@ pub fn run(
         .map(|(_, group)| group.collect())
         .collect::<Vec<LettersCollection>>()
         .into_par_iter()
-        .flat_map(|group| cross(group, digraphs, settings))
+        .flat_map(|group| cross(group, context))
         .collect::<LettersCollection>()
         .into_iter()
         .unique()
         .sorted_by(score_cmp)
         .into_iter()
-        .take(settings.population_size)
+        .take(context.population_size)
         .collect();
 
     if children.len() == 0 {
@@ -52,11 +48,7 @@ fn score_cmp(a: &LettersPointer, b: &LettersPointer) -> Ordering {
     b_total.partial_cmp(&a_total).unwrap()
 }
 
-fn cross(
-    collection: LettersCollection,
-    digraphs: &Digraphs,
-    settings: &CliSettings,
-) -> LettersCollection {
+fn cross(collection: LettersCollection, context: &Context) -> LettersCollection {
     if collection.len() == 1 {
         return collection;
     }
@@ -64,7 +56,7 @@ fn cross(
     collection
         .iter()
         .tuple_windows()
-        .map(|(a, b)| a.cross(&b.mutations, digraphs, settings))
+        .map(|(a, b)| a.cross(&b.mutations, context))
         .collect()
 }
 
@@ -94,5 +86,5 @@ fn cross(
 //     .into_iter()
 //     .sorted_by(score_cmp)
 //     .into_iter()
-//     .take(settings.population_size)
+//     .take(context.population_size)
 //     .collect();
