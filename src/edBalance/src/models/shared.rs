@@ -1,8 +1,10 @@
-use std::{cmp::Ordering, error::Error, path::PathBuf};
+use std::{cmp::Ordering, collections::HashSet, error::Error, path::PathBuf};
 use structopt::StructOpt;
 
-#[derive(StructOpt, Clone)]
-pub struct Settings {
+use super::Digraphs;
+
+#[derive(StructOpt)]
+pub struct CliSettings {
     #[structopt(short = "d", long = "digraphs")]
     pub digraphs: PathBuf,
 
@@ -13,27 +15,39 @@ pub struct Settings {
     pub frozen_right: String,
 
     #[structopt(short = "m", long = "mutations-count", default_value = "2")]
-    pub mutations_count: usize,
+    pub mutations_count: u8,
 
     #[structopt(short = "p", long = "population-size", default_value = "10")]
-    pub population_size: usize,
+    pub population_size: u16,
 
     #[structopt(short = "c", long = "children-count", default_value = "10")]
     pub children_count: u16,
 
     #[structopt(short = "g", long = "generations-count", default_value = "100")]
-    pub generations_count: usize,
+    pub generations_count: u16,
 
     #[structopt(short = "r", long = "results-count", default_value = "20")]
     pub results_count: u8,
 
     #[structopt(short = "l", long = "left-count", default_value = "15")]
+    pub left_count: u8,
+}
+
+pub struct Context {
+    pub digraphs: Digraphs,
+    pub frozen_left: HashSet<char>,
+    pub frozen_right: HashSet<char>,
+    pub mutations_count: usize,
+    pub population_size: usize,
+    pub children_count: u16,
+    pub generations_count: usize,
+    pub results_count: u8,
     pub left_count: usize,
 }
 
-impl Settings {
+impl Context {
     pub fn default() -> Self {
-        Settings {
+        Context {
             digraphs: PathBuf::new(),
             frozen_left: ".".to_string(),
             frozen_right: ".".to_string(),

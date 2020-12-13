@@ -1,5 +1,5 @@
 use super::letters::{LettersCollection, LettersPointer};
-use ed_balance::models::{get_score, Digraphs, Settings};
+use ed_balance::models::{get_score, Digraphs, CliSettings};
 use itertools::Itertools;
 use rayon::prelude::*;
 use std::cmp::Ordering;
@@ -7,7 +7,7 @@ use std::cmp::Ordering;
 pub fn run(
     population: &mut LettersCollection,
     digraphs: &Digraphs,
-    settings: &Settings,
+    settings: &CliSettings,
 ) -> Result<LettersCollection, ()> {
     let mut mutants: LettersCollection = population
         .into_par_iter()
@@ -55,7 +55,7 @@ fn score_cmp(a: &LettersPointer, b: &LettersPointer) -> Ordering {
 fn cross(
     collection: LettersCollection,
     digraphs: &Digraphs,
-    settings: &Settings,
+    settings: &CliSettings,
 ) -> LettersCollection {
     if collection.len() == 1 {
         return collection;

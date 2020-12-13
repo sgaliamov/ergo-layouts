@@ -1,4 +1,4 @@
-use ed_balance::models::{Digraphs, Settings};
+use ed_balance::models::{Digraphs, CliSettings};
 use itertools::Itertools;
 use rand::{distributions::Alphanumeric, prelude::SliceRandom, thread_rng, Rng};
 use std::hash::Hash;
@@ -72,12 +72,32 @@ impl Letters {
         })
     }
 
-    pub fn new(digraphs: &Digraphs, settings: &Settings) -> LettersPointer {
-        let mut all: Vec<_> = ('a'..='z').collect();
+    pub fn new(digraphs: &Digraphs, settings: &CliSettings) -> LettersPointer {
+        let mut all: Vec<_> = ('a'..='z')
+            .filter(|&x| !settings.frozen_right.contains(x))
+            .filter(|&x| !settings.frozen_left.contains(x))
+            .collect();
+
         all.shuffle(&mut rand::thread_rng());
 
-        let left = all.iter().take(settings.left_count).map(|&x| x).collect();
-        let right = all.iter().skip(settings.left_count).map(|&x| x).collect();
+        let mut left: Vec<_> = settings.frozen_left.chars().collect();
+        left.append(
+            &mut all
+                .iter()
+                .take(settings.left_count - left.len())
+                .map(|&x| x)
+                .collect(),
+        );
+
+        let mut right: Vec<_> = settings.frozen_right.chars().collect();
+        right.append(
+            &mut all
+                .iter()
+                .filter(|x| !left.contains(x))
+                .map(|&x| x)
+                .collect(),
+        );
+
         let version = get_version();
 
         Self::ctor(
@@ -96,7 +116,7 @@ impl Letters {
         &self,
         partner_mutations: &Vec<Mutation>,
         digraphs: &Digraphs,
-        settings: &Settings,
+        settings: &CliSettings,
     ) -> LettersPointer {
         let mut left = self.parent_left.clone();
         let mut right = self.parent_right.clone();
@@ -135,7 +155,7 @@ impl Letters {
         )
     }
 
-    pub fn mutate(&self, digraphs: &Digraphs, settings: &Settings) -> LettersPointer {
+    pub fn mutate(&self, digraphs: &Digraphs, settings: &CliSettings) -> LettersPointer {
         let mut rng = thread_rng();
         let mut left = self.left.clone();
         let mut right = self.right.clone();
@@ -173,7 +193,7 @@ fn get_version() -> String {
     rand::thread_rng()
         .sample_iter(&Alphanumeric)
         .take(10)
-        .collect::<String>()
+        .collect()
 }
 
 fn box_letters(letters: Letters) -> LettersPointer {
@@ -189,7 +209,7 @@ pub mod tests {
     fn unique_should_work() {
         let json = json!({});
         let digraphs = Digraphs::new(&json.as_object().unwrap());
-        let settings = Settings::default();
+        let settings = CliSettings::default();
         let a = Letters::new(&digraphs, &settings);
         let b = Letters::new(&digraphs, &settings);
         let clone = a.clone();
@@ -204,7 +224,7 @@ pub mod tests {
     fn should_assign_parent_version() {
         let json = json!({});
         let digraphs = Digraphs::new(&json.as_object().unwrap());
-        let mut settings = Settings::default();
+        let mut settings = CliSettings::default();
         settings.mutations_count = 1;
 
         let target = Letters::new(&digraphs, &settings);
@@ -217,7 +237,7 @@ pub mod tests {
     fn should_not_mutate_source_object() {
         let json = json!({});
         let digraphs = Digraphs::new(&json.as_object().unwrap());
-        let settings = Settings::default();
+        let settings = CliSettings::default();
         let target = Letters::new(&digraphs, &settings);
         let copy = target.left.clone();
         let actual = target.mutate(&digraphs, &settings);
@@ -230,7 +250,7 @@ pub mod tests {
     fn should_mutate() {
         let json = json!({});
         let digraphs = Digraphs::new(&json.as_object().unwrap());
-        let settings = Settings::default();
+        let settings = CliSettings::default();
         let target = Letters::new(&digraphs, &settings);
 
         let actual = target.mutate(&digraphs, &settings);
@@ -243,7 +263,7 @@ pub mod tests {
     fn should_sort_chars() {
         let json = json!({});
         let digraphs = Digraphs::new(&json.as_object().unwrap());
-        let settings = Settings::default();
+        let settings = CliSettings::default();
         let letters = Letters::new(&digraphs, &settings);
 
         let target = to_sorted_string(&letters.left);

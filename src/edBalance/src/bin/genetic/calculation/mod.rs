@@ -2,7 +2,7 @@ mod letters;
 mod process;
 
 use chrono::prelude::*;
-use ed_balance::models::{format_result, Digraphs, DynError, Settings};
+use ed_balance::models::{format_result, Digraphs, DynError, CliSettings};
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use letters::Letters;
 use std::thread;
@@ -16,7 +16,7 @@ use std::thread;
 
 // todo: frozen left and right letters
 
-pub fn run(settings: &Settings) -> Result<(), DynError> {
+pub fn run(settings: &CliSettings) -> Result<(), DynError> {
     let progress = MultiProgress::new();
     let pb_main = ProgressBar::new(settings.generations_count as u64);
     pb_main.set_style(

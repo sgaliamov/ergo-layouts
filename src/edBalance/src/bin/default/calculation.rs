@@ -1,4 +1,4 @@
-use ed_balance::models::{get_score, print_letters, Digraphs, DynError, Settings};
+use ed_balance::models::{get_score, print_letters, Digraphs, DynError, CliSettings};
 use std::collections::VecDeque;
 
 // find a pair to move to the right group that will give biggest result
@@ -10,7 +10,7 @@ use std::collections::VecDeque;
 // print maximized groups
 // continue till left group has 11 letters (because rest 4 can be used for punctuation keys)
 
-pub fn run(settings: &Settings) -> Result<(), DynError> {
+pub fn run(settings: &CliSettings) -> Result<(), DynError> {
     let digraphs = Digraphs::load(&settings.digraphs)?;
     for letter in 'a'..='z' {
         start_with(&letter, &digraphs, &settings.frozen_left)
