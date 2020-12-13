@@ -1,6 +1,9 @@
-./target/debug/genetic.exe \
+clear
+
+./target/publish/genetic.exe \
     -d C:/Users/sgaliamov/projects/personal/ergo-layouts/src/edBalance/data/digraphs.json \
-    -f zxcvaserth \
+    --frozen-left zxcvaserth \
     -p 1000 \
-    -c 100
-    -g 1000
+    -c 20 \
+    -g 100 \
+    -m 6

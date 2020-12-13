@@ -13,7 +13,7 @@ use std::collections::VecDeque;
 pub fn run(settings: &Settings) -> Result<(), DynError> {
     let digraphs = Digraphs::load(&settings.digraphs)?;
     for letter in 'a'..='z' {
-        start_with(&letter, &digraphs, &settings.frozen)
+        start_with(&letter, &digraphs, &settings.frozen_left)
     }
 
     Ok(())

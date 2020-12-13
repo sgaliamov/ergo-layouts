@@ -6,8 +6,8 @@ pub struct Settings {
     #[structopt(short = "d", long = "digraphs")]
     pub digraphs: PathBuf,
 
-    #[structopt(short = "f", long = "frozen", default_value = ".")]
-    pub frozen: String,
+    #[structopt(long = "frozen-left", default_value = ".")]
+    pub frozen_left: String,
 
     #[structopt(short = "m", long = "mutations-count", default_value = "2")]
     pub mutations_count: usize,
@@ -44,7 +44,7 @@ pub fn get_score(left: f64, right: f64) -> f64 {
     let factor = get_factor(left, right);
     let total = left + right;
 
-    total * factor
+    total * factor * factor * factor
 }
 
 pub fn format_result(
