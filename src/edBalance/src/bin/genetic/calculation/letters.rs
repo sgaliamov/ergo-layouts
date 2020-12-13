@@ -152,11 +152,24 @@ impl Letters {
 
     pub fn mutate(&self, context: &Context) -> LettersPointer {
         let mut rng = thread_rng();
-        let mut left = self.left.clone();
-        let mut right = self.right.clone();
-        let mut mutations: Vec<_> = Vec::with_capacity(context.mutations_count);
+
+        let mut left = self
+            .left
+            .iter()
+            .filter(|&x| !context.frozen_left.contains(x))
+            .map(|&x| x)
+            .collect_vec();
         left.shuffle(&mut rng);
+
+        let mut right = self
+            .right
+            .iter()
+            .filter(|&x| !context.frozen_right.contains(x))
+            .map(|&x| x)
+            .collect_vec();
         right.shuffle(&mut rng);
+
+        let mut mutations: Vec<_> = Vec::with_capacity(context.mutations_count);
 
         for index in 0..context.mutations_count {
             let left_char = left[index];
@@ -170,6 +183,9 @@ impl Letters {
                 right: right_char,
             });
         }
+
+        left.extend(&context.frozen_left.iter().map(|&x| x).collect_vec());
+        right.extend(&context.frozen_right.iter().map(|&x| x).collect_vec());
 
         Self::ctor(
             get_version(),

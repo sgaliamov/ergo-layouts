@@ -15,8 +15,6 @@ use std::thread;
 // cross best mutations.
 // apply child mutations.
 
-// todo: frozen left and right letters
-
 pub fn run(settings: &CliSettings) -> Result<(), DynError> {
     let progress = MultiProgress::new();
     let pb_main = ProgressBar::new(settings.generations_count as u64);
