@@ -11,6 +11,12 @@ pub struct Digraphs {
 pub type DigraphsMap = HashMap<char, HashMap<char, f64>>;
 
 impl Digraphs {
+    pub fn copy(&self) -> Digraphs {
+        Digraphs {
+            map: self.map.clone(),
+        }
+    }
+
     pub fn new(json: &Map<String, Value>) -> Digraphs {
         let map = json
             .iter()

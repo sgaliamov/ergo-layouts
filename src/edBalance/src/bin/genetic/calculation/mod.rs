@@ -6,6 +6,7 @@ use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use letters::Letters;
 use scoped_threadpool::Pool;
 use std::thread;
+use threadpool::ThreadPool;
 
 // get a list of instances.
 // do mutations. keep mutations as objects.
@@ -40,6 +41,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
 
     let _ = thread::spawn(move || {
         let mut pool = Pool::new(num_cpus::get() as u32);
+        let tp = ThreadPool::new(num_cpus::get());
 
         let digraphs = Digraphs::load(&settings.digraphs).unwrap();
 
@@ -48,9 +50,10 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
             .map(|_| Letters::new(&digraphs, settings.left_count))
             .collect();
 
-        for _ in 0..settings.generations_count {
+        (0..settings.generations_count).for_each(|_| {
+            let clone = digraphs.copy();
             population =
-                process::run(&mut pool, &mut population, &digraphs, &settings).expect("All died!");
+                process::run(&mut pool, &tp, &mut population, clone, &settings).expect("All died!");
 
             pb_main.inc(1);
             for (i, item) in population.iter().take(pb_letters.len()).enumerate() {
@@ -58,7 +61,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
                     format_result(&item.left, &item.right, item.left_score, item.right_score);
                 pb_letters[i].set_message(&text);
             }
-        }
+        });
 
         pb_main.finish();
         pb_letters.iter().for_each(|x| x.finish());
