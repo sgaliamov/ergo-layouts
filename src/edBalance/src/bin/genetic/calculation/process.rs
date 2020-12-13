@@ -13,7 +13,7 @@ pub fn run(
         .into_par_iter()
         .flat_map(|parent| {
             (0..settings.children_count)
-                .map(|_| parent.mutate(settings.mutations_count, digraphs))
+                .map(|_| parent.mutate(digraphs, settings))
                 .collect::<LettersCollection>()
         })
         .collect();
@@ -29,7 +29,7 @@ pub fn run(
         .map(|(_, group)| group.collect())
         .collect::<Vec<LettersCollection>>()
         .into_par_iter()
-        .flat_map(|group| cross(group, settings.mutations_count, digraphs))
+        .flat_map(|group| cross(group, digraphs, settings))
         .collect::<LettersCollection>()
         .into_iter()
         .unique()
@@ -54,8 +54,8 @@ fn score_cmp(a: &LettersPointer, b: &LettersPointer) -> Ordering {
 
 fn cross(
     collection: LettersCollection,
-    mutations_count: usize,
     digraphs: &Digraphs,
+    settings: &Settings,
 ) -> LettersCollection {
     if collection.len() == 1 {
         return collection;
@@ -64,7 +64,7 @@ fn cross(
     collection
         .iter()
         .tuple_windows()
-        .map(|(a, b)| a.cross(&b.mutations, mutations_count, digraphs))
+        .map(|(a, b)| a.cross(&b.mutations, digraphs, settings))
         .collect()
 }
 

@@ -9,6 +9,9 @@ pub struct Settings {
     #[structopt(long = "frozen-left", default_value = ".")]
     pub frozen_left: String,
 
+    #[structopt(long = "frozen-right", default_value = ".")]
+    pub frozen_right: String,
+
     #[structopt(short = "m", long = "mutations-count", default_value = "2")]
     pub mutations_count: usize,
 
@@ -26,6 +29,22 @@ pub struct Settings {
 
     #[structopt(short = "l", long = "left-count", default_value = "15")]
     pub left_count: usize,
+}
+
+impl Settings {
+    pub fn default() -> Self {
+        Settings {
+            digraphs: PathBuf::new(),
+            frozen_left: ".".to_string(),
+            frozen_right: ".".to_string(),
+            mutations_count: 4,
+            population_size: 10,
+            children_count: 10,
+            generations_count: 10,
+            results_count: 10,
+            left_count: 15,
+        }
+    }
 }
 
 pub type DynError = Box<dyn Error>;

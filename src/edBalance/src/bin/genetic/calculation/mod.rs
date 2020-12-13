@@ -42,7 +42,7 @@ pub fn run(settings: &Settings) -> Result<(), DynError> {
 
         let mut population: Vec<_> = (0..settings.population_size)
             .into_iter()
-            .map(|_| Letters::new(&digraphs, settings.left_count))
+            .map(|_| Letters::new(&digraphs, &settings))
             .collect();
 
         let mut prev: DateTime<Utc> = Utc::now();
