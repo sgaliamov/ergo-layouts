@@ -8,10 +8,10 @@ pub struct CliSettings {
     #[structopt(short = "d", long = "digraphs")]
     pub digraphs: PathBuf,
 
-    #[structopt(long = "frozen-left", default_value = ".")]
+    #[structopt(long = "frozen-left", default_value = "")]
     pub frozen_left: String,
 
-    #[structopt(long = "frozen-right", default_value = ".")]
+    #[structopt(long = "frozen-right", default_value = "")]
     pub frozen_right: String,
 
     #[structopt(short = "m", long = "mutations-count", default_value = "2")]

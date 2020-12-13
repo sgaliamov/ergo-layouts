@@ -1,5 +1,5 @@
 use ed_balance::models::{Context, Digraphs};
-use itertools::Itertools;
+use itertools::{Itertools, min};
 use rand::{distributions::Alphanumeric, prelude::SliceRandom, thread_rng, Rng};
 use std::hash::Hash;
 
@@ -171,7 +171,9 @@ impl Letters {
 
         let mut mutations: Vec<_> = Vec::with_capacity(context.mutations_count);
 
-        for index in 0..context.mutations_count {
+        let mutations_count = min(vec![context.mutations_count, left.len(), right.len()]).unwrap();
+
+        for index in 0..mutations_count {
             let left_char = left[index];
             let right_char = right[index];
 

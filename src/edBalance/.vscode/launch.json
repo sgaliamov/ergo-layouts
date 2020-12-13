@@ -10,11 +10,17 @@
         "-d",
         "C:/Users/sgaliamov/projects/personal/ergo-layouts/src/edBalance/data/digraphs.json",
         "--frozen-left",
-        "zxcvaserth",
+        "zxcvaser",
         "-p",
-        "10",
+        "1000",
         "-g",
-        "10"
+        "10",
+        "-m",
+        "6",
+        "-c",
+        "20",
+        "-l",
+        "12"
       ]
     },
     {
