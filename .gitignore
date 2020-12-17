@@ -2,8 +2,7 @@
 .vs/
 *.user
 ~*
-**/edLayout/bin/
-**/edLayout.Tests/bin/
+**/bin/
 obj/
 publish/
 samples/
