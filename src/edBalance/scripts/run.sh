@@ -8,4 +8,6 @@ clear
     -m 10 \
     -l 15 \
     -r 20 \
-    --repeats-count 1000
+    --frozen-left aszxcv \
+    --frozen-right th \
+    --repeats-count 500
