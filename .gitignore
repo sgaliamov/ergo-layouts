@@ -8,3 +8,4 @@ publish/
 samples/
 launchSettings.json
 target/
+**/bin
