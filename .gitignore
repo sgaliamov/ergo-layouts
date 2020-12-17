@@ -3,6 +3,7 @@
 *.user
 ~*
 **/edLayout/bin/
+**/edLayout.Tests/bin/
 obj/
 publish/
 samples/

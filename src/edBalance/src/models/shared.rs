@@ -118,7 +118,7 @@ pub fn format_result(
     let right_string: String = right_letters.iter().collect();
 
     format!(
-        "{}; {}; {:.3}; {}; {}; {:.3}; {:.3}; {:.3};",
+        "{}; {}; {:.3}; {}; {}; {:.3}; {:.3}; {:.3}; {:.3};",
         left_letters.len(),
         left_string,
         left_score,
@@ -126,6 +126,7 @@ pub fn format_result(
         right_string,
         right_score,
         get_factor(left_score, right_score),
+        left_score + right_score,
         get_score(left_score, right_score)
     )
 }
