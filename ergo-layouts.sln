@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E13E
 		scripts\run.ps1 = scripts\run.ps1
 	EndProjectSection
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "edText", "src\edText\edText.fsproj", "{04BCB361-4E47-41A5-8CA3-FED04DD50E99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{6754AB4C-0921-4C5F-9AAE-975D4392A071}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6754AB4C-0921-4C5F-9AAE-975D4392A071}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6754AB4C-0921-4C5F-9AAE-975D4392A071}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04BCB361-4E47-41A5-8CA3-FED04DD50E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04BCB361-4E47-41A5-8CA3-FED04DD50E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04BCB361-4E47-41A5-8CA3-FED04DD50E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04BCB361-4E47-41A5-8CA3-FED04DD50E99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
