@@ -14,7 +14,7 @@ open System.Collections.Concurrent
 
 // allowed diviations from the ideal score
 [<Literal>]
-let THRESHOLD = 0.95f
+let THRESHOLD = 0.95
 
 // allowed diviations from the ideal score
 [<Literal>]
@@ -79,24 +79,31 @@ let r = Random()
 let shuffle xs = xs |> Seq.sortBy (fun _ -> r.Next())
 
 // calculate score
-let getScore stats lines =
-    1.0f
+let getScore (lettersStats: LettersMap<float>, digraphsStats: DigraphsMap<float>) lines: float =
+    let get (newStats: ConcurrentDictionary<_, float>) (oldStats: ConcurrentDictionary<_, float>) =
+        newStats
+        |> Seq.map (fun pair -> pair.Value / oldStats.[pair.Key])
+        |> Seq.average
+    let (lettersNew, digraphsNew) = Statictics.calculate lines
+    let lettersScore = get lettersNew lettersStats
+    let digraphsScore = get digraphsNew digraphsStats
+    (lettersScore + digraphsScore) / 2.0
 
 // the main logic
-let rec proces counter (stats: LettersMap<float> * DigraphsMap<float>) lines =
-    let rec iteration counter stats (lines: string[]) =
+let rec proces counter getScore lines =
+    let rec iteration counter (lines: string[]) =
         let left = lines.[..lines.Length / 2]
         let right = lines.[lines.Length / 2..]
-        match (getScore stats left, getScore stats right) with
-        | (a, b) when a < THRESHOLD && b < THRESHOLD -> proces (counter + 1) stats lines
-        | (a, b) when a > b -> iteration 0 stats left
-        | _ -> iteration 0 stats right
+        match (getScore left, getScore right) with
+        | (a, b) when a < THRESHOLD && b < THRESHOLD -> proces (counter + 1) getScore lines
+        | (a, b) when a > b -> iteration 0 left
+        | _ -> iteration 0 right
     match counter with
     | c when c < RETRYES ->
         lines
         |> shuffle
         |> Seq.toArray
-        |> iteration c stats
+        |> iteration c
     | _ -> File.WriteAllLines("result.txt", lines)
 
 // unpairwise sequence of tuples
@@ -123,9 +130,12 @@ let convert lines =
 // entry point
 [<EntryPoint>]
 let main argv =
-    argv.[0]
-    |> fun path -> Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
-    |> Seq.collect File.ReadAllLines
-    |> Seq.toArray
-    |> (convert >> (fun lines -> proces 0 (Statictics.calculate(lines)) lines))
+    let lines =
+        argv.[0]
+        |> fun path -> Directory.EnumerateFiles(path, "*.txt", SearchOption.AllDirectories)
+        |> Seq.collect File.ReadAllLines
+        |> convert
+        |> Seq.toArray
+    let stats = Statictics.calculate lines
+    proces 0 (getScore stats) lines
     0
