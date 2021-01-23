@@ -75,72 +75,78 @@ module Statictics =
             |> PSeq.fold folder ((LettersCounter(), DigraphsCounter()))
         (convertToStats letters, convertToStats digraphs)
 
-// to shuffle a sequence
-let r = Random()
-let shuffle xs = xs |> PSeq.sortBy (fun _ -> r.Next())
-
-// calculate score
-let getScore (lettersStats: LettersMap<float>, digraphsStats: DigraphsMap<float>) lines: float =
-    let get (newStats: ConcurrentDictionary<_, float>) (oldStats: ConcurrentDictionary<_, float>) =
-        newStats
-        |> PSeq.map (fun pair -> pair.Value / oldStats.[pair.Key])
-        |> PSeq.average
-    let (lettersNew, digraphsNew) = Statictics.calculate lines
-    let lettersScore = get lettersNew lettersStats
-    let digraphsScore = get digraphsNew digraphsStats
-    (lettersScore + digraphsScore) / 2.0
-
-// the main logic
-let rec proces counter getScore (lines: string[]) =
-    Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}..."
-    let rec iteration counter (lines: string[]) =
-        let left = lines.[..lines.Length / 2]
-        let right = lines.[lines.Length / 2..]
-        match (getScore left, getScore right) with
-        | (a, b) when a < THRESHOLD && b < THRESHOLD -> proces (counter + 1) getScore lines
-        | (a, b) when a > b -> iteration 0 left
-        | _ -> iteration 0 right
-    match counter with
-    | c when c < RETRYES ->
+module Text =
+    // to shuffle a sequence
+    let r = Random()
+    let shuffle xs = xs |> PSeq.sortBy (fun _ -> r.Next())
+    
+    // calculate score
+    let getScore (lettersStats: LettersMap<float>, digraphsStats: DigraphsMap<float>) lines: float =
+        let get (newStats: ConcurrentDictionary<_, float>) (oldStats: ConcurrentDictionary<_, float>) =
+            newStats
+            |> PSeq.map (fun pair -> pair.Value / oldStats.[pair.Key])
+            |> PSeq.average
+        let (lettersNew, digraphsNew) = Statictics.calculate lines
+        let lettersScore = get lettersNew lettersStats
+        let digraphsScore = get digraphsNew digraphsStats
+        (lettersScore + digraphsScore) / 2.0
+    
+    // the main logic
+    let rec proces counter getScore (lines: string[]) =
+        Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}..."
+        let rec iteration counter (lines: string[]) =
+            let left = lines.[..lines.Length / 2]
+            let right = lines.[lines.Length / 2..]
+            match (getScore left, getScore right) with
+            | (a, b) when a < THRESHOLD && b < THRESHOLD -> proces (counter + 1) getScore lines
+            | (a, b) when a > b -> iteration 0 left
+            | _ -> iteration 0 right
+        match counter with
+        | c when c < RETRYES ->
+            lines
+            |> shuffle
+            |> PSeq.toArray
+            |> iteration c
+        | _ -> 
+            Console.WriteLine "Done."
+            File.WriteAllLines("result.txt", lines)
+    
+    // unpairwise sequence of tuples
+    let unpairwise (s: seq<'a * 'a>) : seq<'a> = seq {
+        let collection = s |> Seq.toArray
+        if collection.Length > 0 then
+            yield  (fst (Seq.head collection))
+            yield! (collection |> Seq.map snd)
+    }
+    
+    // keep only relevant characters in the line
+    let convert lines =
+        let isSpace char = char.Equals(' ')
+        let isAllowed char = alpha.Contains char || isSpace char
+        let mapLine (line: string) =
+            line.ToLowerInvariant().Replace('\t', ' ')
+            |> Seq.filter isAllowed
+            |> Seq.pairwise
+            |> Seq.filter (fun (a, b) -> not (isSpace a && isSpace b))
+            |> unpairwise
+            |> Seq.toArray
+            |> String
         lines
-        |> shuffle
+        |> PSeq.map mapLine
+        |> PSeq.map (fun x -> x.Trim())
+        |> Seq.filter (String.IsNullOrEmpty >> not)
         |> PSeq.toArray
-        |> iteration c
-    | _ -> 
-        Console.WriteLine "Done."
-        File.WriteAllLines("result.txt", lines)
-
-// unpairwise sequence of tuples
-let unpairwise (s: seq<'a * 'a>) : seq<'a> = seq {
-    yield  (fst (Seq.head s))
-    yield! (s |> Seq.map snd)
-}
-
-// keep only relevant characters in the line
-let convert lines =
-    let isSpace char = char.Equals(' ')
-    let isAllowed char = alpha.Contains char || isSpace char
-    let mapLine (line: string) =
-        line.ToLowerInvariant().Replace('\t', ' ')
-        |> Seq.filter isAllowed
-        |> Seq.pairwise
-        |> Seq.filter (fun (a, b) -> not (isSpace a && isSpace b))
-        |> unpairwise
-        |> string
-    lines
-    |> PSeq.map mapLine
-    |> PSeq.toArray
 
 // entry point
 [<EntryPoint>]
 let main argv =
     let lines =
         argv.[0]
-        |> fun path -> Directory.EnumerateFiles(path, "*.txt", SearchOption.AllDirectories)
+        |> fun path -> Directory.EnumerateFiles(path, "1.txt", SearchOption.AllDirectories)
         |> PSeq.collect File.ReadAllLines
-        |> convert
+        |> Text.convert
         |> PSeq.toArray
     Console.WriteLine $"{lines.Length} lines loaded."
     let stats = Statictics.calculate lines
-    proces 0 (getScore stats) lines
+    Text.proces 0 (Text.getScore stats) lines
     0
