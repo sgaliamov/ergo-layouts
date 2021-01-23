@@ -23,10 +23,13 @@ let RETRYES = 10
 // all letters
 let alpha = ['a'..'z'] |> HashSet<char>
 
+type LettersMap<'t> = ConcurrentDictionary<char, 't>
+type DigraphsMap<'t> = ConcurrentDictionary<char * char, 't>
+
 // calculating statistics
 module Statictics =
-    type LettersCounter = ConcurrentDictionary<char, int>
-    type DigraphsCounter = ConcurrentDictionary<char * char, int>
+    type LettersCounter = LettersMap<int>
+    type DigraphsCounter = DigraphsMap<int>
 
     // fold collection into dictionary
     let private fold dict collection =
@@ -50,7 +53,7 @@ module Statictics =
         |> Seq.collect id
 
     // calculate stats
-    let calculate lines =
+    let calculate lines: LettersMap<float> * DigraphsMap<float> =
         let folder 
             (lettersCounts: LettersCounter, digraphsCounts: DigraphsCounter)
             (lettersSeq: seq<char * int>, digraphsSeq: seq<(char * char) * int>) =
@@ -80,7 +83,7 @@ let getScore stats lines =
     1.0f
 
 // the main logic
-let rec proces counter stats lines =
+let rec proces counter (stats: LettersMap<float> * DigraphsMap<float>) lines =
     let rec iteration counter stats (lines: string[]) =
         let left = lines.[..lines.Length / 2]
         let right = lines.[lines.Length / 2..]
@@ -124,5 +127,5 @@ let main argv =
     |> fun path -> Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
     |> Seq.collect File.ReadAllLines
     |> Seq.toArray
-    |> (convert >> proces 0 Statictics.calculate)
+    |> (convert >> (fun lines -> proces 0 (Statictics.calculate(lines)) lines))
     0
