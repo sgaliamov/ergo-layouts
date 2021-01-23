@@ -92,7 +92,7 @@ let getScore (lettersStats: LettersMap<float>, digraphsStats: DigraphsMap<float>
 
 // the main logic
 let rec proces counter getScore (lines: string[]) =
-    Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}."
+    Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}..."
     let rec iteration counter (lines: string[]) =
         let left = lines.[..lines.Length / 2]
         let right = lines.[lines.Length / 2..]
