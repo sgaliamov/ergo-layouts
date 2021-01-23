@@ -76,25 +76,24 @@ let r = Random()
 let shuffle xs = xs |> Seq.sortBy (fun _ -> r.Next())
 
 // calculate score
-let getScore lines =
+let getScore stats lines =
     1.0f
 
 // the main logic
-let rec proces counter lines =
-    let rec iteration counter (lines: string[]) =
+let rec proces counter stats lines =
+    let rec iteration counter stats (lines: string[]) =
         let left = lines.[..lines.Length / 2]
         let right = lines.[lines.Length / 2..]
-        match (getScore left, getScore right) with
-        | (a, b) when a < THRESHOLD && b < THRESHOLD -> proces (counter + 1) lines
-        | (a, b) when a > b -> iteration 0 left
-        | _ -> iteration 0 right
-
+        match (getScore stats left, getScore stats right) with
+        | (a, b) when a < THRESHOLD && b < THRESHOLD -> proces (counter + 1) stats lines
+        | (a, b) when a > b -> iteration 0 stats left
+        | _ -> iteration 0 stats right
     match counter with
-    | c when c < RETRYES -> 
+    | c when c < RETRYES ->
         lines
         |> shuffle
         |> Seq.toArray
-        |> iteration c
+        |> iteration c stats
     | _ -> File.WriteAllLines("result.txt", lines)
 
 // unpairwise sequence of tuples
@@ -104,7 +103,7 @@ let unpairwise (s: seq<'a * 'a>) : seq<'a> = seq {
 }
 
 // keep only relevant characters in the line
-let convert stats lines =
+let convert lines =
     let isSpace char = char.Equals(' ')
     let isAllowed char = alpha.Contains char || isSpace char
     let mapLine (line: string) =
@@ -125,6 +124,5 @@ let main argv =
     |> fun path -> Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
     |> Seq.collect File.ReadAllLines
     |> Seq.toArray
-    |> (convert (Statictics.calculate) >> proces 0)
+    |> (convert >> proces 0 Statictics.calculate)
     0
-
