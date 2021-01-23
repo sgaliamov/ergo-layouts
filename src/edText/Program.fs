@@ -2,6 +2,7 @@
 open System.IO
 open System.Collections.Generic
 open System.Collections.Concurrent
+open FSharp.Collections.ParallelSeq
 
 // 0. load all texts.
 // 1. shuffle current set.
@@ -67,30 +68,31 @@ module Statictics =
 
         let (letters, digraphs) = 
             lines
-            |> Seq.map (fun line -> 
+            |> PSeq.map (fun line -> 
                 let letters = countLetters line
                 let digraphs = countDigraphs line
                 (letters, digraphs))
-            |> Seq.fold folder ((LettersCounter(), DigraphsCounter()))
+            |> PSeq.fold folder ((LettersCounter(), DigraphsCounter()))
         (convertToStats letters, convertToStats digraphs)
 
 // to shuffle a sequence
 let r = Random()
-let shuffle xs = xs |> Seq.sortBy (fun _ -> r.Next())
+let shuffle xs = xs |> PSeq.sortBy (fun _ -> r.Next())
 
 // calculate score
 let getScore (lettersStats: LettersMap<float>, digraphsStats: DigraphsMap<float>) lines: float =
     let get (newStats: ConcurrentDictionary<_, float>) (oldStats: ConcurrentDictionary<_, float>) =
         newStats
-        |> Seq.map (fun pair -> pair.Value / oldStats.[pair.Key])
-        |> Seq.average
+        |> PSeq.map (fun pair -> pair.Value / oldStats.[pair.Key])
+        |> PSeq.average
     let (lettersNew, digraphsNew) = Statictics.calculate lines
     let lettersScore = get lettersNew lettersStats
     let digraphsScore = get digraphsNew digraphsStats
     (lettersScore + digraphsScore) / 2.0
 
 // the main logic
-let rec proces counter getScore lines =
+let rec proces counter getScore (lines: string[]) =
+    Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}."
     let rec iteration counter (lines: string[]) =
         let left = lines.[..lines.Length / 2]
         let right = lines.[lines.Length / 2..]
@@ -102,9 +104,11 @@ let rec proces counter getScore lines =
     | c when c < RETRYES ->
         lines
         |> shuffle
-        |> Seq.toArray
+        |> PSeq.toArray
         |> iteration c
-    | _ -> File.WriteAllLines("result.txt", lines)
+    | _ -> 
+        Console.WriteLine "Done."
+        File.WriteAllLines("result.txt", lines)
 
 // unpairwise sequence of tuples
 let unpairwise (s: seq<'a * 'a>) : seq<'a> = seq {
@@ -124,8 +128,8 @@ let convert lines =
         |> unpairwise
         |> string
     lines
-    |> Seq.map mapLine
-    |> Seq.toArray
+    |> PSeq.map mapLine
+    |> PSeq.toArray
 
 // entry point
 [<EntryPoint>]
@@ -133,9 +137,10 @@ let main argv =
     let lines =
         argv.[0]
         |> fun path -> Directory.EnumerateFiles(path, "*.txt", SearchOption.AllDirectories)
-        |> Seq.collect File.ReadAllLines
+        |> PSeq.collect File.ReadAllLines
         |> convert
-        |> Seq.toArray
+        |> PSeq.toArray
+    Console.WriteLine $"{lines.Length} lines loaded."
     let stats = Statictics.calculate lines
     proces 0 (getScore stats) lines
     0
