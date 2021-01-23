@@ -15,11 +15,11 @@ open FSharp.Collections.ParallelSeq
 
 // allowed diviations from the ideal score
 [<Literal>]
-let THRESHOLD = 0.95
+let THRESHOLD = 0.05
 
 // allowed diviations from the ideal score
 [<Literal>]
-let RETRYES = 10
+let RETRYES = 100
 
 // all letters
 let alpha = ['a'..'z'] |> HashSet<char>
@@ -54,14 +54,14 @@ module Statictics =
         |> Seq.collect id
 
     // calculate stats
-    let calculate lines: LettersMap<float> * DigraphsMap<float> =
+    let calculate lines =
         let folder 
-            (lettersCounts: LettersCounter, digraphsCounts: DigraphsCounter)
-            (lettersSeq: seq<char * int>, digraphsSeq: seq<(char * char) * int>) =
+            (lettersCounts, digraphsCounts)
+            (lettersSeq, digraphsSeq) =
             (fold lettersCounts lettersSeq, fold digraphsCounts digraphsSeq)
 
         let convertToStats (dict: ConcurrentDictionary<_, int>) =
-            let total = dict |> Seq.sumBy (fun x -> x.Value)|> float
+            let total = dict |> Seq.sumBy (fun x -> x.Value) |> float
             dict 
             |> Seq.map (fun pair -> KeyValuePair(pair.Key, float pair.Value / total))
             |> ConcurrentDictionary<_, float>
@@ -81,25 +81,27 @@ module Text =
     let shuffle xs = xs |> PSeq.sortBy (fun _ -> r.Next())
     
     // calculate score
-    let getScore (lettersStats: LettersMap<float>, digraphsStats: DigraphsMap<float>) lines: float =
+    let getgetDiviation (lettersStats, digraphsStats) lines =
         let get (newStats: ConcurrentDictionary<_, float>) (oldStats: ConcurrentDictionary<_, float>) =
             newStats
             |> PSeq.map (fun pair -> pair.Value / oldStats.[pair.Key])
             |> PSeq.average
+            |> (fun x -> Math.Abs(1.0 - x))
+
         let (lettersNew, digraphsNew) = Statictics.calculate lines
-        let lettersScore = get lettersNew lettersStats
-        let digraphsScore = get digraphsNew digraphsStats
-        (lettersScore + digraphsScore) / 2.0
+        let lettersDiviation = get lettersNew lettersStats
+        let digraphsDiviation = get digraphsNew digraphsStats
+        Math.Max(lettersDiviation, digraphsDiviation)
     
     // the main logic
-    let rec proces counter getScore (lines: string[]) =
-        Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}..."
+    let rec proces counter getDiviation lines =
         let rec iteration counter (lines: string[]) =
+            Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}, {lines.[0].Substring(0, Math.Min(20, lines.[0].Length - 1))}"
             let left = lines.[..lines.Length / 2]
             let right = lines.[lines.Length / 2..]
-            match (getScore left, getScore right) with
-            | (a, b) when a < THRESHOLD && b < THRESHOLD -> proces (counter + 1) getScore lines
-            | (a, b) when a > b -> iteration 0 left
+            match (getDiviation left, getDiviation right) with
+            | (a, b) when a > THRESHOLD && b > THRESHOLD -> proces (counter + 1) getDiviation lines
+            | (a, b) when a < b -> iteration 0 left
             | _ -> iteration 0 right
         match counter with
         | c when c < RETRYES ->
@@ -108,11 +110,11 @@ module Text =
             |> PSeq.toArray
             |> iteration c
         | _ -> 
-            Console.WriteLine "Done."
+            Console.WriteLine $"Done with {lines.Length} lines."
             File.WriteAllLines("result.txt", lines)
     
     // unpairwise sequence of tuples
-    let unpairwise (s: seq<'a * 'a>) : seq<'a> = seq {
+    let unpairwise s = seq {
         let collection = s |> Seq.toArray
         if collection.Length > 0 then
             yield  (fst (Seq.head collection))
@@ -122,10 +124,9 @@ module Text =
     // keep only relevant characters in the line
     let convert lines =
         let isSpace char = char.Equals(' ')
-        let isAllowed char = alpha.Contains char || isSpace char
         let mapLine (line: string) =
-            line.ToLowerInvariant().Replace('\t', ' ')
-            |> Seq.filter isAllowed
+            line.ToLowerInvariant()
+            |> Seq.map (fun x -> if alpha.Contains x then x else ' ')
             |> Seq.pairwise
             |> Seq.filter (fun (a, b) -> not (isSpace a && isSpace b))
             |> unpairwise
@@ -134,7 +135,7 @@ module Text =
         lines
         |> PSeq.map mapLine
         |> PSeq.map (fun x -> x.Trim())
-        |> Seq.filter (String.IsNullOrEmpty >> not)
+        |> PSeq.filter (String.IsNullOrEmpty >> not)
         |> PSeq.toArray
 
 // entry point
@@ -142,11 +143,11 @@ module Text =
 let main argv =
     let lines =
         argv.[0]
-        |> fun path -> Directory.EnumerateFiles(path, "1.txt", SearchOption.AllDirectories)
+        |> fun path -> Directory.EnumerateFiles(path, "*.txt", SearchOption.AllDirectories)
         |> PSeq.collect File.ReadAllLines
         |> Text.convert
         |> PSeq.toArray
     Console.WriteLine $"{lines.Length} lines loaded."
     let stats = Statictics.calculate lines
-    Text.proces 0 (Text.getScore stats) lines
+    Text.proces 0 (Text.getgetDiviation stats) lines
     0

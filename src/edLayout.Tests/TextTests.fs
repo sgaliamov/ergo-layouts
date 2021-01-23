@@ -11,6 +11,11 @@ let ``Should prepare text to processing.`` () =
     actual |> should equivalent ["asd zxc"]
 
 [<Fact>]
-let ``Should filter charachers.`` () =
+let ``Should filter non letters.`` () =
     let actual = convert ["123 !@#  "; " "; ""]
     actual |> should equivalent Seq.empty
+
+[<Fact>]
+let ``Should split on punctuation.`` () =
+    let actual = convert ["asdf.asdf"]
+    actual |> should equivalent ["asdf asdf"]
