@@ -29,29 +29,28 @@ module Statictics =
     type DigraphsCounter = ConcurrentDictionary<char * char, int>
 
     // fold collection into dictionary
-    let fold dict collection =
+    let private fold dict collection =
         // sum the value to key
         let sum (dict: ConcurrentDictionary<_, int>) key value =
             dict.AddOrUpdate(key, (fun _ v -> v), (fun _ acc v -> acc + v), value) |> ignore
             dict
-
         collection
         |> Seq.fold (fun acc (char, count) -> sum acc char count) dict
 
     // number of all letters in a line
-    let countLetters line =
+    let private countLetters line =
         line
         |> Seq.filter alpha.Contains
         |> Seq.countBy id
 
     // number of all pairs in a line
-    let countDigraphs (line: string) =
+    let private countDigraphs (line: string) =
         line.Split(' ', StringSplitOptions.RemoveEmptyEntries)
         |> Seq.map (Seq.pairwise >> Seq.countBy id)
         |> Seq.collect id
 
     // calculate stats
-    let calculate (lines: string[]) =
+    let calculate lines =
         let folder 
             (lettersCounts: LettersCounter, digraphsCounts: DigraphsCounter)
             (lettersSeq: seq<char * int>, digraphsSeq: seq<(char * char) * int>) =
@@ -105,7 +104,7 @@ let unpairwise (s: seq<'a * 'a>) : seq<'a> = seq {
 }
 
 // keep only relevant characters in the line
-let convert lines =
+let convert stats lines =
     let isSpace char = char.Equals(' ')
     let isAllowed char = alpha.Contains char || isSpace char
     let mapLine (line: string) =
@@ -123,9 +122,9 @@ let convert lines =
 [<EntryPoint>]
 let main argv =
     argv.[0]
-    |> (fun path -> Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories))
+    |> fun path -> Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
     |> Seq.collect File.ReadAllLines
-    |> convert
-    |> proces 0
+    |> Seq.toArray
+    |> (convert (Statictics.calculate) >> proces 0)
     0
 
