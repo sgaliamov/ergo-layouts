@@ -19,11 +19,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E13E840A-A8A9-4E5B-82E3-1A12CFF86132}"
 	ProjectSection(SolutionItems) = preProject
 		scripts\lint.ps1 = scripts\lint.ps1
+		scripts\publish-text.ps1 = scripts\publish-text.ps1
 		scripts\publish.ps1 = scripts\publish.ps1
+		scripts\run-text.ps1 = scripts\run-text.ps1
 		scripts\run.ps1 = scripts\run.ps1
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "edText", "src\edText\edText.fsproj", "{04BCB361-4E47-41A5-8CA3-FED04DD50E99}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "edText", "src\edText\edText.fsproj", "{04BCB361-4E47-41A5-8CA3-FED04DD50E99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

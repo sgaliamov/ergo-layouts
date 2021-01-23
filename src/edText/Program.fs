@@ -15,11 +15,7 @@ open FSharp.Collections.ParallelSeq
 
 // allowed diviations from the ideal score
 [<Literal>]
-let THRESHOLD = 0.05
-
-// allowed diviations from the ideal score
-[<Literal>]
-let RETRYES = 100
+let RETRYES = 50
 
 // all letters
 let alpha = ['a'..'z'] |> HashSet<char>
@@ -77,8 +73,7 @@ module Statictics =
 
 module Text =
     // to shuffle a sequence
-    let r = Random()
-    let shuffle xs = xs |> PSeq.sortBy (fun _ -> r.Next())
+    let shuffle xs = xs |> PSeq.sortBy (fun _ -> Guid.NewGuid())
     
     // calculate score
     let getgetDiviation (lettersStats, digraphsStats) lines =
@@ -94,13 +89,13 @@ module Text =
         Math.Max(lettersDiviation, digraphsDiviation)
     
     // the main logic
-    let rec proces counter getDiviation lines =
+    let rec proces threshold counter getDiviation lines =
         let rec iteration counter (lines: string[]) =
             Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}, {lines.[0].Substring(0, Math.Min(20, lines.[0].Length - 1))}"
             let left = lines.[..lines.Length / 2]
             let right = lines.[lines.Length / 2..]
             match (getDiviation left, getDiviation right) with
-            | (a, b) when a > THRESHOLD && b > THRESHOLD -> proces (counter + 1) getDiviation lines
+            | (a, b) when a > threshold && b > threshold -> proces threshold (counter + 1) getDiviation lines
             | (a, b) when a < b -> iteration 0 left
             | _ -> iteration 0 right
         match counter with
@@ -109,9 +104,7 @@ module Text =
             |> shuffle
             |> PSeq.toArray
             |> iteration c
-        | _ -> 
-            Console.WriteLine $"Done with {lines.Length} lines."
-            File.WriteAllLines("result.txt", lines)
+        | _ -> lines            
     
     // unpairwise sequence of tuples
     let unpairwise s = seq {
@@ -141,6 +134,7 @@ module Text =
 // entry point
 [<EntryPoint>]
 let main argv =
+    let threshold = Double.Parse(argv.[1])
     let lines =
         argv.[0]
         |> fun path -> Directory.EnumerateFiles(path, "*.txt", SearchOption.AllDirectories)
@@ -149,5 +143,7 @@ let main argv =
         |> PSeq.toArray
     Console.WriteLine $"{lines.Length} lines loaded."
     let stats = Statictics.calculate lines
-    Text.proces 0 (Text.getgetDiviation stats) lines
+    let lines = Text.proces threshold 0 (Text.getgetDiviation stats) lines
+    Console.WriteLine $"Done with {lines.Length} lines."
+    File.WriteAllLines(Path.Combine(argv.[2], $"{lines.Length}.{argv.[1]}.result.txt"), lines)
     0
