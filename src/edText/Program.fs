@@ -68,8 +68,8 @@ module Text =
     let rec proces threshold counter getDiviation lines =
         let rec iteration counter (lines: string[]) =
             Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}, {lines.[0].Substring(0, Math.Min(20, lines.[0].Length - 1))}"
-            let left = lines.[..lines.Length / 2]
-            let right = lines.[lines.Length / 2..]
+            let left = lines.[..lines.Length / 3]
+            let right = lines.[lines.Length / 3..]
             match (getDiviation left, getDiviation right) with
             | (a, b) when a > threshold && b > threshold -> proces threshold (counter + 1) getDiviation lines
             | (a, b) when a < b -> iteration 0 left
