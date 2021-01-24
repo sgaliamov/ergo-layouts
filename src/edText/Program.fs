@@ -20,12 +20,10 @@ let RETRYES = 50
 // all letters
 let alpha = ['a'..'z'] |> HashSet<char>
 
-type LettersMap<'t> = ConcurrentDictionary<char, 't>
 type DigraphsMap<'t> = ConcurrentDictionary<char * char, 't>
 
 // calculating statistics
 module Statictics =
-    type LettersCounter = LettersMap<int>
     type DigraphsCounter = DigraphsMap<int>
 
     // fold collection into dictionary
@@ -37,12 +35,6 @@ module Statictics =
         collection
         |> Seq.fold (fun acc (char, count) -> sum acc char count) dict
 
-    // number of all letters in a line
-    let private countLetters line =
-        line
-        |> Seq.filter alpha.Contains
-        |> Seq.countBy id
-
     // number of all pairs in a line
     let private countDigraphs (line: string) =
         line.Split(' ', StringSplitOptions.RemoveEmptyEntries)
@@ -51,44 +43,27 @@ module Statictics =
 
     // calculate stats
     let calculate lines =
-        let folder 
-            (lettersCounts, digraphsCounts)
-            (lettersSeq, digraphsSeq) =
-            (fold lettersCounts lettersSeq, fold digraphsCounts digraphsSeq)
-
         let convertToStats (dict: ConcurrentDictionary<_, int>) =
             let total = dict |> Seq.sumBy (fun x -> x.Value) |> float
             dict 
             |> Seq.map (fun pair -> KeyValuePair(pair.Key, float pair.Value / total))
             |> ConcurrentDictionary<_, float>
-
-        let (letters, digraphs) = 
-            lines
-            |> PSeq.map (fun line -> 
-                let letters = countLetters line
-                let digraphs = countDigraphs line
-                (letters, digraphs))
-            |> PSeq.fold folder ((LettersCounter(), DigraphsCounter()))
-        (convertToStats letters, convertToStats digraphs)
+        lines
+        |> PSeq.map countDigraphs
+        |> PSeq.fold fold (DigraphsCounter())
+        |> convertToStats
 
 module Text =
     // to shuffle a sequence
     let shuffle xs = xs |> PSeq.sortBy (fun _ -> Guid.NewGuid())
     
     // calculate score
-    let getDiviation (lettersStats, digraphsStats) lines =
-        let get (newStats: ConcurrentDictionary<_, float>) (oldStats: ConcurrentDictionary<_, float>) =
-            newStats
-            |> PSeq.map (fun pair -> pair.Value / oldStats.[pair.Key])
-            |> PSeq.average
-            |> fun x -> Math.Abs(1.0 - x)
-
-        let (lettersNew, digraphsNew) = Statictics.calculate lines
-        let lettersDiviation = get lettersNew lettersStats
-        let digraphsDiviation = get digraphsNew digraphsStats
-        if lettersDiviation > digraphsDiviation then
-            Console.WriteLine $"Bad letters: {lettersDiviation - digraphsDiviation}"
-        Math.Max(lettersDiviation, digraphsDiviation)
+    let getDiviation (digraphsStats: ConcurrentDictionary<_, float>) lines =
+        lines
+        |> Statictics.calculate
+        |> PSeq.map (fun pair -> pair.Value / digraphsStats.[pair.Key])
+        |> PSeq.average
+        |> fun x -> Math.Abs(1.0 - x)
     
     // the main logic
     let rec proces threshold counter getDiviation lines =
