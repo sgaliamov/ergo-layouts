@@ -76,16 +76,18 @@ module Text =
     let shuffle xs = xs |> PSeq.sortBy (fun _ -> Guid.NewGuid())
     
     // calculate score
-    let getgetDiviation (lettersStats, digraphsStats) lines =
+    let getDiviation (lettersStats, digraphsStats) lines =
         let get (newStats: ConcurrentDictionary<_, float>) (oldStats: ConcurrentDictionary<_, float>) =
             newStats
             |> PSeq.map (fun pair -> pair.Value / oldStats.[pair.Key])
             |> PSeq.average
-            |> (fun x -> Math.Abs(1.0 - x))
+            |> fun x -> Math.Abs(1.0 - x)
 
         let (lettersNew, digraphsNew) = Statictics.calculate lines
         let lettersDiviation = get lettersNew lettersStats
         let digraphsDiviation = get digraphsNew digraphsStats
+        if lettersDiviation > digraphsDiviation then
+            Console.WriteLine $"Bad letters: {lettersDiviation - digraphsDiviation}"
         Math.Max(lettersDiviation, digraphsDiviation)
     
     // the main logic
@@ -114,7 +116,7 @@ module Text =
             yield! (collection |> Seq.map snd)
     }
     
-    // keep only relevant characters in the line
+    // keep only relevant characters in lines
     let convert lines =
         let isSpace char = char.Equals(' ')
         let mapLine (line: string) =
@@ -125,9 +127,9 @@ module Text =
             |> unpairwise
             |> Seq.toArray
             |> String
+            |> fun x -> x.Trim()
         lines
         |> PSeq.map mapLine
-        |> PSeq.map (fun x -> x.Trim())
         |> PSeq.filter (String.IsNullOrEmpty >> not)
         |> PSeq.toArray
 
@@ -143,7 +145,7 @@ let main argv =
         |> PSeq.toArray
     Console.WriteLine $"{lines.Length} lines loaded."
     let stats = Statictics.calculate lines
-    let lines = Text.proces threshold 0 (Text.getgetDiviation stats) lines
+    let lines = Text.proces threshold 0 (Text.getDiviation stats) lines
     Console.WriteLine $"Done with {lines.Length} lines."
-    File.WriteAllLines(Path.Combine(argv.[2], $"{lines.Length}.{argv.[1]}.result.txt"), lines)
+    File.WriteAllText(Path.Combine(argv.[2], $"{argv.[1]}-{lines.Length}.result.txt"), String.Join(' ', lines))
     0
