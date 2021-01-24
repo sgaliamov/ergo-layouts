@@ -13,7 +13,6 @@ open FSharp.Collections.ParallelSeq
 // 5. get best part.
 // 6. go to 2.
 
-// allowed diviations from the ideal score
 [<Literal>]
 let RETRYES = 50
 
