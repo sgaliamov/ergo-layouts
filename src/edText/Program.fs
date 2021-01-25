@@ -65,13 +65,13 @@ module Text =
         |> fun x -> Math.Abs(1.0 - x)
     
     // the main logic
-    let rec proces threshold counter getDiviation lines =
+    let rec proces divider threshold counter getDiviation lines =
         let rec iteration counter (lines: string[]) =
             Console.WriteLine $"Processing {lines.Length} lines, attempt {counter + 1}, {lines.[0].Substring(0, Math.Min(20, lines.[0].Length - 1))}"
-            let left = lines.[..lines.Length / 2]
-            let right = lines.[lines.Length / 2..]
+            let left = lines.[..lines.Length / divider]
+            let right = lines.[lines.Length / divider..]
             match (getDiviation left, getDiviation right) with
-            | (a, b) when a > threshold && b > threshold -> proces threshold (counter + 1) getDiviation lines
+            | (a, b) when a > threshold && b > threshold -> proces divider threshold (counter + 1) getDiviation lines
             | (a, b) when a < b -> iteration 0 left
             | _ -> iteration 0 right
         match counter with
@@ -110,7 +110,8 @@ module Text =
 // entry point
 [<EntryPoint>]
 let main argv =
-    let threshold = Double.Parse(argv.[1])
+    let threshold = Double.Parse argv.[1]
+    let divider = Int32.Parse argv.[3]
     let lines =
         argv.[0]
         |> fun path -> Directory.EnumerateFiles(path, "*.txt", SearchOption.AllDirectories)
@@ -119,7 +120,7 @@ let main argv =
         |> PSeq.toArray
     Console.WriteLine $"{lines.Length} lines loaded."
     let stats = Statictics.calculate lines
-    let lines = Text.proces threshold 0 (Text.getDiviation stats) lines
+    let lines = Text.proces divider threshold 0 (Text.getDiviation stats) lines
     Console.WriteLine $"Done with {lines.Length} lines."
 
     let path = $"{argv.[1]}-{lines.Length}.result.txt"
