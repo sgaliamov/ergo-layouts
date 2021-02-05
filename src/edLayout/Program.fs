@@ -23,7 +23,7 @@ let private handler input pattern layout output showProgress detailed =
 let [<EntryPoint>] main args =
     let root = RootCommand()
     root.AddOption (Option<string>([| "--input"; "-i" |], "Path to a directory with sampling texts."))
-    root.AddOption (Option<string> ([| "--pattern"; "-p" |], (fun () -> "*.txt"), "Pattern to filter sampling files. "))
+    root.AddOption (Option<string> ([| "--pattern"; "-p" |], (fun () -> "*.txt"), "Pattern to filter sampling files."))
     root.AddOption (Option<string>([| "--layout"; "-l" |]))
     root.AddOption (Option<string>([| "--output"; "-o" |]))
     root.AddOption (Option<bool>([| "--show-progress"; "-sp" |], fun () -> true))

@@ -2,14 +2,14 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
         <Compile Include="modules\Utilities.fs" />
         <Compile Include="modules\models\StateModels.fs" />
-        <Compile Include="modules\models\KeyboardModelds.fs" />
+        <Compile Include="modules\models\KeyboardModels.fs" />
         <Compile Include="modules\Configs.fs" />
         <Compile Include="modules\Keyboard.fs" />
         <Compile Include="modules\Calculations.fs" />
