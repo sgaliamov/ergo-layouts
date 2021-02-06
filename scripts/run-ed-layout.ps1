@@ -1,12 +1,12 @@
 $ErrorActionPreference = "Stop"
 
-cls
+Clear-Host
 
 $currDir = (Get-Item -Path "./").FullName
 
 $TextInfo = (Get-Culture).TextInfo
 
-Get-ChildItem $currDir\publish\layouts\*.json -Recurse | ForEach-Object {
+Get-ChildItem $currDir\publish\layouts\*.json | ForEach-Object {
     Write-Host "## $($TextInfo.ToTitleCase($_.Basename))"
     Write-Host
     Write-Host "`````` ini"
