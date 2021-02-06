@@ -61,7 +61,7 @@ module Text =
         lines
         |> Statictics.calculate
         |> PSeq.map (fun pair -> pair.Value / digraphsStats.[pair.Key])
-        |> PSeq.max
+        |> PSeq.average
         |> fun x -> Math.Abs(1.0 - x)
     
     // the main logic
