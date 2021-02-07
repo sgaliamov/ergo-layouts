@@ -5,7 +5,6 @@ open System.Collections.Generic
 open System.IO
 open System.Linq
 open System.Reactive.Subjects
-open System.Reactive.Linq
 open System.Text
 open System.Threading
 open FSharp.Collections.ParallelSeq
@@ -160,29 +159,10 @@ let calculate showProgress samplesPath search detailed (layoutPath: string) outp
         |> Console.Write
         state
 
-    let onStateChanged state =
-        if showProgress then
-            let initialPosition = (Console.CursorLeft, Console.CursorTop)
-            StringBuilder()
-            |> formatMain state
-            |> Console.Write
-            Console.SetCursorPosition initialPosition
-
     use stateChangedStream = new Subject<State>()
-    use subscription = stateChangedStream.Sample(TimeSpan.FromSeconds(0.500)).Subscribe onStateChanged
-    let spacer = new string(' ', Console.WindowWidth)
 
     let folder state next =
         let newState = aggregator state next
-        if Probability.value settings.precision > 0. then
-            let digraphsFinished = isFinished newState.Digraphs settings.digraphs newState.TotalDigraphs settings.precision
-            let lettersFinished = isFinished newState.Letters settings.letters newState.TotalLetters settings.precision
-            if digraphsFinished && lettersFinished then
-                Console.SetCursorPosition(0, Console.CursorTop)
-                Console.Write spacer
-                printfn "\rCollected enough data."
-                subscription.Dispose()
-                cancel ()
         stateChangedStream.OnNext newState
         newState
 
