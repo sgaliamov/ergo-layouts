@@ -1,11 +1,12 @@
-# Utilities for ErgoDox EZ layouts
+# Utilities for ErgoDox EZ
 
 ## edLayout
 
 Is a utility to examine layouts for ErgoDox keyboard.
 
 ``` pwsh
-❯ .\publish\edLayout\edLayout.exe --help
+❯ .\edLayout.exe -i .\samples -l .\layouts\qwerty.json -sp false -o .\publish\edLayout\results.csv
+
 Usage:
   edLayout [options]
 
@@ -24,7 +25,7 @@ More details you can fined [here](https://sgaliamov.medium.com/evaluating-keyboa
 
 ## edText
 
-A utility that helps to minify a sampling texts without loosing statistical characteristic's of digraphs.
+A utility that helps to minify sampling texts without loosing statistical characteristic's of digraphs.
 
 In case when you have a lot of texts for some algorithm, you can save some time running it on smaller version of those texts which have same quality.
 
