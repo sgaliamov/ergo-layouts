@@ -4,7 +4,23 @@
 
 Is a utility to examine layouts for ErgoDox keyboard.
 
-[TBD] link to the post.
+``` pwsh
+❯ .\publish\edLayout\edLayout.exe --help
+Usage:
+  edLayout [options]
+
+Options:
+  -i, --input <input>        Path to a directory with sampling texts.
+  -p, --pattern <pattern>    Pattern to filter sampling files. [default: *.txt]
+  -l, --layout <layout>      Path to a layout file.
+  -o, --output <output>      Path to the output file.
+  -sp, --show-progress       [default: True]
+  -d, --detailed             Show sample texts statistics.
+  --version                  Show version information
+  -?, -h, --help             Show help and usage information
+```
+
+More details you can fined [here](https://sgaliamov.medium.com/evaluating-keyboard-layouts-for-ergodox-ez-cf70042c4865).
 
 ## edText
 
