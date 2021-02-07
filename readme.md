@@ -21,13 +21,13 @@ Options:
   -?, -h, --help             Show help and usage information
 ```
 
-More details you can fined [here](https://sgaliamov.medium.com/evaluating-keyboard-layouts-for-ergodox-ez-cf70042c4865).
+More details you can find [here](https://sgaliamov.medium.com/evaluating-keyboard-layouts-for-ergodox-ez-cf70042c4865).
 
 ## edText
 
 A utility that helps to minify sampling texts without loosing statistical characteristic's of digraphs.
 
-In case when you have a lot of texts for some algorithm, you can save some time running it on smaller version of those texts which have same quality.
+In case when you have a lot of texts for some algorithm, you can save some time running it on smaller version of those texts that have same quality.
 
 ``` pwsh
 edText.exe .\samples 0.01 .\results 4
@@ -47,6 +47,6 @@ edText.exe .\samples 0.01 .\results 4
 1. If shuffled 10 times already, save text and exit.
 1. Split into 2 parts using the last input parameter.
 1. Calculate a score for both parts.
-1. If both bad according chosen precision, go to 2.
+1. If both bad according the chosen precision, go to 2.
 1. Get the best part.
 1. Go to 3.
