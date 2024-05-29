@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <GenerateProgramFile>false</GenerateProgramFile>
     </PropertyGroup>
@@ -15,16 +15,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Update="FSharp.Core" Version="5.0.0" />
-      <PackageReference Include="FsUnit" Version="4.0.4" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+      <PackageReference Update="FSharp.Core" Version="8.0.200" />
+      <PackageReference Include="FsUnit" Version="6.0.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
         <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20303.1" />
-        <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+        <PackageReference Include="xunit" Version="2.7.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="3.0.1">
+        <PackageReference Include="coverlet.collector" Version="6.0.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

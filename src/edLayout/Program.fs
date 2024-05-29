@@ -5,13 +5,16 @@ open System.CommandLine
 open System.CommandLine.Invocation;
 open Main
 
-let private handler input pattern layout output showProgress detailed =
-    use cts = new CancellationTokenSource()
-    let cancel () = cts.Cancel true
+let cts = new CancellationTokenSource()
 
-    Task.Run((fun () ->
-        Console.ReadKey true |> ignore
-        cancel ()), cts.Token) |> ignore
+let cancel () = cts.Cancel true
+
+let run = fun () ->
+    Console.ReadKey true |> ignore
+    cancel ()
+
+let private handler input pattern layout output showProgress detailed =
+    Task.Run(run, cts.Token) |> ignore
 
     let result = calculate showProgress input pattern detailed layout output cts.Token cancel
     match result with
